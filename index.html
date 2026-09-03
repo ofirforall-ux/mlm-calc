@@ -1,240 +1,679 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון שיווק רשתי - Universe Pro</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --success: #10b981;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ניהול שיווק רשתי</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0f1422;
+      --card-bg: #182033;
+      --card-border: #25314d;
+      --accent-purple: #9333ea;
+      --accent-purple-light: #c084fc;
+      --accent-purple-hover: #7e22ce;
+      --accent-red: #ef4444;
+      --accent-green: #22c55e;
+      --text-main: #f3e8ff;
+      --text-muted: #94a3b8;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 40px; min-height: 100vh; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
+    /* סרגל עליון */
+    .top-bar {
+      background: #111827;
+      border-bottom: 1px solid var(--card-border);
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    .brand { font-size: 1.3rem; font-weight: bold; color: var(--accent-purple-light); display: flex; gap: 10px; align-items: center; }
 
-        header {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-        }
+    /* תפריט 3 נקודות */
+    .menu-container { position: relative; }
+    .three-dots-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .three-dots-btn:hover { background: #1e293b; }
 
-        h1 {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
+    .dropdown-menu {
+      position: absolute;
+      left: 0;
+      top: 48px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      width: 220px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+      overflow: hidden;
+    }
 
-        p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+    .dropdown-menu.active { display: flex; }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border);
-        }
+    .dropdown-item {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 12px 16px;
+      text-align: right;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      width: 100%;
+      transition: background 0.2s;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    .dropdown-item:hover { background: rgba(147, 51, 234, 0.2); }
+    .dropdown-item.danger-item { color: var(--accent-red); }
+    .dropdown-item.danger-item:hover { background: rgba(239, 68, 68, 0.2); }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+    .btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: 1rem;
-            outline: none;
-        }
+    .btn-primary { background: var(--accent-purple); color: #ffffff; border: none; font-weight: bold; }
+    .btn-primary:hover { background: var(--accent-purple-hover); }
 
-        input:focus, select:focus {
-            border-color: var(--accent);
-        }
+    .container { max-width: 900px; margin: 20px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px; }
+    .card-title { font-weight: bold; color: var(--accent-purple-light); margin-bottom: 15px; display: flex; gap: 8px; align-items: center; font-size: 1.1rem; }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; text-align: right; }
+    .form-group label { font-size: 0.85rem; color: var(--text-muted); }
+    .form-group input, .form-group select {
+      background: #0d121f; border: 1px solid var(--card-border); color: #fff; padding: 10px; border-radius: 6px; font-size: 0.9rem;
+    }
 
-        button:hover {
-            background-color: var(--accent-hover);
-        }
+    /* עיגולי מדדים */
+    .circles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+    .circle-card { background: #0d121f; border: 1px solid var(--card-border); border-radius: 10px; padding: 15px; text-align: center; transition: all 0.3s; }
+    .circle-card h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+    
+    .circle-container { position: relative; width: 100px; height: 100px; margin: 0 auto; }
+    .circle-container svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .circle-bg { fill: none; stroke: #1e293b; stroke-width: 8; }
+    .circle-progress { fill: none; stroke: var(--accent-purple-light); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.5s, stroke 0.3s; }
+    
+    .circle-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .circle-percentage { font-size: 0.95rem; font-weight: bold; color: #fff; }
+    .circle-val { font-size: 0.75rem; color: var(--text-muted); }
 
-        .results {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
+    /* עיצוב ירוק כשאין עמלה על המשיכה */
+    .circle-card.unlocked-card {
+      border: 1px solid var(--accent-green);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+    }
+    .circle-card.unlocked-card .circle-progress {
+      stroke: var(--accent-green) !important;
+    }
 
-        .result-box {
-            background-color: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid var(--border);
-        }
+    .investment-timer-msg {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--text-muted);
+      min-height: 24px;
+    }
+    .investment-timer-msg.unlocked-text {
+      color: var(--accent-green);
+    }
 
-        .result-box .title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
+    /* עץ הרשת */
+    .tree-wrapper { overflow-x: auto; padding: 20px 0; text-align: center; }
+    .tree ul { padding-top: 15px; position: relative; display: flex; justify-content: center; gap: 20px; }
+    .tree li { list-style-type: none; position: relative; padding: 15px 5px 0 5px; }
+    .tree li::before, .tree li::after {
+      content: ''; position: absolute; top: 0; right: 50%; border-top: 1px solid var(--card-border); width: 50%; height: 15px;
+    }
+    .tree li::after { right: auto; left: 50%; border-left: 1px solid var(--card-border); }
+    .tree li:only-child::after, .tree li:only-child::before { display: none; }
+    .tree li:only-child { padding-top: 0; }
+    .tree li:first-child::before, .tree li:last-child::after { border: none; }
+    .tree li:last-child::before { border-right: 1px solid var(--card-border); }
+    .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 1px solid var(--card-border); width: 0; height: 15px; }
 
-        .result-box .value {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--success);
-        }
-    </style>
+    .node {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 50%; width: 90px; height: 90px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      margin: 0 auto; cursor: pointer; position: relative; padding: 4px;
+    }
+    .node.selected { border-color: var(--accent-purple-light); box-shadow: 0 0 12px rgba(192, 132, 252, 0.4); }
+    .node-name { font-size: 0.75rem; font-weight: bold; max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .no-data-msg { color: var(--text-muted); font-size: 0.95rem; text-align: center; padding: 20px 0; }
+
+    /* מודאלים */
+    .modal {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .modal.active { display: flex; }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--card-border); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>מחשבון תגמולים - Universe Pro</h1>
-        <p>חישוב רווחים, עמלות רשת ותחזית צמיחה</p>
-    </header>
+  <header class="top-bar">
+    <div class="brand"><i class="fa-solid fa-sitemap"></i> ניהול שיווק רשתי</div>
+    
+    <!-- תפריט 3 נקודות -->
+    <div class="menu-container">
+      <button class="three-dots-btn" onclick="toggleDropdown(event)">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div id="dropdownMenu" class="dropdown-menu">
+        <button class="dropdown-item" onclick="openModalFromMenu('passModal')">
+          <i class="fa-solid fa-key"></i> שינוי סיסמה לפי כינוי
+        </button>
+        <button class="dropdown-item" onclick="openModalFromMenu('rankModal')">
+          <i class="fa-solid fa-gear"></i> הגדרות דרגה
+        </button>
+        <button class="dropdown-item danger-item" onclick="resetSystemData()">
+          <i class="fa-solid fa-rotate-left"></i> איפוס נתונים
+        </button>
+      </div>
+    </div>
+  </header>
 
+  <div class="container">
+    
+    <!-- טופס הוספת משתמש -->
     <div class="card">
-        <div class="grid">
-            <div class="form-group">
-                <label for="investment">סכום השקעה אישית ($)</label>
-                <input type="number" id="investment" value="1000" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="directMembers">חברים ישירים (דור 1)</label>
-                <input type="number" id="directMembers" value="3" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="avgInvestment">השקעה ממוצעת לחבר ($)</label>
-                <input type="number" id="avgInvestment" value="500" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="networkDepth">עומק רשת (דורות)</label>
-                <input type="number" id="networkDepth" value="3" min="1" max="10">
-            </div>
+      <div class="card-title"><i class="fa-solid fa-user-plus"></i> הוספת משתמש חדש</div>
+      <form id="addUserForm" onsubmit="addUser(event)">
+        <div class="form-group">
+          <label>מספר ארגון:</label>
+          <input type="text" id="uOrgId" placeholder="הכנס מספר ארגון">
         </div>
-
-        <button onclick="calculateEarnings()">חשב רווחים</button>
+        <div class="form-group">
+          <label>שם משתמש למערכת (מזהה):</label>
+          <input type="text" id="uUsername" required placeholder="user123">
+        </div>
+        <div class="form-group">
+          <label>שם מלא:</label>
+          <input type="text" id="uName" required placeholder="ישראל ישראלי">
+        </div>
+        <div class="form-group">
+          <label>אימייל:</label>
+          <input type="email" id="uEmail" required placeholder="user@email.com">
+        </div>
+        <div class="form-group">
+          <label>סיסמה ראשונית:</label>
+          <input type="password" id="uPass" required placeholder="******">
+        </div>
+        <div class="form-group">
+          <label>מנהל מצרף (Sponsor):</label>
+          <select id="uSponsor" required></select>
+        </div>
+        <div class="form-group">
+          <label>השקעה אישית ($):</label>
+          <input type="number" step="any" id="uInvest" min="0" placeholder="הכנס סכום השקעה">
+        </div>
+        <div class="form-group">
+          <label>זמן משיכה ללא עמלה (בחודשים):</label>
+          <input type="number" step="any" id="uFeeFreeMonths" min="0" placeholder="הכנס מספר חודשים">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; justify-content: center; padding: 12px; font-size: 1rem;">הוסף לרשת</button>
+      </form>
     </div>
 
+    <!-- לוח מדדים -->
     <div class="card">
-        <h2>תחזית הכנסות</h2>
-        <div class="results">
-            <div class="result-box">
-                <div class="title">תשואה יומית אישית</div>
-                <div class="value" id="dailyPersonal">$0.00</div>
-            </div>
-            <div class="result-box">
-                <div class="title">עמלת דור 1 (ישירים)</div>
-                <div class="value" id="directBonus">$0.00</div>
-            </div>
-            <div class="result-box">
-                <div class="title">סה"כ חברי רשת</div>
-                <div class="value" id="totalNetworkSize">0</div>
-            </div>
-            <div class="result-box">
-                <div class="title">צפי הכנסה חודשית כוללת</div>
-                <div class="value" id="totalMonthly">$0.00</div>
-            </div>
+      <div class="card-title" id="selectedUserHeader"><i class="fa-solid fa-chart-pie"></i> מדדים עבור:</div>
+      
+      <div class="circles-grid">
+        <div class="circle-card">
+          <h4>מכירה אישית</h4>
+          <div class="circle-container">
+            <svg viewBox="0 0 100 100"><circle class="circle-bg" cx="50" cy="50" r="45"/><circle id="cSales" class="circle-progress" cx="50" cy="50" r="45"/></svg>
+            <div class="circle-text"><div id="pSales" class="circle-percentage">0%</div><div id="vSales" class="circle-val">0$/3000$</div></div>
+          </div>
         </div>
+
+        <div class="circle-card" id="investCard">
+          <h4>השקעה אישית</h4>
+          <div class="circle-container">
+            <svg viewBox="0 0 100 100"><circle class="circle-bg" cx="50" cy="50" r="45"/><circle id="cInvest" class="circle-progress" cx="50" cy="50" r="45"/></svg>
+            <div class="circle-text"><div id="pInvest" class="circle-percentage">0%</div><div id="vInvest" class="circle-val">0$/1000$</div></div>
+          </div>
+          <div id="investTimerMsg" class="investment-timer-msg"></div>
+        </div>
+
+        <div class="circle-card">
+          <h4>חברים בדרגה תחתיו</h4>
+          <div class="circle-container">
+            <svg viewBox="0 0 100 100"><circle class="circle-bg" cx="50" cy="50" r="45"/><circle id="cMembers" class="circle-progress" cx="50" cy="50" r="45"/></svg>
+            <div class="circle-text"><div id="pMembers" class="circle-percentage">0%</div><div id="vMembers" class="circle-val">0/2</div></div>
+          </div>
+        </div>
+
+        <div class="circle-card">
+          <h4>מכירות קבוצתיות</h4>
+          <div class="circle-container">
+            <svg viewBox="0 0 100 100"><circle class="circle-bg" cx="50" cy="50" r="45"/><circle id="cGrp" class="circle-progress" cx="50" cy="50" r="45"/></svg>
+            <div class="circle-text"><div id="pGrp" class="circle-percentage">0%</div><div id="vGrp" class="circle-val">0$/15000$</div></div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-<script>
-    function calculateEarnings() {
-        const investment = parseFloat(document.getElementById('investment').value) || 0;
-        const directMembers = parseInt(document.getElementById('directMembers').value) || 0;
-        const avgInvestment = parseFloat(document.getElementById('avgInvestment').value) || 0;
-        const depth = parseInt(document.getElementById('networkDepth').value) || 1;
+    <!-- עץ הרשת -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-sitemap"></i> מבנה הרשת</div>
+      <div class="tree-wrapper">
+        <div id="tree" class="tree"></div>
+      </div>
+    </div>
 
-        // חישוב תשואה יומית אישית (לפי 0.5% ביום)
-        const dailyRate = 0.005;
-        const dailyPersonal = investment * dailyRate;
+  </div>
 
-        // עמלת הישירים (דור 1 - לפי 10%)
-        const directRate = 0.10;
-        const directVolume = directMembers * avgInvestment;
-        const directBonus = directVolume * directRate;
+  <!-- מודאל הגדרות דרגה -->
+  <div id="rankModal" class="modal">
+    <div class="modal-content">
+      <div class="card-title"><i class="fa-solid fa-gear"></i> הגדרות דרגה</div>
+      <div class="form-group"><label>יעד מכירה אישית ($):</label><input type="number" step="any" id="cfgSales" value="3000"></div>
+      <div class="form-group"><label>יעד השקעה אישית ($):</label><input type="number" step="any" id="cfgInvest" value="1000"></div>
+      <div class="form-group"><label>יעד חברים מתחתיו:</label><input type="number" step="any" id="cfgMembers" value="2"></div>
+      <div class="form-group"><label>יעד מכירות קבוצתיות ($):</label><input type="number" step="any" id="cfgGrp" value="15000"></div>
+      <button class="btn btn-primary" style="width:100%; margin-top:10px; justify-content: center;" onclick="saveConfig()">שמור</button>
+      <button class="btn" style="width:100%; margin-top:5px; justify-content: center;" onclick="closeModal('rankModal')">ביטול</button>
+    </div>
+  </div>
 
-        // חישוב גודל הרשת הכולל (לפי מכפיל היררכי)
-        let totalMembers = 0;
-        for (let i = 1; i <= depth; i++) {
-            totalMembers += Math.pow(directMembers, i);
+  <!-- מודאל שינוי סיסמה לפי כינוי -->
+  <div id="passModal" class="modal">
+    <div class="modal-content">
+      <div class="card-title"><i class="fa-solid fa-key"></i> שינוי סיסמה לפי כינוי</div>
+      <form onsubmit="changePassword(event)">
+        <div class="form-group">
+          <label>בחר משתמש (לפי כינוי / שם):</label>
+          <select id="passUserSelect" required></select>
+        </div>
+        <div class="form-group">
+          <label>סיסמה חדשה:</label>
+          <input type="password" id="newPassVal" required placeholder="הזן סיסמה חדשה">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px; justify-content: center;">עדכן סיסמה</button>
+        <button type="button" class="btn" style="width:100%; margin-top:5px; justify-content: center;" onclick="closeModal('passModal')">ביטול</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY_TREE = 'mlm_purple_tree_v2';
+    const STORAGE_KEY_RANK = 'mlm_purple_rank_v2';
+
+    let rankReq = { sales: 3000, invest: 1000, members: 2, grp: 15000 };
+    let treeData = null;
+    let selectedId = null;
+    let timerInterval = null;
+
+    window.onload = () => {
+      const savedTree = localStorage.getItem(STORAGE_KEY_TREE);
+      const savedRank = localStorage.getItem(STORAGE_KEY_RANK);
+
+      if (savedRank) {
+        try { rankReq = JSON.parse(savedRank); } catch(e){}
+      }
+      if (savedTree) {
+        try { treeData = JSON.parse(savedTree); } catch(e){}
+      }
+      
+      if (treeData) {
+        selectedId = treeData.id;
+      }
+      
+      render();
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.menu-container')) {
+          document.getElementById('dropdownMenu').classList.remove('active');
         }
+      });
 
-        // צפי הכנסה חודשית (תשואה אישית + עמלות צוות משוערות)
-        const monthlyPersonal = dailyPersonal * 30;
-        const teamVolume = totalMembers * avgInvestment;
-        const estimatedMonthlyTeamBonus = teamVolume * 0.02; // עמלת רשת ממוצעת של 2%
-        const totalMonthly = monthlyPersonal + estimatedMonthlyTeamBonus;
+      // עדכון טיימר חי כל שניה
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        updateInvestmentTimer();
+      }, 1000);
+    };
 
-        // עדכון התוצאות במסך
-        document.getElementById('dailyPersonal').innerText = '$' + dailyPersonal.toFixed(2);
-        document.getElementById('directBonus').innerText = '$' + directBonus.toFixed(2);
-        document.getElementById('totalNetworkSize').innerText = totalMembers.toLocaleString();
-        document.getElementById('totalMonthly').innerText = '$' + totalMonthly.toFixed(2);
+    function toggleDropdown(e) {
+      e.stopPropagation();
+      document.getElementById('dropdownMenu').classList.toggle('active');
     }
 
-    // הרצה ראשונית בעת טעינת הדף
-    calculateEarnings();
-</script>
+    function openModalFromMenu(modalId) {
+      document.getElementById('dropdownMenu').classList.remove('active');
+      openModal(modalId);
+    }
 
+    function saveStorageData() {
+      if(treeData) {
+        localStorage.setItem(STORAGE_KEY_TREE, JSON.stringify(treeData));
+      } else {
+        localStorage.removeItem(STORAGE_KEY_TREE);
+      }
+      localStorage.setItem(STORAGE_KEY_RANK, JSON.stringify(rankReq));
+    }
+
+    function render() {
+      updateSponsorsAndUsers();
+      renderTree();
+      updateDashboard();
+    }
+
+    function findNode(node, id) {
+      if (!node) return null;
+      if (node.id === id) return node;
+      for (let c of node.children) {
+        let res = findNode(c, id);
+        if (res) return res;
+      }
+      return null;
+    }
+
+    function getGroupSales(node) {
+      if (!node) return 0;
+      let total = parseFloat(node.sales || 0);
+      for (let c of node.children) {
+        total += getGroupSales(c);
+      }
+      return total;
+    }
+
+    function updateDashboard() {
+      let user = findNode(treeData, selectedId);
+      
+      if (!user) {
+        document.getElementById('selectedUserHeader').innerHTML = `<i class="fa-solid fa-chart-pie"></i> מדדים: (טרם נוספו משתמשים)`;
+        setCircle('cSales', 'pSales', 'vSales', 0, rankReq.sales, '$');
+        setCircle('cInvest', 'pInvest', 'vInvest', 0, rankReq.invest, '$');
+        setCircle('cMembers', 'pMembers', 'vMembers', 0, rankReq.members, '');
+        setCircle('cGrp', 'pGrp', 'vGrp', 0, rankReq.grp, '$');
+        document.getElementById('investTimerMsg').innerText = '';
+        return;
+      }
+
+      let orgText = user.orgId ? ` | ארגון: ${user.orgId}` : '';
+      document.getElementById('selectedUserHeader').innerHTML = `<i class="fa-solid fa-chart-pie"></i> מדדים עבור: ${user.name} (@${user.username}${orgText})`;
+
+      let personalSales = parseFloat(user.sales || 0);
+      let personalInvest = parseFloat(user.invest || 0);
+      let directMembers = user.children ? user.children.length : 0;
+      let groupSales = getGroupSales(user);
+
+      setCircle('cSales', 'pSales', 'vSales', personalSales, rankReq.sales, '$');
+      setCircle('cInvest', 'pInvest', 'vInvest', personalInvest, rankReq.invest, '$');
+      setCircle('cMembers', 'pMembers', 'vMembers', directMembers, rankReq.members, '');
+      setCircle('cGrp', 'pGrp', 'vGrp', groupSales, rankReq.grp, '$');
+
+      updateInvestmentTimer();
+    }
+
+    function updateInvestmentTimer() {
+      let user = findNode(treeData, selectedId);
+      let investCard = document.getElementById('investCard');
+      let msgElem = document.getElementById('investTimerMsg');
+
+      if (!user) {
+        investCard.classList.remove('unlocked-card');
+        msgElem.className = 'investment-timer-msg';
+        msgElem.innerText = '';
+        return;
+      }
+
+      let personalInvest = parseFloat(user.invest || 0);
+      let feeFreeMonths = parseFloat(user.feeFreeMonths || 0);
+
+      // אם אין השקעה או לא הוגדרו חודשים למשיכה ללא עמלה
+      if (personalInvest === 0 || feeFreeMonths === 0) {
+        investCard.classList.remove('unlocked-card');
+        msgElem.className = 'investment-timer-msg';
+        msgElem.innerText = '';
+        return;
+      }
+
+      let createdAt = user.createdAt || Date.now();
+      // חישוב תאריך שחרור לפי ימים (כולל עשרוני בחודשים)
+      let daysToAdd = feeFreeMonths * 30.4375; // ממוצע ימים בחודש
+      let feeFreeTime = createdAt + (daysToAdd * 24 * 60 * 60 * 1000);
+
+      let now = Date.now();
+      let diff = feeFreeTime - now;
+
+      if (diff <= 0) {
+        // הגיע הזמן - פתוח למשיכה ללא עמלות!
+        investCard.classList.add('unlocked-card');
+        msgElem.className = 'investment-timer-msg unlocked-text';
+        msgElem.innerHTML = `<i class="fa-solid fa-circle-check"></i> ההשקעה הפתוחה למשיכה ללא עמלות`;
+      } else {
+        // עדיין בתקופת עמלה
+        investCard.classList.remove('unlocked-card');
+        msgElem.className = 'investment-timer-msg';
+
+        let totalSeconds = Math.floor(diff / 1000);
+        let days = Math.floor(totalSeconds / (3600 * 24));
+        let hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
+
+        let timeStr = "";
+        if (days > 30) {
+          let monthsLeft = (days / 30).toFixed(1);
+          timeStr = `פטור מעמלה בעוד: כ-${monthsLeft} חודשים`;
+        } else if (days > 0) {
+          timeStr = `פטור מעמלה בעוד: ${days} ימים ו-${hours} שעות`;
+        } else {
+          timeStr = `פטור מעמלה בעוד: ${hours}:${minutes}:${seconds}`;
+        }
+
+        msgElem.innerHTML = `<i class="fa-solid fa-clock"></i> ${timeStr}`;
+      }
+    }
+
+    function setCircle(cId, pId, vId, current, target, unit) {
+      let pct = target > 0 ? Math.min(100, (current / target) * 100) : 100;
+      let offset = 283 - (pct / 100) * 283;
+      document.getElementById(cId).style.strokeDashoffset = offset;
+      document.getElementById(pId).innerText = Math.round(pct) + '%';
+      
+      // תמיכה בהצגת מספרים עשרוניים יפה
+      let currStr = Number.isInteger(current) ? current : current.toFixed(2);
+      let targetStr = Number.isInteger(target) ? target : target.toFixed(2);
+      
+      document.getElementById(vId).innerText = `${currStr}${unit}/${targetStr}${unit}`;
+    }
+
+    function renderTree() {
+      let container = document.getElementById('tree');
+      container.innerHTML = '';
+      
+      if (!treeData) {
+        container.innerHTML = '<div class="no-data-msg">הרשת ריקה. הוסף משתמש ראשון כמנהל המערכת.</div>';
+        return;
+      }
+
+      let ul = document.createElement('ul');
+      ul.appendChild(buildNode(treeData));
+      container.appendChild(ul);
+    }
+
+    function buildNode(node) {
+      let li = document.createElement('li');
+      let div = document.createElement('div');
+      
+      let extraClass = node.id === selectedId ? 'selected' : '';
+      div.className = `node ${extraClass}`;
+      div.onclick = (e) => { e.stopPropagation(); selectedId = node.id; render(); };
+      
+      div.innerHTML = `
+        <i class="fa-solid fa-user" style="font-size:0.9rem; color: var(--accent-purple-light);"></i>
+        <div class="node-name">${node.name}</div>
+      `;
+      li.appendChild(div);
+
+      if (node.children && node.children.length > 0) {
+        let ul = document.createElement('ul');
+        node.children.forEach(c => ul.appendChild(buildNode(c)));
+        li.appendChild(ul);
+      }
+      return li;
+    }
+
+    function updateSponsorsAndUsers() {
+      let sponsorSelect = document.getElementById('uSponsor');
+      let passUserSelect = document.getElementById('passUserSelect');
+      
+      sponsorSelect.innerHTML = '';
+      passUserSelect.innerHTML = '';
+
+      if (!treeData) {
+        let opt = document.createElement('option');
+        opt.value = "root_new";
+        opt.innerText = "מנהל מערכת (ראשי)";
+        sponsorSelect.appendChild(opt);
+        return;
+      }
+
+      function walk(node) {
+        let opt1 = document.createElement('option');
+        opt1.value = node.id;
+        opt1.innerText = `${node.name} (@${node.username})`;
+        sponsorSelect.appendChild(opt1);
+
+        let opt2 = document.createElement('option');
+        opt2.value = node.id;
+        opt2.innerText = `${node.username} (${node.name})`;
+        passUserSelect.appendChild(opt2);
+
+        if (node.children) node.children.forEach(walk);
+      }
+      walk(treeData);
+    }
+
+    function addUser(e) {
+      e.preventDefault();
+      
+      let investInput = document.getElementById('uInvest').value;
+      let monthsInput = document.getElementById('uFeeFreeMonths').value;
+
+      let investVal = investInput !== "" ? parseFloat(investInput) : 0;
+      let feeFreeMonths = monthsInput !== "" ? parseFloat(monthsInput) : 0;
+
+      let sponsorId = document.getElementById('uSponsor').value;
+
+      let newUser = {
+        id: Date.now().toString(),
+        orgId: document.getElementById('uOrgId').value,
+        username: document.getElementById('uUsername').value,
+        name: document.getElementById('uName').value,
+        email: document.getElementById('uEmail').value,
+        pass: document.getElementById('uPass').value,
+        invest: investVal,
+        feeFreeMonths: feeFreeMonths,
+        createdAt: Date.now(),
+        sales: 0,
+        children: []
+      };
+
+      // אם עדיין אין עץ (משתמש ראשון - מנהל)
+      if (!treeData || sponsorId === "root_new") {
+        treeData = newUser;
+        selectedId = treeData.id;
+      } else {
+        let parent = findNode(treeData, sponsorId);
+        if (parent) {
+          parent.children.push(newUser);
+        }
+      }
+
+      document.getElementById('addUserForm').reset();
+      
+      saveStorageData();
+      render();
+    }
+
+    function changePassword(e) {
+      e.preventDefault();
+      let userId = document.getElementById('passUserSelect').value;
+      let newPass = document.getElementById('newPassVal').value;
+      let user = findNode(treeData, userId);
+      
+      if (user) {
+        user.pass = newPass;
+        saveStorageData();
+        alert(`הסיסמה עבור @${user.username} עודכנה בהצלחה!`);
+        document.getElementById('newPassVal').value = '';
+        closeModal('passModal');
+      }
+    }
+
+    function saveConfig() {
+      rankReq.sales = parseFloat(document.getElementById('cfgSales').value) || 0;
+      rankReq.invest = parseFloat(document.getElementById('cfgInvest').value) || 0;
+      rankReq.members = parseFloat(document.getElementById('cfgMembers').value) || 0;
+      rankReq.grp = parseFloat(document.getElementById('cfgGrp').value) || 0;
+      
+      saveStorageData();
+      closeModal('rankModal');
+      render();
+    }
+
+    function resetSystemData() {
+      document.getElementById('dropdownMenu').classList.remove('active');
+      if (confirm("איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?")) {
+        treeData = null;
+        selectedId = null;
+        localStorage.removeItem(STORAGE_KEY_TREE);
+        localStorage.removeItem(STORAGE_KEY_RANK);
+        render();
+      }
+    }
+
+    function openModal(id) { 
+      if(id === 'rankModal') {
+        document.getElementById('cfgSales').value = rankReq.sales;
+        document.getElementById('cfgInvest').value = rankReq.invest;
+        document.getElementById('cfgMembers').value = rankReq.members;
+        document.getElementById('cfgGrp').value = rankReq.grp;
+      }
+      document.getElementById(id).classList.add('active'); 
+    }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+  </script>
 </body>
 </html>
