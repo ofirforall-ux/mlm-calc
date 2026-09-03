@@ -1,8 +1,12 @@
-<!DOCTYPE html><html lang="he" dir="rtl">
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ניהול שיווק רשתי</title>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  <style>
+  <title>ניהול שיווק רשתי</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
     :root {
       --bg-dark: #0f1422;
       --card-bg: #182033;
@@ -30,10 +34,6 @@
       min-height: 100vh;
     }
 
-    /* =========================
-       סרגל עליון
-    ========================= */
-
     .top-bar {
       background: #111827;
       border-bottom: 1px solid var(--card-border);
@@ -52,10 +52,6 @@
       gap: 10px;
       align-items: center;
     }
-
-    /* =========================
-       תפריט 3 נקודות
-    ========================= */
 
     .menu-container {
       position: relative;
@@ -125,10 +121,6 @@
       background: rgba(239, 68, 68, 0.2);
     }
 
-    /* =========================
-       כפתורים
-    ========================= */
-
     .btn {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -153,13 +145,18 @@
       background: var(--accent-purple-hover);
     }
 
-    .btn:hover {
-      background: #1e293b;
+    .btn-danger {
+      background: var(--accent-red);
+      color: white;
+      border: none;
     }
 
-    /* =========================
-       מבנה כללי
-    ========================= */
+    .btn-green {
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
 
     .container {
       max-width: 900px;
@@ -187,10 +184,6 @@
       font-size: 1.1rem;
     }
 
-    /* =========================
-       טפסים
-    ========================= */
-
     .form-group {
       margin-bottom: 12px;
       display: flex;
@@ -212,11 +205,10 @@
       padding: 10px;
       border-radius: 6px;
       font-size: 0.9rem;
+      width: 100%;
     }
 
-    /* =========================
-       מדדים
-    ========================= */
+    /* עיגולי מדדים */
 
     .circles-grid {
       display: grid;
@@ -284,6 +276,7 @@
     .circle-val {
       font-size: 0.75rem;
       color: var(--text-muted);
+      white-space: nowrap;
     }
 
     .circle-card.unlocked-card {
@@ -307,9 +300,7 @@
       color: var(--accent-green);
     }
 
-    /* =========================
-       עץ הרשת
-    ========================= */
+    /* עץ הרשת */
 
     .tree-wrapper {
       overflow-x: auto;
@@ -376,16 +367,12 @@
       height: 15px;
     }
 
-    /* =========================
-       עיגול משתמש
-    ========================= */
-
     .node {
       background: var(--card-bg);
       border: 2px solid var(--card-border);
       border-radius: 50%;
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -393,13 +380,7 @@
       margin: 0 auto;
       cursor: pointer;
       position: relative;
-      padding: 6px;
-      transition: 0.2s;
-    }
-
-    .node:hover {
-      border-color: var(--accent-purple-light);
-      transform: scale(1.04);
+      padding: 4px;
     }
 
     .node.selected {
@@ -407,67 +388,23 @@
       box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
     }
 
-    .node-email {
-      font-size: 0.67rem;
-      font-weight: bold;
-      max-width: 94px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      direction: ltr;
-      color: #fff;
-    }
-
     .node-name {
-      font-size: 0.65rem;
-      max-width: 94px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      max-width: 75px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .node-email {
+      font-size: 0.55rem;
+      max-width: 78px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--text-muted);
-      margin-top: 2px;
     }
-
-    .node-username {
-      font-size: 0.58rem;
-      max-width: 94px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: var(--accent-purple-light);
-      direction: ltr;
-      margin-top: 2px;
-    }
-
-    /* =========================
-       כותרת תצוגת העץ
-    ========================= */
-
-    .tree-view-header {
-      background: #0d121f;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tree-view-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .tree-view-label strong {
-      color: var(--accent-purple-light);
-    }
-
-    /* =========================
-       הודעה
-    ========================= */
 
     .no-data-msg {
       color: var(--text-muted);
@@ -476,9 +413,126 @@
       padding: 20px 0;
     }
 
-    /* =========================
-       מודאל
-    ========================= */
+    /* השקעות */
+
+    .investment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .investment-item {
+      background: #0d121f;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .investment-item.unlocked {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 10px rgba(34,197,94,0.15);
+    }
+
+    .investment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .investment-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--accent-purple-light);
+    }
+
+    .thunder-name {
+      color: #84cc16;
+    }
+
+    .unai-name {
+      color: #a855f7;
+    }
+
+    .investment-data {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .investment-data-box {
+      background: #111827;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .investment-data-title {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .investment-data-value {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+
+    .investment-timer {
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+      color: var(--text-muted);
+    }
+
+    .investment-timer.green {
+      color: var(--accent-green);
+    }
+
+    .investment-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .investment-actions button {
+      flex: 1;
+      min-width: 120px;
+      justify-content: center;
+    }
+
+    .wallet-interest {
+      color: #84cc16;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .summary-box {
+      background: #0d121f;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .summary-box strong {
+      display: block;
+      color: var(--accent-purple-light);
+      font-size: 1.1rem;
+      margin-top: 4px;
+    }
+
+    /* מודאלים */
 
     .modal {
       position: fixed;
@@ -491,7 +545,8 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      padding: 15px;
+      overflow-y: auto;
+      padding: 20px;
     }
 
     .modal.active {
@@ -509,137 +564,24 @@
       overflow-y: auto;
     }
 
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-
     .modal-close {
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
+      float: left;
+      font-size: 1.5rem;
       cursor: pointer;
-      font-size: 1.3rem;
+      color: var(--text-muted);
     }
 
     .modal-close:hover {
-      color: #fff;
+      color: white;
     }
 
-    /* =========================
-       פרטי משתמש
-    ========================= */
-
-    .user-profile-icon {
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-      background: #0d121f;
-      border: 2px solid var(--accent-purple-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 2rem;
-      color: var(--accent-purple-light);
+    .danger-text {
+      color: var(--accent-red);
     }
-
-    .profile-title {
-      text-align: center;
-      font-size: 1.15rem;
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
-
-    .profile-subtitle {
-      text-align: center;
-      color: var(--accent-purple-light);
-      direction: ltr;
-      margin-bottom: 18px;
-      font-size: 0.85rem;
-    }
-
-    .details-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .detail-row {
-      background: #0d121f;
-      border: 1px solid var(--card-border);
-      border-radius: 7px;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .detail-label {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-    }
-
-    .detail-value {
-      color: #fff;
-      font-size: 0.82rem;
-      font-weight: bold;
-      text-align: left;
-      word-break: break-word;
-    }
-
-    /* =========================
-       מצב עץ
-    ========================= */
-
-    .view-mode-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-
-    .view-mode-option {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--card-border);
-      background: #0d121f;
-      color: var(--text-main);
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: right;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .view-mode-option:hover {
-      background: #1e293b;
-    }
-
-    .view-mode-option.active {
-      border-color: var(--accent-purple-light);
-      background: rgba(147,51,234,0.15);
-    }
-
-    .view-mode-option i {
-      color: var(--accent-purple-light);
-    }
-
-    /* =========================
-       מובייל
-    ========================= */
 
     @media (max-width: 600px) {
       .top-bar {
         padding: 12px 15px;
-      }
-
-      .brand {
-        font-size: 1rem;
       }
 
       .container {
@@ -650,2202 +592,3085 @@
         padding: 15px;
       }
 
-      .node {
-        width: 100px;
-        height: 100px;
+      .investment-data {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .tree ul {
-        gap: 10px;
+      .summary-row {
+        grid-template-columns: 1fr;
       }
     }
-  </style></head><body>  <!-- =========================
-       סרגל עליון
-  ========================= -->  <header class="top-bar"><div class="brand">
-  <i class="fa-solid fa-sitemap"></i>
-  ניהול שיווק רשתי
+  </style>
+</head>
+
+<body>
+
+<header class="top-bar">
+
+  <div class="brand">
+    <i class="fa-solid fa-sitemap"></i>
+    ניהול שיווק רשתי
+  </div>
+
+  <div class="menu-container">
+
+    <button class="three-dots-btn" onclick="toggleDropdown(event)">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+
+    <div id="dropdownMenu" class="dropdown-menu">
+
+      <button class="dropdown-item" onclick="openModalFromMenu('passModal')">
+        <i class="fa-solid fa-key"></i>
+        שינוי סיסמה לפי כינוי
+      </button>
+
+      <button class="dropdown-item" onclick="openModalFromMenu('editUserModal')">
+        <i class="fa-solid fa-user-pen"></i>
+        עריכת משתמש
+      </button>
+
+      <button class="dropdown-item" onclick="openModalFromMenu('deleteUserModal')">
+        <i class="fa-solid fa-user-minus"></i>
+        מחיקת משתמש
+      </button>
+
+      <button class="dropdown-item" onclick="openModalFromMenu('rankModal')">
+        <i class="fa-solid fa-gear"></i>
+        הגדרות דרגה
+      </button>
+
+      <button class="dropdown-item danger-item" onclick="resetSystemData()">
+        <i class="fa-solid fa-rotate-left"></i>
+        איפוס נתונים
+      </button>
+
+    </div>
+  </div>
+
+</header>
+
+
+<div class="container">
+
+  <!-- הוספת משתמש -->
+
+  <div class="card">
+
+    <div class="card-title">
+      <i class="fa-solid fa-user-plus"></i>
+      הוספת משתמש חדש
+    </div>
+
+    <form id="addUserForm" onsubmit="addUser(event)">
+
+      <div class="form-group">
+        <label>מספר ארגון:</label>
+        <input type="text" id="uOrgId" placeholder="הכנס מספר ארגון">
+      </div>
+
+      <div class="form-group">
+        <label>שם משתמש למערכת (מזהה):</label>
+        <input type="text" id="uUsername" required placeholder="user123">
+      </div>
+
+      <div class="form-group">
+        <label>שם מלא:</label>
+        <input type="text" id="uName" required placeholder="ישראל ישראלי">
+      </div>
+
+      <div class="form-group">
+        <label>אימייל:</label>
+        <input type="email" id="uEmail" required placeholder="user@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>סיסמה ראשונית:</label>
+        <input type="password" id="uPass" required placeholder="******">
+      </div>
+
+      <div class="form-group">
+        <label>מנהל מצרף (Sponsor):</label>
+        <select id="uSponsor" required></select>
+      </div>
+
+      <div class="form-group">
+        <label>השקעה אישית ($):</label>
+        <input type="number" step="any" id="uInvest" min="0" placeholder="הכנס סכום השקעה">
+      </div>
+
+      <div class="form-group">
+        <label>זמן משיכה ללא עמלה (בחודשים):</label>
+        <input type="number" step="any" id="uFeeFreeMonths" min="0" placeholder="הכנס מספר חודשים">
+      </div>
+
+      <!-- סוג ההשקעה הראשונה -->
+
+      <div class="form-group">
+        <label>סוג ההשקעה:</label>
+
+        <select id="uInvestmentType">
+
+          <option value="thunder">
+            ⚡ Thunder Stake
+          </option>
+
+          <option value="unai">
+            ✦ UNAI Engine
+          </option>
+
+        </select>
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          תשואה חודשית (%):
+        </label>
+
+        <input
+          type="number"
+          step="any"
+          id="uMonthlyRate"
+          min="0"
+          placeholder="לדוגמה 21.13"
+        >
+
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="width:100%; margin-top:10px; justify-content:center; padding:12px; font-size:1rem;"
+      >
+        הוסף לרשת
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <!-- לוח מדדים -->
+
+  <div class="card">
+
+    <div class="card-title" id="selectedUserHeader">
+      <i class="fa-solid fa-chart-pie"></i>
+      מדדים עבור:
+    </div>
+
+    <div class="circles-grid">
+
+      <div class="circle-card">
+
+        <h4>מכירה אישית</h4>
+
+        <div class="circle-container">
+
+          <svg viewBox="0 0 100 100">
+
+            <circle
+              class="circle-bg"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+            <circle
+              id="cSales"
+              class="circle-progress"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+          </svg>
+
+          <div class="circle-text">
+
+            <div id="pSales" class="circle-percentage">
+              0%
+            </div>
+
+            <div id="vSales" class="circle-val">
+              0$/3000$
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="circle-card" id="investCard">
+
+        <h4>השקעה אישית</h4>
+
+        <div class="circle-container">
+
+          <svg viewBox="0 0 100 100">
+
+            <circle
+              class="circle-bg"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+            <circle
+              id="cInvest"
+              class="circle-progress"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+          </svg>
+
+          <div class="circle-text">
+
+            <div id="pInvest" class="circle-percentage">
+              0%
+            </div>
+
+            <div id="vInvest" class="circle-val">
+              0$/1000$
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="investTimerMsg" class="investment-timer-msg"></div>
+
+      </div>
+
+
+      <div class="circle-card">
+
+        <h4>חברים בדרגה תחתיו</h4>
+
+        <div class="circle-container">
+
+          <svg viewBox="0 0 100 100">
+
+            <circle
+              class="circle-bg"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+            <circle
+              id="cMembers"
+              class="circle-progress"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+          </svg>
+
+          <div class="circle-text">
+
+            <div id="pMembers" class="circle-percentage">
+              0%
+            </div>
+
+            <div id="vMembers" class="circle-val">
+              0/2
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="circle-card">
+
+        <h4>מכירות קבוצתיות</h4>
+
+        <div class="circle-container">
+
+          <svg viewBox="0 0 100 100">
+
+            <circle
+              class="circle-bg"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+            <circle
+              id="cGrp"
+              class="circle-progress"
+              cx="50"
+              cy="50"
+              r="45"
+            />
+
+          </svg>
+
+          <div class="circle-text">
+
+            <div id="pGrp" class="circle-percentage">
+              0%
+            </div>
+
+            <div id="vGrp" class="circle-val">
+              0$/15000$
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- השקעות המשתמש -->
+
+  <div class="card">
+
+    <div class="card-title">
+
+      <i class="fa-solid fa-coins"></i>
+
+      ההשקעות של המשתמש
+
+    </div>
+
+    <div id="investmentsList" class="investment-list"></div>
+
+    <div id="investmentSummary"></div>
+
+  </div>
+
+
+  <!-- עץ הרשת -->
+
+  <div class="card">
+
+    <div class="card-title">
+
+      <i class="fa-solid fa-sitemap"></i>
+
+      מבנה הרשת
+
+    </div>
+
+    <div class="tree-wrapper">
+
+      <div id="tree" class="tree"></div>
+
+    </div>
+
+  </div>
+
 </div>
 
-<div class="menu-container">
 
-  <button class="three-dots-btn" onclick="toggleDropdown(event)">
-    <i class="fa-solid fa-ellipsis-vertical"></i>
-  </button>
+<!-- הגדרות דרגה -->
 
-  <div id="dropdownMenu" class="dropdown-menu">
+<div id="rankModal" class="modal">
 
-    <button class="dropdown-item" onclick="openModalFromMenu('treeViewModal')">
-      <i class="fa-solid fa-diagram-project"></i>
-      תצוגת עץ
-    </button>
+  <div class="modal-content">
 
-    <button class="dropdown-item" onclick="openModalFromMenu('passModal')">
-      <i class="fa-solid fa-key"></i>
-      שינוי סיסמה לפי כינוי
-    </button>
+    <span class="modal-close" onclick="closeModal('rankModal')">
+      ×
+    </span>
 
-    <button class="dropdown-item" onclick="openModalFromMenu('rankModal')">
+    <div class="card-title">
+
       <i class="fa-solid fa-gear"></i>
+
       הגדרות דרגה
-    </button>
 
-    <button class="dropdown-item danger-item" onclick="resetSystemData()">
-      <i class="fa-solid fa-rotate-left"></i>
-      איפוס נתונים
-    </button>
-
-  </div>
-</div>
-
-  </header>  <div class="container"><!-- =========================
-     הוספת משתמש
-========================= -->
-
-<div class="card">
-
-  <div class="card-title">
-    <i class="fa-solid fa-user-plus"></i>
-    הוספת משתמש חדש
-  </div>
-
-  <form id="addUserForm" onsubmit="addUser(event)">
-
-    <div class="form-group">
-      <label>מספר ארגון:</label>
-      <input type="text" id="uOrgId" placeholder="הכנס מספר ארגון">
     </div>
 
     <div class="form-group">
-      <label>שם משתמש למערכת (כינוי / מזהה):</label>
-      <input type="text" id="uUsername" required placeholder="user123">
+
+      <label>יעד מכירה אישית ($):</label>
+
+      <input type="number" step="any" id="cfgSales" value="3000">
+
+    </div>
+
+    <div class="form-group">
+
+      <label>יעד השקעה אישית ($):</label>
+
+      <input type="number" step="any" id="cfgInvest" value="1000">
+
+    </div>
+
+    <div class="form-group">
+
+      <label>יעד חברים מתחתיו:</label>
+
+      <input type="number" step="any" id="cfgMembers" value="2">
+
+    </div>
+
+    <div class="form-group">
+
+      <label>יעד מכירות קבוצתיות ($):</label>
+
+      <input type="number" step="any" id="cfgGrp" value="15000">
+
+    </div>
+
+    <button
+      class="btn btn-primary"
+      style="width:100%; margin-top:10px; justify-content:center;"
+      onclick="saveConfig()"
+    >
+      שמור
+    </button>
+
+    <button
+      class="btn"
+      style="width:100%; margin-top:5px; justify-content:center;"
+      onclick="closeModal('rankModal')"
+    >
+      ביטול
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- שינוי סיסמה -->
+
+<div id="passModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="modal-close" onclick="closeModal('passModal')">
+      ×
+    </span>
+
+    <div class="card-title">
+
+      <i class="fa-solid fa-key"></i>
+
+      שינוי סיסמה לפי כינוי
+
+    </div>
+
+    <form onsubmit="changePassword(event)">
+
+      <div class="form-group">
+
+        <label>בחר משתמש:</label>
+
+        <select id="passUserSelect" required></select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>סיסמה חדשה:</label>
+
+        <input
+          type="password"
+          id="newPassVal"
+          required
+          placeholder="הזן סיסמה חדשה"
+        >
+
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="width:100%; margin-top:10px; justify-content:center;"
+      >
+        עדכן סיסמה
+      </button>
+
+      <button
+        type="button"
+        class="btn"
+        style="width:100%; margin-top:5px; justify-content:center;"
+        onclick="closeModal('passModal')"
+      >
+        ביטול
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- עריכת משתמש -->
+
+<div id="editUserModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="modal-close" onclick="closeModal('editUserModal')">
+      ×
+    </span>
+
+    <div class="card-title">
+
+      <i class="fa-solid fa-user-pen"></i>
+
+      עריכת פרטי משתמש
+
+    </div>
+
+    <div class="form-group">
+
+      <label>בחר משתמש:</label>
+
+      <select id="editUserSelect" onchange="loadEditUser()"></select>
+
+    </div>
+
+    <div class="form-group">
+      <label>מספר ארגון:</label>
+      <input type="text" id="editOrgId">
+    </div>
+
+    <div class="form-group">
+      <label>כינוי / מזהה:</label>
+      <input type="text" id="editUsername">
     </div>
 
     <div class="form-group">
       <label>שם מלא:</label>
-      <input type="text" id="uName" required placeholder="ישראל ישראלי">
+      <input type="text" id="editName">
     </div>
 
     <div class="form-group">
       <label>אימייל:</label>
-      <input type="email" id="uEmail" required placeholder="user@email.com">
+      <input type="email" id="editEmail">
     </div>
 
     <div class="form-group">
-      <label>סיסמה ראשונית:</label>
-      <input type="password" id="uPass" required placeholder="******">
-    </div>
-
-    <div class="form-group">
-      <label>מנהל מצרף (Sponsor):</label>
-      <select id="uSponsor" required></select>
-    </div>
-
-    <div class="form-group">
-      <label>השקעה אישית ($):</label>
-      <input type="number" step="any" id="uInvest" min="0" placeholder="הכנס סכום השקעה">
-    </div>
-
-    <div class="form-group">
-      <label>זמן משיכה ללא עמלה (בחודשים):</label>
-      <input type="number" step="any" id="uFeeFreeMonths" min="0" placeholder="הכנס מספר חודשים">
-    </div>
-
-    <button
-      type="submit"
-      class="btn btn-primary"
-      style="width:100%; margin-top:10px; justify-content:center; padding:12px; font-size:1rem;"
-    >
-      הוסף לרשת
-    </button>
-
-  </form>
-</div>
-
-
-<!-- =========================
-     לוח מדדים
-========================= -->
-
-<div class="card">
-
-  <div class="card-title" id="selectedUserHeader">
-    <i class="fa-solid fa-chart-pie"></i>
-    מדדים עבור:
-  </div>
-
-  <div class="circles-grid">
-
-    <div class="circle-card">
-
-      <h4>מכירה אישית</h4>
-
-      <div class="circle-container">
-
-        <svg viewBox="0 0 100 100">
-          <circle class="circle-bg" cx="50" cy="50" r="45"/>
-          <circle id="cSales" class="circle-progress" cx="50" cy="50" r="45"/>
-        </svg>
-
-        <div class="circle-text">
-          <div id="pSales" class="circle-percentage">0%</div>
-          <div id="vSales" class="circle-val">0$/3000$</div>
-        </div>
-
-      </div>
-    </div>
-
-
-    <div class="circle-card" id="investCard">
-
-      <h4>השקעה אישית</h4>
-
-      <div class="circle-container">
-
-        <svg viewBox="0 0 100 100">
-          <circle class="circle-bg" cx="50" cy="50" r="45"/>
-          <circle id="cInvest" class="circle-progress" cx="50" cy="50" r="45"/>
-        </svg>
-
-        <div class="circle-text">
-          <div id="pInvest" class="circle-percentage">0%</div>
-          <div id="vInvest" class="circle-val">0$/1000$</div>
-        </div>
-
-      </div>
-
-      <div id="investTimerMsg" class="investment-timer-msg"></div>
-
-    </div>
-
-
-    <div class="circle-card">
-
-      <h4>חברים בדרגה תחתיו</h4>
-
-      <div class="circle-container">
-
-        <svg viewBox="0 0 100 100">
-          <circle class="circle-bg" cx="50" cy="50" r="45"/>
-          <circle id="cMembers" class="circle-progress" cx="50" cy="50" r="45"/>
-        </svg>
-
-        <div class="circle-text">
-          <div id="pMembers" class="circle-percentage">0%</div>
-          <div id="vMembers" class="circle-val">0/2</div>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="circle-card">
-
-      <h4>מכירות קבוצתיות</h4>
-
-      <div class="circle-container">
-
-        <svg viewBox="0 0 100 100">
-          <circle class="circle-bg" cx="50" cy="50" r="45"/>
-          <circle id="cGrp" class="circle-progress" cx="50" cy="50" r="45"/>
-        </svg>
-
-        <div class="circle-text">
-          <div id="pGrp" class="circle-percentage">0%</div>
-          <div id="vGrp" class="circle-val">0$/15000$</div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-
-<!-- =========================
-     עץ הרשת
-========================= -->
-
-<div class="card">
-
-  <div class="card-title">
-    <i class="fa-solid fa-sitemap"></i>
-    מבנה הרשת
-  </div>
-
-  <div id="treeViewHeader" class="tree-view-header">
-    <div class="tree-view-label">
-      תצוגה:
-      <strong id="treeViewModeText">כל הרשת</strong>
-    </div>
-
-    <button class="btn" onclick="openModal('treeViewModal')">
-      <i class="fa-solid fa-filter"></i>
-      שינוי תצוגה
-    </button>
-  </div>
-
-  <div class="tree-wrapper">
-    <div id="tree" class="tree"></div>
-  </div>
-
-</div>
-
-  </div>  <!-- =========================
-       מודאל תצוגת עץ
-  ========================= -->  <div id="treeViewModal" class="modal"><div class="modal-content">
-
-  <div class="modal-header">
-
-    <div class="card-title" style="margin-bottom:0;">
-      <i class="fa-solid fa-diagram-project"></i>
-      תצוגת עץ
-    </div>
-
-    <button class="modal-close" onclick="closeModal('treeViewModal')">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-
-  </div>
-
-
-  <div class="view-mode-buttons">
-
-    <button
-      id="viewAllBtn"
-      class="view-mode-option active"
-      onclick="setTreeView('all')"
-    >
-      <i class="fa-solid fa-sitemap"></i>
-
-      <div>
-        <strong>תצוגה כללית</strong>
-        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">
-          הצג את כל הרשת ואת הקשרים בין כולם
-        </div>
-      </div>
-
-    </button>
-
-
-    <button
-      id="viewUserBtn"
-      class="view-mode-option"
-      onclick="showUserTreeSelector()"
-    >
-      <i class="fa-solid fa-user-tree"></i>
-
-      <div>
-        <strong>עץ לפי כינוי</strong>
-        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">
-          הצג רק את המשתמש ואת כל מי שנמצא מתחתיו
-        </div>
-      </div>
-
-    </button>
-
-  </div>
-
-
-  <div id="treeUserSelectorArea" style="display:none;">
-
-    <div class="form-group">
-
-      <label>
-        בחר כינוי:
-      </label>
-
-      <select id="treeUserSelect"></select>
-
+      <label>סיסמה:</label>
+      <input type="text" id="editPass">
     </div>
 
     <button
       class="btn btn-primary"
-      style="width:100%;justify-content:center;"
-      onclick="applyUserTree()"
+      style="width:100%; justify-content:center;"
+      onclick="saveEditedUser()"
     >
-      <i class="fa-solid fa-eye"></i>
-      הצג את העץ
+      שמור שינויים
+    </button>
+
+    <button
+      class="btn"
+      style="width:100%; margin-top:5px; justify-content:center;"
+      onclick="closeModal('editUserModal')"
+    >
+      ביטול
     </button>
 
   </div>
 
-
-  <button
-    class="btn"
-    style="width:100%;margin-top:8px;justify-content:center;"
-    onclick="closeModal('treeViewModal')"
-  >
-    סגור
-  </button>
-
 </div>
 
-  </div>  <!-- =========================
-       מודאל פרטי משתמש
-  ========================= -->  <div id="userDetailsModal" class="modal"><div class="modal-content">
 
-  <div class="modal-header">
+<!-- מחיקת משתמש -->
 
-    <div class="card-title" style="margin-bottom:0;">
-      <i class="fa-solid fa-address-card"></i>
-      פרטי משתמש
-    </div>
+<div id="deleteUserModal" class="modal">
 
-    <button class="modal-close" onclick="closeModal('userDetailsModal')">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+  <div class="modal-content">
 
-  </div>
+    <span class="modal-close" onclick="closeModal('deleteUserModal')">
+      ×
+    </span>
 
+    <div class="card-title danger-text">
 
-  <div class="user-profile-icon">
-    <i class="fa-solid fa-user"></i>
-  </div>
+      <i class="fa-solid fa-user-minus"></i>
 
-  <div id="profileName" class="profile-title"></div>
-  <div id="profileUsername" class="profile-subtitle"></div>
-
-
-  <div class="details-grid">
-
-    <div class="detail-row">
-      <span class="detail-label">אימייל</span>
-      <span id="profileEmail" class="detail-value" dir="ltr"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">מספר ארגון</span>
-      <span id="profileOrg" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">מנהל מצרף</span>
-      <span id="profileSponsor" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">השקעה אישית</span>
-      <span id="profileInvest" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">מכירות אישיות</span>
-      <span id="profileSales" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">חברים ישירים</span>
-      <span id="profileMembers" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">מכירות קבוצתיות</span>
-      <span id="profileGroupSales" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">פטור מעמלה</span>
-      <span id="profileFeeMonths" class="detail-value"></span>
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">תאריך הצטרפות</span>
-      <span id="profileCreated" class="detail-value"></span>
-    </div>
-
-  </div>
-
-
-  <button
-    class="btn btn-primary"
-    style="width:100%;margin-top:15px;justify-content:center;"
-    onclick="closeModal('userDetailsModal')"
-  >
-    סגור
-  </button>
-
-</div>
-
-  </div>  <!-- =========================
-       מודאל הגדרות דרגה
-  ========================= -->  <div id="rankModal" class="modal"><div class="modal-content">
-
-  <div class="card-title">
-    <i class="fa-solid fa-gear"></i>
-    הגדרות דרגה
-  </div>
-
-  <div class="form-group">
-    <label>יעד מכירה אישית ($):</label>
-    <input type="number" step="any" id="cfgSales" value="3000">
-  </div>
-
-  <div class="form-group">
-    <label>יעד השקעה אישית ($):</label>
-    <input type="number" step="any" id="cfgInvest" value="1000">
-  </div>
-
-  <div class="form-group">
-    <label>יעד חברים מתחתיו:</label>
-    <input type="number" step="any" id="cfgMembers" value="2">
-  </div>
-
-  <div class="form-group">
-    <label>יעד מכירות קבוצתיות ($):</label>
-    <input type="number" step="any" id="cfgGrp" value="15000">
-  </div>
-
-  <button
-    class="btn btn-primary"
-    style="width:100%;margin-top:10px;justify-content:center;"
-    onclick="saveConfig()"
-  >
-    שמור
-  </button>
-
-  <button
-    class="btn"
-    style="width:100%;margin-top:5px;justify-content:center;"
-    onclick="closeModal('rankModal')"
-  >
-    ביטול
-  </button>
-
-</div>
-
-  </div>  <!-- =========================
-       מודאל שינוי סיסמה
-  ========================= -->  <div id="passModal" class="modal"><div class="modal-content">
-
-  <div class="card-title">
-    <i class="fa-solid fa-key"></i>
-    שינוי סיסמה לפי כינוי
-  </div>
-
-  <form onsubmit="changePassword(event)">
-
-    <div class="form-group">
-
-      <label>
-        בחר משתמש:
-      </label>
-
-      <select id="passUserSelect" required></select>
+      מחיקת משתמש
 
     </div>
 
     <div class="form-group">
 
-      <label>
-        סיסמה חדשה:
-      </label>
+      <label>בחר משתמש למחיקה:</label>
+
+      <select id="deleteUserSelect"></select>
+
+    </div>
+
+    <p
+      style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px;"
+    >
+      שים לב: מחיקת משתמש תמחק גם את כל המשתמשים שנמצאים מתחתיו בעץ.
+    </p>
+
+    <button
+      class="btn btn-danger"
+      style="width:100%; justify-content:center;"
+      onclick="deleteSelectedUser()"
+    >
+      מחק משתמש
+    </button>
+
+    <button
+      class="btn"
+      style="width:100%; margin-top:5px; justify-content:center;"
+      onclick="closeModal('deleteUserModal')"
+    >
+      ביטול
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- הוספת השקעה -->
+
+<div id="investmentModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="modal-close" onclick="closeModal('investmentModal')">
+      ×
+    </span>
+
+    <div class="card-title">
+
+      <i class="fa-solid fa-coins"></i>
+
+      הוספת השקעה
+
+    </div>
+
+    <div id="investmentUserName"
+         style="color:var(--text-muted); margin-bottom:15px;">
+    </div>
+
+    <div class="form-group">
+
+      <label>סוג השקעה:</label>
+
+      <select id="investmentType">
+
+        <option value="thunder">
+          ⚡ Thunder Stake
+        </option>
+
+        <option value="unai">
+          ✦ UNAI Engine
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="form-group">
+
+      <label>סכום קרן ($):</label>
 
       <input
-        type="password"
-        id="newPassVal"
+        type="number"
+        id="investmentAmount"
+        step="any"
+        min="0"
         required
-        placeholder="הזן סיסמה חדשה"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>תשואה חודשית (%):</label>
+
+      <input
+        type="number"
+        id="investmentMonthlyRate"
+        step="any"
+        min="0"
+        required
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>זמן משיכה ללא עמלה (בחודשים):</label>
+
+      <input
+        type="number"
+        id="investmentMonths"
+        step="any"
+        min="0"
+        required
       >
 
     </div>
 
     <button
-      type="submit"
       class="btn btn-primary"
-      style="width:100%;margin-top:10px;justify-content:center;"
+      style="width:100%; justify-content:center;"
+      onclick="addInvestment()"
     >
-      עדכן סיסמה
+      הוסף השקעה
     </button>
 
-    <button
-      type="button"
-      class="btn"
-      style="width:100%;margin-top:5px;justify-content:center;"
-      onclick="closeModal('passModal')"
-    >
-      ביטול
-    </button>
-
-  </form>
+  </div>
 
 </div>
 
-  </div>  <script>
 
-    /* =========================
-       אחסון
-    ========================= */
+<script>
 
-    const STORAGE_KEY_TREE = 'mlm_purple_tree_v2';
-    const STORAGE_KEY_RANK = 'mlm_purple_rank_v2';
+const STORAGE_KEY_TREE = 'mlm_purple_tree_v2';
+const STORAGE_KEY_RANK = 'mlm_purple_rank_v2';
 
+let rankReq = {
+  sales: 3000,
+  invest: 1000,
+  members: 2,
+  grp: 15000
+};
 
-    /* =========================
-       משתנים
-    ========================= */
-
-    let rankReq = {
-      sales: 3000,
-      invest: 1000,
-      members: 2,
-      grp: 15000
-    };
-
-    let treeData = null;
-    let selectedId = null;
-    let timerInterval = null;
-
-    /*
-      all = כל הרשת
-      user = עץ לפי משתמש
-    */
-    let treeViewMode = 'all';
-    let treeViewUserId = null;
+let treeData = null;
+let selectedId = null;
+let timerInterval = null;
 
 
-    /* =========================
-       טעינה
-    ========================= */
+/* =========================================
+   טעינה
+========================================= */
 
-    window.onload = () => {
+window.onload = () => {
 
-      const savedTree =
-        localStorage.getItem(STORAGE_KEY_TREE);
+  const savedTree = localStorage.getItem(STORAGE_KEY_TREE);
+  const savedRank = localStorage.getItem(STORAGE_KEY_RANK);
 
-      const savedRank =
-        localStorage.getItem(STORAGE_KEY_RANK);
+  if (savedRank) {
+
+    try {
+      rankReq = JSON.parse(savedRank);
+    } catch(e) {}
+
+  }
+
+  if (savedTree) {
+
+    try {
+      treeData = JSON.parse(savedTree);
+    } catch(e) {}
+
+  }
+
+  /*
+     המרת המודל הישן:
+     אם למשתמש יש invest ישן אבל אין investments,
+     אנחנו הופכים אותו להשקעה ראשונה.
+  */
+
+  migrateOldInvestments(treeData);
+
+  if (treeData) {
+    selectedId = treeData.id;
+  }
+
+  render();
+
+  document.addEventListener('click', (e) => {
+
+    if (!e.target.closest('.menu-container')) {
+
+      document
+        .getElementById('dropdownMenu')
+        .classList
+        .remove('active');
+
+    }
+
+  });
+
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+
+  timerInterval = setInterval(() => {
+
+    updateInvestmentTimer();
+
+    renderInvestments();
+
+  }, 1000);
+
+};
 
 
-      if (savedRank) {
+/* =========================================
+   המרת השקעות ישנות
+========================================= */
 
-        try {
-          rankReq = JSON.parse(savedRank);
-        } catch(e) {}
+function migrateOldInvestments(node) {
 
-      }
+  if (!node) return;
 
+  if (!Array.isArray(node.investments)) {
 
-      if (savedTree) {
+    node.investments = [];
 
-        try {
-          treeData = JSON.parse(savedTree);
-        } catch(e) {}
+    const oldInvest = parseFloat(node.invest || 0);
 
-      }
+    if (oldInvest > 0) {
 
+      node.investments.push({
 
-      if (treeData) {
+        id: 'old-' + node.id,
 
-        selectedId = treeData.id;
+        type: 'thunder',
 
-      }
+        principal: oldInvest,
 
+        monthlyRate: 0,
 
-      render();
+        feeFreeMonths: parseFloat(node.feeFreeMonths || 0),
 
+        createdAt: node.createdAt || Date.now(),
 
-      document.addEventListener('click', (e) => {
+        released: false,
 
-        if (!e.target.closest('.menu-container')) {
-
-          document
-            .getElementById('dropdownMenu')
-            .classList.remove('active');
-
-        }
+        walletInterest: 0
 
       });
 
-
-      if (timerInterval) {
-        clearInterval(timerInterval);
-      }
-
-
-      timerInterval = setInterval(() => {
-
-        updateInvestmentTimer();
-
-      }, 1000);
-
-    };
-
-
-    /* =========================
-       תפריט
-    ========================= */
-
-    function toggleDropdown(e) {
-
-      e.stopPropagation();
-
-      document
-        .getElementById('dropdownMenu')
-        .classList.toggle('active');
-
     }
 
+  }
 
-    function openModalFromMenu(modalId) {
+  if (!Array.isArray(node.children)) {
+    node.children = [];
+  }
 
-      document
-        .getElementById('dropdownMenu')
-        .classList.remove('active');
+  node.children.forEach(child => {
 
-      openModal(modalId);
+    migrateOldInvestments(child);
 
+  });
+
+}
+
+
+/* =========================================
+   תפריט
+========================================= */
+
+function toggleDropdown(e) {
+
+  e.stopPropagation();
+
+  document
+    .getElementById('dropdownMenu')
+    .classList
+    .toggle('active');
+
+}
+
+
+function openModalFromMenu(modalId) {
+
+  document
+    .getElementById('dropdownMenu')
+    .classList
+    .remove('active');
+
+  if (modalId === 'editUserModal') {
+    fillEditUserList();
+  }
+
+  if (modalId === 'deleteUserModal') {
+    fillDeleteUserList();
+  }
+
+  openModal(modalId);
+
+}
+
+
+/* =========================================
+   שמירה
+========================================= */
+
+function saveStorageData() {
+
+  if (treeData) {
+
+    localStorage.setItem(
+      STORAGE_KEY_TREE,
+      JSON.stringify(treeData)
+    );
+
+  } else {
+
+    localStorage.removeItem(STORAGE_KEY_TREE);
+
+  }
+
+  localStorage.setItem(
+    STORAGE_KEY_RANK,
+    JSON.stringify(rankReq)
+  );
+
+}
+
+
+/* =========================================
+   רינדור
+========================================= */
+
+function render() {
+
+  updateSponsorsAndUsers();
+
+  renderTree();
+
+  updateDashboard();
+
+  renderInvestments();
+
+}
+
+
+/* =========================================
+   מציאת משתמש
+========================================= */
+
+function findNode(node, id) {
+
+  if (!node) return null;
+
+  if (node.id === id) return node;
+
+  for (let c of (node.children || [])) {
+
+    let res = findNode(c, id);
+
+    if (res) return res;
+
+  }
+
+  return null;
+
+}
+
+
+/* =========================================
+   מציאת הורה
+========================================= */
+
+function findParent(node, id) {
+
+  if (!node) return null;
+
+  for (let child of (node.children || [])) {
+
+    if (child.id === id) {
+      return node;
     }
 
+    const found = findParent(child, id);
 
-    /* =========================
-       שמירה
-    ========================= */
+    if (found) return found;
 
-    function saveStorageData() {
+  }
 
-      if (treeData) {
+  return null;
 
-        localStorage.setItem(
-          STORAGE_KEY_TREE,
-          JSON.stringify(treeData)
-        );
-
-      } else {
-
-        localStorage.removeItem(STORAGE_KEY_TREE);
-
-      }
+}
 
 
-      localStorage.setItem(
-        STORAGE_KEY_RANK,
-        JSON.stringify(rankReq)
+/* =========================================
+   מכירות קבוצה
+========================================= */
+
+function getGroupSales(node) {
+
+  if (!node) return 0;
+
+  let total = parseFloat(node.sales || 0);
+
+  for (let c of (node.children || [])) {
+
+    total += getGroupSales(c);
+
+  }
+
+  return total;
+
+}
+
+
+/* =========================================
+   השקעה כוללת
+========================================= */
+
+function getTotalPrincipal(user) {
+
+  if (!user) return 0;
+
+  if (!Array.isArray(user.investments)) {
+    return parseFloat(user.invest || 0);
+  }
+
+  return user.investments.reduce(
+    (sum, inv) => sum + calculateCurrentPrincipal(inv),
+    0
+  );
+
+}
+
+
+/* =========================================
+   חישוב ריבית יומית
+========================================= */
+
+function getDailyRate(inv) {
+
+  const monthlyRate = parseFloat(inv.monthlyRate || 0);
+
+  /*
+     החישוב:
+     אחוז חודשי / 30
+     
+     UNAI:
+     אחוז חודשי / 30 + 0.1%
+  */
+
+  let dailyRate = monthlyRate / 30;
+
+  if (inv.type === 'unai') {
+
+    dailyRate += 0.1;
+
+  }
+
+  return dailyRate / 100;
+
+}
+
+
+/* =========================================
+   חישוב הקרן הנוכחית
+========================================= */
+
+function calculateCurrentPrincipal(inv) {
+
+  if (!inv) return 0;
+
+  const principal = parseFloat(inv.principal || 0);
+
+  if (principal <= 0) return 0;
+
+  const elapsedDays =
+    Math.max(
+      0,
+      (Date.now() - inv.createdAt) /
+      (24 * 60 * 60 * 1000)
+    );
+
+  /*
+     אנחנו מחשבים לפי ימים שלמים.
+  */
+
+  const fullDays = Math.floor(elapsedDays);
+
+  if (inv.type === 'unai') {
+
+    /*
+       UNAI:
+       ריבית מצטברת לקרן.
+       
+       לדוגמה:
+       קרן 1000
+       יום ראשון +1%
+       יום שני הריבית מחושבת
+       על הקרן החדשה.
+    */
+
+    return principal *
+      Math.pow(
+        1 + getDailyRate(inv),
+        fullDays
       );
 
-    }
+  }
 
+  /*
+     Thunder:
+     הקרן עצמה נשארת קרן.
+     הריבית יוצאת לארנק.
+  */
 
-    /* =========================
-       Render
-    ========================= */
+  return principal;
 
-    function render() {
+}
 
-      updateSponsorsAndUsers();
 
-      renderTree();
+/* =========================================
+   ריבית שנצברה
+========================================= */
 
-      updateDashboard();
+function calculateAccruedInterest(inv) {
 
-    }
+  if (!inv) return 0;
 
+  const principal =
+    parseFloat(inv.principal || 0);
 
-    /* =========================
-       חיפוש משתמש
-    ========================= */
+  if (principal <= 0) return 0;
 
-    function findNode(node, id) {
+  const elapsedDays =
+    Math.max(
+      0,
+      (Date.now() - inv.createdAt) /
+      (24 * 60 * 60 * 1000)
+    );
 
-      if (!node) return null;
+  const fullDays = Math.floor(elapsedDays);
 
-      if (node.id === id) {
-        return node;
-      }
+  if (inv.type === 'unai') {
 
-      for (let c of (node.children || [])) {
+    /*
+       ב-UNAI הריבית כבר נמצאת בתוך הקרן.
+    */
 
-        let res = findNode(c, id);
+    return Math.max(
+      0,
+      calculateCurrentPrincipal(inv) - principal
+    );
 
-        if (res) {
-          return res;
-        }
+  }
 
-      }
+  /*
+     Thunder:
+     ריבית פשוטה שיוצאת לארנק.
+  */
 
-      return null;
-    }
+  return principal *
+    getDailyRate(inv) *
+    fullDays;
 
+}
 
-    /* =========================
-       מציאת ההורה / Sponsor
-    ========================= */
 
-    function findParent(node, id, parent = null) {
+/* =========================================
+   זמן שחרור
+========================================= */
 
-      if (!node) return null;
+function getReleaseTime(inv) {
 
-      if (node.id === id) {
-        return parent;
-      }
+  const months =
+    parseFloat(inv.feeFreeMonths || 0);
 
-      for (let c of (node.children || [])) {
+  const days =
+    months * 30.4375;
 
-        let result = findParent(c, id, node);
+  return inv.createdAt +
+    days *
+    24 *
+    60 *
+    60 *
+    1000;
 
-        if (result !== null) {
-          return result;
-        }
+}
 
-      }
 
-      return null;
-    }
+/* =========================================
+   טיימר השקעה
+========================================= */
 
+function formatCountdown(diff) {
 
-    /* =========================
-       מכירות קבוצתיות
-    ========================= */
+  if (diff <= 0) {
 
-    function getGroupSales(node) {
+    return 'ההשקעה פתוחה למשיכה ללא עמלות';
 
-      if (!node) return 0;
+  }
 
-      let total =
-        parseFloat(node.sales || 0);
+  let totalSeconds =
+    Math.floor(diff / 1000);
 
-      for (let c of (node.children || [])) {
+  let days =
+    Math.floor(totalSeconds / 86400);
 
-        total += getGroupSales(c);
+  let hours =
+    Math.floor(
+      (totalSeconds % 86400) / 3600
+    );
 
-      }
+  let minutes =
+    Math.floor(
+      (totalSeconds % 3600) / 60
+    );
 
-      return total;
+  let seconds =
+    totalSeconds % 60;
 
-    }
+  return `
+    ${days} ימים
+    ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}
+  `;
 
+}
 
-    /* =========================
-       Dashboard
-    ========================= */
 
-    function updateDashboard() {
+/* =========================================
+   עדכון טיימר
+========================================= */
 
-      let user =
-        findNode(treeData, selectedId);
+function updateInvestmentTimer() {
 
+  let user =
+    findNode(treeData, selectedId);
 
-      if (!user) {
+  let investCard =
+    document.getElementById('investCard');
 
-        document.getElementById(
-          'selectedUserHeader'
-        ).innerHTML =
-          `<i class="fa-solid fa-chart-pie"></i>
-           מדדים: (טרם נוספו משתמשים)`;
+  let msgElem =
+    document.getElementById('investTimerMsg');
 
+  if (!user) {
 
-        setCircle(
-          'cSales',
-          'pSales',
-          'vSales',
-          0,
-          rankReq.sales,
-          '$'
-        );
+    investCard.classList.remove('unlocked-card');
 
+    msgElem.className =
+      'investment-timer-msg';
 
-        setCircle(
-          'cInvest',
-          'pInvest',
-          'vInvest',
-          0,
-          rankReq.invest,
-          '$'
-        );
+    msgElem.innerText = '';
 
+    return;
 
-        setCircle(
-          'cMembers',
-          'pMembers',
-          'vMembers',
-          0,
-          rankReq.members,
-          ''
-        );
+  }
 
+  const investments =
+    user.investments || [];
 
-        setCircle(
-          'cGrp',
-          'pGrp',
-          'vGrp',
-          0,
-          rankReq.grp,
-          '$'
-        );
+  if (investments.length === 0) {
 
+    investCard.classList.remove(
+      'unlocked-card'
+    );
 
-        document.getElementById(
-          'investTimerMsg'
-        ).innerText = '';
+    msgElem.innerText = '';
 
-        return;
-      }
+    return;
 
+  }
 
-      let orgText =
-        user.orgId
-          ? ` | ארגון: ${escapeHtml(user.orgId)}`
-          : '';
+  const hasUnlocked =
+    investments.some(
+      inv => Date.now() >= getReleaseTime(inv)
+    );
 
+  if (hasUnlocked) {
 
-      document.getElementById(
-        'selectedUserHeader'
-      ).innerHTML =
-        `<i class="fa-solid fa-chart-pie"></i>
-         מדדים עבור:
-         ${escapeHtml(user.name)}
-         (@${escapeHtml(user.username)}${orgText})`;
+    investCard.classList.add(
+      'unlocked-card'
+    );
 
+    msgElem.className =
+      'investment-timer-msg unlocked-text';
 
-      let personalSales =
-        parseFloat(user.sales || 0);
+    msgElem.innerHTML =
+      '<i class="fa-solid fa-circle-check"></i> יש השקעה שפתוחה למשיכה ללא עמלות';
 
-      let personalInvest =
-        parseFloat(user.invest || 0);
+  } else {
 
-      let directMembers =
-        user.children
-          ? user.children.length
-          : 0;
+    investCard.classList.remove(
+      'unlocked-card'
+    );
 
-      let groupSales =
-        getGroupSales(user);
+    msgElem.className =
+      'investment-timer-msg';
 
-
-      setCircle(
-        'cSales',
-        'pSales',
-        'vSales',
-        personalSales,
-        rankReq.sales,
-        '$'
+    let closest =
+      investments.reduce(
+        (a,b) =>
+          getReleaseTime(a) <
+          getReleaseTime(b)
+            ? a
+            : b
       );
 
-
-      setCircle(
-        'cInvest',
-        'pInvest',
-        'vInvest',
-        personalInvest,
-        rankReq.invest,
-        '$'
-      );
-
-
-      setCircle(
-        'cMembers',
-        'pMembers',
-        'vMembers',
-        directMembers,
-        rankReq.members,
-        ''
-      );
-
-
-      setCircle(
-        'cGrp',
-        'pGrp',
-        'vGrp',
-        groupSales,
-        rankReq.grp,
-        '$'
-      );
-
-
-      updateInvestmentTimer();
-
-    }
-
-
-    /* =========================
-       טיימר השקעה
-    ========================= */
-
-    function updateInvestmentTimer() {
-
-      let user =
-        findNode(treeData, selectedId);
-
-      let investCard =
-        document.getElementById('investCard');
-
-      let msgElem =
-        document.getElementById('investTimerMsg');
-
-
-      if (!user) {
-
-        investCard.classList.remove('unlocked-card');
-
-        msgElem.className =
-          'investment-timer-msg';
-
-        msgElem.innerText = '';
-
-        return;
-
-      }
-
-
-      let personalInvest =
-        parseFloat(user.invest || 0);
-
-      let feeFreeMonths =
-        parseFloat(user.feeFreeMonths || 0);
-
-
-      if (
-        personalInvest === 0 ||
-        feeFreeMonths === 0
-      ) {
-
-        investCard.classList.remove(
-          'unlocked-card'
-        );
-
-        msgElem.className =
-          'investment-timer-msg';
-
-        msgElem.innerText = '';
-
-        return;
-
-      }
-
-
-      let createdAt =
-        user.createdAt || Date.now();
-
-
-      let daysToAdd =
-        feeFreeMonths * 30.4375;
-
-
-      let feeFreeTime =
-        createdAt +
-        (
-          daysToAdd *
-          24 *
-          60 *
-          60 *
-          1000
-        );
-
-
-      let now = Date.now();
-
-      let diff =
-        feeFreeTime - now;
-
-
-      if (diff <= 0) {
-
-        investCard.classList.add(
-          'unlocked-card'
-        );
-
-        msgElem.className =
-          'investment-timer-msg unlocked-text';
-
-        msgElem.innerHTML =
-          `<i class="fa-solid fa-circle-check"></i>
-           ההשקעה פתוחה למשיכה ללא עמלות`;
-
-      } else {
-
-        investCard.classList.remove(
-          'unlocked-card'
-        );
-
-        msgElem.className =
-          'investment-timer-msg';
-
-
-        let totalSeconds =
-          Math.floor(diff / 1000);
-
-        let days =
-          Math.floor(
-            totalSeconds /
-            (3600 * 24)
-          );
-
-        let hours =
-          Math.floor(
-            (totalSeconds %
-              (3600 * 24)) /
-            3600
-          );
-
-        let minutes =
-          Math.floor(
-            (totalSeconds % 3600) /
-            60
-          );
-
-        let seconds =
-          totalSeconds % 60;
-
-
-        let timeStr = "";
-
-
-        if (days > 30) {
-
-          let monthsLeft =
-            (days / 30).toFixed(1);
-
-          timeStr =
-            `פטור מעמלה בעוד: כ-${monthsLeft} חודשים`;
-
-        } else if (days > 0) {
-
-          timeStr =
-            `פטור מעמלה בעוד: ${days} ימים ו-${hours} שעות`;
-
-        } else {
-
-          timeStr =
-            `פטור מעמלה בעוד: ${hours}:${minutes}:${seconds}`;
-
-        }
-
-
-        msgElem.innerHTML =
-          `<i class="fa-solid fa-clock"></i>
-           ${timeStr}`;
-
-      }
-
-    }
-
-
-    /* =========================
-       עיגולים
-    ========================= */
-
-    function setCircle(
-      cId,
-      pId,
-      vId,
-      current,
-      target,
-      unit
-    ) {
-
-      let pct =
-        target > 0
-          ? Math.min(
-              100,
-              (current / target) * 100
-            )
-          : 100;
-
-
-      let offset =
-        283 -
-        (pct / 100) * 283;
-
-
-      document.getElementById(
-        cId
-      ).style.strokeDashoffset =
-        offset;
-
-
-      document.getElementById(
-        pId
-      ).innerText =
-        Math.round(pct) + '%';
-
-
-      let currStr =
-        Number.isInteger(current)
-          ? current
-          : current.toFixed(2);
-
-
-      let targetStr =
-        Number.isInteger(target)
-          ? target
-          : target.toFixed(2);
-
-
-      document.getElementById(
-        vId
-      ).innerText =
-        `${currStr}${unit}/${targetStr}${unit}`;
-
-    }
-
-
-    /* =========================
-       בניית עץ
-    ========================= */
-
-    function renderTree() {
-
-      let container =
-        document.getElementById('tree');
-
-
-      container.innerHTML = '';
-
-
-      if (!treeData) {
-
-        container.innerHTML =
-          '<div class="no-data-msg">' +
-          'הרשת ריקה. הוסף משתמש ראשון כמנהל המערכת.' +
-          '</div>';
-
-        document.getElementById(
-          'treeViewModeText'
-        ).innerText =
-          'כל הרשת';
-
-        return;
-      }
-
-
-      let rootToDisplay;
-
-
-      if (
-        treeViewMode === 'user' &&
-        treeViewUserId
-      ) {
-
-        rootToDisplay =
-          findNode(
-            treeData,
-            treeViewUserId
-          );
-
-      } else {
-
-        rootToDisplay = treeData;
-
-      }
-
-
-      if (!rootToDisplay) {
-
-        treeViewMode = 'all';
-        treeViewUserId = null;
-
-        rootToDisplay = treeData;
-
-      }
-
-
-      let ul =
-        document.createElement('ul');
-
-
-      ul.appendChild(
-        buildNode(rootToDisplay)
-      );
-
-
-      container.appendChild(ul);
-
-
-      updateTreeViewHeader(
-        rootToDisplay
-      );
-
-    }
-
-
-    /* =========================
-       בניית משתמש בעץ
-    ========================= */
-
-    function buildNode(node) {
-
-      let li =
-        document.createElement('li');
-
-
-      let div =
-        document.createElement('div');
-
-
-      let extraClass =
-        node.id === selectedId
-          ? 'selected'
-          : '';
-
-
-      div.className =
-        `node ${extraClass}`;
-
-
-      /*
-        לחיצה על משתמש:
-        1. בוחרת אותו
-        2. מעדכנת מדדים
-        3. פותחת פרטים מלאים
-      */
-
-      div.onclick = (e) => {
-
-        e.stopPropagation();
-
-        selectedId = node.id;
-
-        render();
-
-        openUserDetails(node.id);
-
-      };
-
-
-      /*
-        תיקון חשוב:
-        עכשיו מוצג האימייל בעיגול,
-        ולא השם.
-      */
-
-      div.innerHTML = `
-
-        <i
-          class="fa-solid fa-user"
-          style="
-            font-size:0.9rem;
-            color:var(--accent-purple-light);
-            margin-bottom:2px;
-          "
-        ></i>
-
-        <div class="node-email">
-          ${escapeHtml(node.email || 'ללא אימייל')}
-        </div>
-
-        <div class="node-name">
-          ${escapeHtml(node.name || '')}
-        </div>
-
-        <div class="node-username">
-          @${escapeHtml(node.username || '')}
-        </div>
-
-      `;
-
-
-      li.appendChild(div);
-
-
-      if (
-        node.children &&
-        node.children.length > 0
-      ) {
-
-        let ul =
-          document.createElement('ul');
-
-
-        node.children.forEach(c => {
-
-          ul.appendChild(
-            buildNode(c)
-          );
-
-        });
-
-
-        li.appendChild(ul);
-
-      }
-
-
-      return li;
-
-    }
-
-
-    /* =========================
-       כותרת מצב העץ
-    ========================= */
-
-    function updateTreeViewHeader(rootNode) {
-
-      let label =
-        document.getElementById(
-          'treeViewModeText'
-        );
-
-
-      if (
-        treeViewMode === 'user' &&
-        rootNode
-      ) {
-
-        label.innerText =
-          `העץ של @${rootNode.username}`;
-
-      } else {
-
-        label.innerText =
-          'כל הרשת';
-
-      }
-
-    }
-
-
-    /* =========================
-       משתמשים / Sponsors
-    ========================= */
-
-    function updateSponsorsAndUsers() {
-
-      let sponsorSelect =
-        document.getElementById(
-          'uSponsor'
-        );
-
-      let passUserSelect =
-        document.getElementById(
-          'passUserSelect'
-        );
-
-      let treeUserSelect =
-        document.getElementById(
-          'treeUserSelect'
-        );
-
-
-      sponsorSelect.innerHTML = '';
-
-      passUserSelect.innerHTML = '';
-
-      treeUserSelect.innerHTML = '';
-
-
-      if (!treeData) {
-
-        let opt =
-          document.createElement(
-            'option'
-          );
-
-        opt.value =
-          "root_new";
-
-        opt.innerText =
-          "מנהל מערכת (ראשי)";
-
-        sponsorSelect.appendChild(opt);
-
-        return;
-
-      }
-
-
-      function walk(node) {
-
-        let opt1 =
-          document.createElement(
-            'option'
-          );
-
-        opt1.value =
-          node.id;
-
-        opt1.innerText =
-          `${node.name} (@${node.username})`;
-
-        sponsorSelect.appendChild(opt1);
-
-
-        let opt2 =
-          document.createElement(
-            'option'
-          );
-
-        opt2.value =
-          node.id;
-
-        opt2.innerText =
-          `${node.username} (${node.name})`;
-
-        passUserSelect.appendChild(opt2);
-
-
-        let opt3 =
-          document.createElement(
-            'option'
-          );
-
-        opt3.value =
-          node.id;
-
-        opt3.innerText =
-          `@${node.username} — ${node.name}`;
-
-        treeUserSelect.appendChild(opt3);
-
-
-        if (node.children) {
-
-          node.children.forEach(walk);
-
-        }
-
-      }
-
-
-      walk(treeData);
-
-    }
-
-
-    /* =========================
-       הוספת משתמש
-    ========================= */
-
-    function addUser(e) {
-
-      e.preventDefault();
-
-
-      let investInput =
-        document.getElementById(
-          'uInvest'
-        ).value;
-
-
-      let monthsInput =
-        document.getElementById(
-          'uFeeFreeMonths'
-        ).value;
-
-
-      let investVal =
-        investInput !== ""
-          ? parseFloat(investInput)
-          : 0;
-
-
-      let feeFreeMonths =
-        monthsInput !== ""
-          ? parseFloat(monthsInput)
-          : 0;
-
-
-      let sponsorId =
-        document.getElementById(
-          'uSponsor'
-        ).value;
-
-
-      let newUser = {
-
-        id:
-          Date.now().toString(),
-
-        orgId:
-          document.getElementById(
-            'uOrgId'
-          ).value,
-
-        username:
-          document.getElementById(
-            'uUsername'
-          ).value,
-
-        name:
-          document.getElementById(
-            'uName'
-          ).value,
-
-        email:
-          document.getElementById(
-            'uEmail'
-          ).value,
-
-        pass:
-          document.getElementById(
-            'uPass'
-          ).value,
-
-        invest:
-          investVal,
-
-        feeFreeMonths:
-          feeFreeMonths,
-
-        createdAt:
-          Date.now(),
-
-        sales:
-          0,
-
-        children:
-          []
-
-      };
-
-
-      /*
-        משתמש ראשון = מנהל ראשי
-      */
-
-      if (
-        !treeData ||
-        sponsorId === "root_new"
-      ) {
-
-        treeData =
-          newUser;
-
-        selectedId =
-          treeData.id;
-
-        treeViewMode =
-          'all';
-
-        treeViewUserId =
-          null;
-
-      } else {
-
-        let parent =
-          findNode(
-            treeData,
-            sponsorId
-          );
-
-
-        if (parent) {
-
-          parent.children.push(
-            newUser
-          );
-
-        }
-
-      }
-
-
-      document
-        .getElementById(
-          'addUserForm'
+    let diff =
+      getReleaseTime(closest) -
+      Date.now();
+
+    msgElem.innerHTML =
+      `<i class="fa-solid fa-clock"></i> השקעה קרובה לשחרור: ${formatCountdown(diff)}`;
+
+  }
+
+}
+
+
+/* =========================================
+   עיגולים
+========================================= */
+
+function setCircle(
+  cId,
+  pId,
+  vId,
+  current,
+  target,
+  unit
+) {
+
+  let pct =
+    target > 0
+      ? Math.min(
+          100,
+          (current / target) * 100
         )
-        .reset();
+      : 100;
+
+  let offset =
+    283 -
+    (pct / 100) * 283;
+
+  document.getElementById(
+    cId
+  ).style.strokeDashoffset =
+    offset;
+
+  document.getElementById(
+    pId
+  ).innerText =
+    Math.round(pct) + '%';
+
+  let currStr =
+    Number.isInteger(current)
+      ? current
+      : current.toFixed(2);
+
+  let targetStr =
+    Number.isInteger(target)
+      ? target
+      : target.toFixed(2);
+
+  document.getElementById(
+    vId
+  ).innerText =
+    `${currStr}${unit}/${targetStr}${unit}`;
+
+}
 
 
-      saveStorageData();
+/* =========================================
+   Dashboard
+========================================= */
 
-      render();
+function updateDashboard() {
 
-    }
+  let user =
+    findNode(treeData, selectedId);
+
+  if (!user) {
+
+    document.getElementById(
+      'selectedUserHeader'
+    ).innerHTML =
+      `<i class="fa-solid fa-chart-pie"></i> מדדים: (טרם נוספו משתמשים)`;
+
+    setCircle(
+      'cSales',
+      'pSales',
+      'vSales',
+      0,
+      rankReq.sales,
+      '$'
+    );
+
+    setCircle(
+      'cInvest',
+      'pInvest',
+      'vInvest',
+      0,
+      rankReq.invest,
+      '$'
+    );
+
+    setCircle(
+      'cMembers',
+      'pMembers',
+      'vMembers',
+      0,
+      rankReq.members,
+      ''
+    );
+
+    setCircle(
+      'cGrp',
+      'pGrp',
+      'vGrp',
+      0,
+      rankReq.grp,
+      '$'
+    );
+
+    document.getElementById(
+      'investTimerMsg'
+    ).innerText = '';
+
+    return;
+
+  }
+
+  let orgText =
+    user.orgId
+      ? ` | ארגון: ${user.orgId}`
+      : '';
+
+  document.getElementById(
+    'selectedUserHeader'
+  ).innerHTML =
+    `<i class="fa-solid fa-chart-pie"></i> מדדים עבור: ${user.name} (@${user.username}${orgText})`;
+
+  let personalSales =
+    parseFloat(user.sales || 0);
+
+  let personalInvest =
+    getTotalPrincipal(user);
+
+  let directMembers =
+    user.children
+      ? user.children.length
+      : 0;
+
+  let groupSales =
+    getGroupSales(user);
+
+  setCircle(
+    'cSales',
+    'pSales',
+    'vSales',
+    personalSales,
+    rankReq.sales,
+    '$'
+  );
+
+  setCircle(
+    'cInvest',
+    'pInvest',
+    'vInvest',
+    personalInvest,
+    rankReq.invest,
+    '$'
+  );
+
+  setCircle(
+    'cMembers',
+    'pMembers',
+    'vMembers',
+    directMembers,
+    rankReq.members,
+    ''
+  );
+
+  setCircle(
+    'cGrp',
+    'pGrp',
+    'vGrp',
+    groupSales,
+    rankReq.grp,
+    '$'
+  );
+
+  updateInvestmentTimer();
+
+}
 
 
-    /* =========================
-       שינוי סיסמה
-    ========================= */
+/* =========================================
+   הצגת השקעות
+========================================= */
 
-    function changePassword(e) {
+function renderInvestments() {
 
-      e.preventDefault();
+  const container =
+    document.getElementById(
+      'investmentsList'
+    );
 
+  const summary =
+    document.getElementById(
+      'investmentSummary'
+    );
 
-      let userId =
-        document.getElementById(
-          'passUserSelect'
-        ).value;
+  if (!container || !summary) return;
 
+  const user =
+    findNode(treeData, selectedId);
 
-      let newPass =
-        document.getElementById(
-          'newPassVal'
-        ).value;
+  container.innerHTML = '';
+  summary.innerHTML = '';
 
+  if (!user) {
 
-      let user =
-        findNode(
-          treeData,
-          userId
-        );
+    container.innerHTML =
+      '<div class="no-data-msg">בחר משתמש מהעץ</div>';
 
+    return;
 
-      if (user) {
+  }
 
-        user.pass =
-          newPass;
+  if (!Array.isArray(user.investments)) {
+    user.investments = [];
+  }
 
+  if (user.investments.length === 0) {
 
-        saveStorageData();
+    container.innerHTML =
+      '<div class="no-data-msg">אין השקעות למשתמש הזה.</div>';
 
+  } else {
 
-        alert(
-          `הסיסמה עבור @${user.username} עודכנה בהצלחה!`
-        );
+    user.investments.forEach(
+      (inv, index) => {
 
-
-        document.getElementById(
-          'newPassVal'
-        ).value = '';
-
-
-        closeModal(
-          'passModal'
-        );
-
-      }
-
-    }
-
-
-    /* =========================
-       הגדרות דרגה
-    ========================= */
-
-    function saveConfig() {
-
-      rankReq.sales =
-        parseFloat(
-          document.getElementById(
-            'cfgSales'
-          ).value
-        ) || 0;
-
-
-      rankReq.invest =
-        parseFloat(
-          document.getElementById(
-            'cfgInvest'
-          ).value
-        ) || 0;
-
-
-      rankReq.members =
-        parseFloat(
-          document.getElementById(
-            'cfgMembers'
-          ).value
-        ) || 0;
-
-
-      rankReq.grp =
-        parseFloat(
-          document.getElementById(
-            'cfgGrp'
-          ).value
-        ) || 0;
-
-
-      saveStorageData();
-
-      closeModal(
-        'rankModal'
-      );
-
-      render();
-
-    }
-
-
-    /* =========================
-       תצוגת עץ כללית
-    ========================= */
-
-    function setTreeView(mode) {
-
-      if (mode === 'all') {
-
-        treeViewMode =
-          'all';
-
-        treeViewUserId =
-          null;
-
-        document
-          .getElementById(
-            'viewAllBtn'
+        container.appendChild(
+          createInvestmentElement(
+            user,
+            inv,
+            index
           )
-          .classList.add(
-            'active'
-          );
-
-        document
-          .getElementById(
-            'viewUserBtn'
-          )
-          .classList.remove(
-            'active'
-          );
-
-        document
-          .getElementById(
-            'treeUserSelectorArea'
-          )
-          .style.display =
-          'none';
-
-
-        renderTree();
-
-        closeModal(
-          'treeViewModal'
         );
-
-        return;
-
-      }
-
-    }
-
-
-    /* =========================
-       בחירת עץ לפי כינוי
-    ========================= */
-
-    function showUserTreeSelector() {
-
-      document
-        .getElementById(
-          'viewUserBtn'
-        )
-        .classList.add(
-          'active'
-        );
-
-
-      document
-        .getElementById(
-          'viewAllBtn'
-        )
-        .classList.remove(
-          'active'
-        );
-
-
-      document
-        .getElementById(
-          'treeUserSelectorArea'
-        )
-        .style.display =
-        'block';
-
-
-      let select =
-        document.getElementById(
-          'treeUserSelect'
-        );
-
-
-      if (treeViewUserId) {
-
-        select.value =
-          treeViewUserId;
-
-      } else if (selectedId) {
-
-        select.value =
-          selectedId;
-
-      }
-
-    }
-
-
-    /* =========================
-       הצגת עץ המשתמש
-    ========================= */
-
-    function applyUserTree() {
-
-      let userId =
-        document.getElementById(
-          'treeUserSelect'
-        ).value;
-
-
-      if (!userId) {
-        return;
-      }
-
-
-      let user =
-        findNode(
-          treeData,
-          userId
-        );
-
-
-      if (!user) {
-        return;
-      }
-
-
-      treeViewMode =
-        'user';
-
-      treeViewUserId =
-        userId;
-
-      selectedId =
-        userId;
-
-
-      render();
-
-
-      closeModal(
-        'treeViewModal'
-      );
-
-
-      /*
-        פתיחת פרטי המשתמש
-        לא מתבצעת אוטומטית,
-        כדי שהמשתמש יוכל לראות
-        קודם את העץ.
-      */
-
-    }
-
-
-    /* =========================
-       פרטי משתמש
-    ========================= */
-
-    function openUserDetails(userId) {
-
-      let user =
-        findNode(
-          treeData,
-          userId
-        );
-
-
-      if (!user) {
-        return;
-      }
-
-
-      let parent =
-        findParent(
-          treeData,
-          userId
-        );
-
-
-      document.getElementById(
-        'profileName'
-      ).innerText =
-        user.name ||
-        'ללא שם';
-
-
-      document.getElementById(
-        'profileUsername'
-      ).innerText =
-        '@' +
-        (user.username || '');
-
-
-      document.getElementById(
-        'profileEmail'
-      ).innerText =
-        user.email ||
-        'ללא אימייל';
-
-
-      document.getElementById(
-        'profileOrg'
-      ).innerText =
-        user.orgId ||
-        'לא הוגדר';
-
-
-      document.getElementById(
-        'profileSponsor'
-      ).innerText =
-        parent
-          ? `@${parent.username} — ${parent.name}`
-          : 'מנהל מערכת ראשי';
-
-
-      document.getElementById(
-        'profileInvest'
-      ).innerText =
-        `$${formatNumber(user.invest || 0)}`;
-
-
-      document.getElementById(
-        'profileSales'
-      ).innerText =
-        `$${formatNumber(user.sales || 0)}`;
-
-
-      document.getElementById(
-        'profileMembers'
-      ).innerText =
-        (user.children || []).length;
-
-
-      document.getElementById(
-        'profileGroupSales'
-      ).innerText =
-        `$${formatNumber(
-          getGroupSales(user)
-        )}`;
-
-
-      document.getElementById(
-        'profileFeeMonths'
-      ).innerText =
-        user.feeFreeMonths
-          ? `${user.feeFreeMonths} חודשים`
-          : 'לא הוגדר';
-
-
-      document.getElementById(
-        'profileCreated'
-      ).innerText =
-        user.createdAt
-          ? new Date(
-              user.createdAt
-            ).toLocaleString(
-              'he-IL'
-            )
-          : 'לא ידוע';
-
-
-      openModal(
-        'userDetailsModal'
-      );
-
-    }
-
-
-    /* =========================
-       מספרים
-    ========================= */
-
-    function formatNumber(value) {
-
-      let number =
-        parseFloat(value) || 0;
-
-
-      return number.toLocaleString(
-        'en-US',
-        {
-          maximumFractionDigits: 2
-        }
-      );
-
-    }
-
-
-    /* =========================
-       איפוס
-    ========================= */
-
-    function resetSystemData() {
-
-      document
-        .getElementById(
-          'dropdownMenu'
-        )
-        .classList.remove(
-          'active'
-        );
-
-
-      if (
-        confirm(
-          "איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?"
-        )
-      ) {
-
-        treeData =
-          null;
-
-        selectedId =
-          null;
-
-        treeViewMode =
-          'all';
-
-        treeViewUserId =
-          null;
-
-
-        localStorage.removeItem(
-          STORAGE_KEY_TREE
-        );
-
-        localStorage.removeItem(
-          STORAGE_KEY_RANK
-        );
-
-
-        render();
-
-      }
-
-    }
-
-
-    /* =========================
-       פתיחה / סגירה מודאל
-    ========================= */
-
-    function openModal(id) {
-
-      if (
-        id === 'rankModal'
-      ) {
-
-        document.getElementById(
-          'cfgSales'
-        ).value =
-          rankReq.sales;
-
-
-        document.getElementById(
-          'cfgInvest'
-        ).value =
-          rankReq.invest;
-
-
-        document.getElementById(
-          'cfgMembers'
-        ).value =
-          rankReq.members;
-
-
-        document.getElementById(
-          'cfgGrp'
-        ).value =
-          rankReq.grp;
-
-      }
-
-
-      if (
-        id === 'treeViewModal'
-      ) {
-
-        if (
-          treeViewMode === 'all'
-        ) {
-
-          document
-            .getElementById(
-              'viewAllBtn'
-            )
-            .classList.add(
-              'active'
-            );
-
-          document
-            .getElementById(
-              'viewUserBtn'
-            )
-            .classList.remove(
-              'active'
-            );
-
-          document
-            .getElementById(
-              'treeUserSelectorArea'
-            )
-            .style.display =
-            'none';
-
-        } else {
-
-          showUserTreeSelector();
-
-        }
-
-      }
-
-
-      document
-        .getElementById(id)
-        .classList.add(
-          'active'
-        );
-
-    }
-
-
-    function closeModal(id) {
-
-      document
-        .getElementById(id)
-        .classList.remove(
-          'active'
-        );
-
-    }
-
-
-    /* =========================
-       אבטחת הצגת טקסט
-    ========================= */
-
-    function escapeHtml(value) {
-
-      return String(
-        value ?? ''
-      )
-      .replace(
-        /&/g,
-        '&amp;'
-      )
-      .replace(
-        /</g,
-        '&lt;'
-      )
-      .replace(
-        />/g,
-        '&gt;'
-      )
-      .replace(
-        /"/g,
-        '&quot;'
-      )
-      .replace(
-        /'/g,
-        '&#039;'
-      );
-
-    }
-
-
-    /* =========================
-       סגירת מודאל בלחיצה מחוץ לחלון
-    ========================= */
-
-    document.addEventListener(
-      'click',
-      function(e) {
-
-        if (
-          e.target.classList.contains(
-            'modal'
-          )
-        ) {
-
-          e.target.classList.remove(
-            'active'
-          );
-
-        }
 
       }
     );
 
-  </script></body>
-  </html>
+  }
+
+  let totalPrincipal = 0;
+  let totalInterest = 0;
+  let thunderWallet = 0;
+
+  user.investments.forEach(inv => {
+
+    totalPrincipal +=
+      calculateCurrentPrincipal(inv);
+
+    totalInterest +=
+      calculateAccruedInterest(inv);
+
+    if (inv.type === 'thunder') {
+
+      thunderWallet +=
+        calculateAccruedInterest(inv);
+
+    }
+
+  });
+
+  summary.innerHTML = `
+
+    <div class="summary-row">
+
+      <div class="summary-box">
+
+        סך כל הקרנות
+
+        <strong>
+          $${totalPrincipal.toFixed(2)}
+        </strong>
+
+      </div>
+
+      <div class="summary-box">
+
+        סך הריבית
+
+        <strong>
+          $${totalInterest.toFixed(2)}
+        </strong>
+
+      </div>
+
+      <div class="summary-box">
+
+        ארנק Thunder Stake
+
+        <strong class="wallet-interest">
+          $${thunderWallet.toFixed(2)}
+        </strong>
+
+      </div>
+
+      <div class="summary-box">
+
+        מספר השקעות
+
+        <strong>
+          ${user.investments.length}
+        </strong>
+
+      </div>
+
+    </div>
+
+    <button
+      class="btn btn-primary"
+      style="width:100%; justify-content:center; margin-top:12px;"
+      onclick="openInvestmentModal('${user.id}')"
+    >
+      <i class="fa-solid fa-plus"></i>
+      הוסף השקעה נוספת למשתמש
+    </button>
+  `;
+
+}
+
+
+/* =========================================
+   כרטיס השקעה
+========================================= */
+
+function createInvestmentElement(
+  user,
+  inv,
+  index
+) {
+
+  const div =
+    document.createElement('div');
+
+  const releaseTime =
+    getReleaseTime(inv);
+
+  const diff =
+    releaseTime - Date.now();
+
+  const unlocked =
+    diff <= 0;
+
+  if (unlocked) {
+    div.className =
+      'investment-item unlocked';
+  } else {
+    div.className =
+      'investment-item';
+  }
+
+  const principal =
+    calculateCurrentPrincipal(inv);
+
+  const interest =
+    calculateAccruedInterest(inv);
+
+  const dailyRate =
+    getDailyRate(inv) * 100;
+
+  let investmentName =
+    inv.type === 'unai'
+      ? '✦ UNAI Engine'
+      : '⚡ Thunder Stake';
+
+  let nameClass =
+    inv.type === 'unai'
+      ? 'unai-name'
+      : 'thunder-name';
+
+  let interestDescription = '';
+
+  if (inv.type === 'thunder') {
+
+    interestDescription =
+      'הריבית יוצאת לארנק ואינה מצטרפת לקרן';
+
+  } else {
+
+    interestDescription =
+      'הריבית היומית מתווספת לקרן + 0.1%';
+
+  }
+
+  let actionHtml = '';
+
+  if (inv.type === 'thunder' && interest >= 100) {
+
+    actionHtml += `
+
+      <button
+        class="btn btn-green"
+        onclick="reinvestThunder('${user.id}','${inv.id}')"
+      >
+        <i class="fa-solid fa-plus"></i>
+        הוסף $100+ לקרן חדשה
+      </button>
+
+    `;
+
+  }
+
+  actionHtml += `
+
+    <button
+      class="btn btn-danger"
+      onclick="deleteInvestment('${user.id}','${inv.id}')"
+    >
+      <i class="fa-solid fa-trash"></i>
+      מחק השקעה
+    </button>
+
+  `;
+
+  div.innerHTML = `
+
+    <div class="investment-header">
+
+      <div class="investment-name ${nameClass}">
+        ${investmentName}
+      </div>
+
+      <div style="color:var(--text-muted); font-size:0.75rem;">
+        השקעה #${index + 1}
+      </div>
+
+    </div>
+
+
+    <div
+      style="
+        font-size:0.75rem;
+        color:var(--text-muted);
+        margin-bottom:8px;
+      "
+    >
+      ${interestDescription}
+    </div>
+
+
+    <div class="investment-data">
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          קרן מקורית
+        </div>
+
+        <div class="investment-data-value">
+          $${parseFloat(inv.principal || 0).toFixed(2)}
+        </div>
+
+      </div>
+
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          קרן נוכחית
+        </div>
+
+        <div class="investment-data-value">
+          $${principal.toFixed(2)}
+        </div>
+
+      </div>
+
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          תשואה חודשית
+        </div>
+
+        <div class="investment-data-value">
+          ${parseFloat(inv.monthlyRate || 0).toFixed(2)}%
+        </div>
+
+      </div>
+
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          תשואה יומית
+        </div>
+
+        <div class="investment-data-value">
+          ${dailyRate.toFixed(4)}%
+        </div>
+
+      </div>
+
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          ריבית שנצברה
+        </div>
+
+        <div class="investment-data-value">
+          $${interest.toFixed(2)}
+        </div>
+
+      </div>
+
+
+      <div class="investment-data-box">
+
+        <div class="investment-data-title">
+          תאריך התחלה
+        </div>
+
+        <div class="investment-data-value">
+          ${new Date(inv.createdAt).toLocaleDateString('he-IL')}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="investment-timer ${unlocked ? 'green' : ''}">
+
+      ${
+        unlocked
+
+        ? `<i class="fa-solid fa-circle-check"></i>
+           ההשקעה פתוחה למשיכה ללא עמלות`
+
+        : `<i class="fa-solid fa-clock"></i>
+           ${formatCountdown(diff)}`
+      }
+
+    </div>
+
+
+    <div class="investment-actions">
+
+      ${actionHtml}
+
+    </div>
+
+  `;
+
+  return div;
+
+}
+
+
+/* =========================================
+   הוספת משתמש
+========================================= */
+
+function addUser(e) {
+
+  e.preventDefault();
+
+  let investInput =
+    document.getElementById(
+      'uInvest'
+    ).value;
+
+  let monthsInput =
+    document.getElementById(
+      'uFeeFreeMonths'
+    ).value;
+
+  let investVal =
+    investInput !== ""
+      ? parseFloat(investInput)
+      : 0;
+
+  let feeFreeMonths =
+    monthsInput !== ""
+      ? parseFloat(monthsInput)
+      : 0;
+
+  let monthlyRate =
+    parseFloat(
+      document.getElementById(
+        'uMonthlyRate'
+      ).value
+    ) || 0;
+
+  let investmentType =
+    document.getElementById(
+      'uInvestmentType'
+    ).value;
+
+  let sponsorId =
+    document.getElementById(
+      'uSponsor'
+    ).value;
+
+  let now = Date.now();
+
+  let newUser = {
+
+    id: now.toString(),
+
+    orgId:
+      document.getElementById(
+        'uOrgId'
+      ).value,
+
+    username:
+      document.getElementById(
+        'uUsername'
+      ).value,
+
+    name:
+      document.getElementById(
+        'uName'
+      ).value,
+
+    email:
+      document.getElementById(
+        'uEmail'
+      ).value,
+
+    pass:
+      document.getElementById(
+        'uPass'
+      ).value,
+
+    invest: investVal,
+
+    feeFreeMonths: feeFreeMonths,
+
+    createdAt: now,
+
+    sales: 0,
+
+    children: [],
+
+    investments: []
+
+  };
+
+
+  if (investVal > 0) {
+
+    newUser.investments.push({
+
+      id: 'inv-' + now,
+
+      type: investmentType,
+
+      principal: investVal,
+
+      monthlyRate: monthlyRate,
+
+      feeFreeMonths: feeFreeMonths,
+
+      createdAt: now,
+
+      released: false,
+
+      walletInterest: 0
+
+    });
+
+  }
+
+
+  /*
+     אם עדיין אין עץ
+  */
+
+  if (!treeData || sponsorId === "root_new") {
+
+    treeData = newUser;
+
+    selectedId =
+      treeData.id;
+
+  } else {
+
+    let parent =
+      findNode(
+        treeData,
+        sponsorId
+      );
+
+    if (parent) {
+
+      parent.children.push(
+        newUser
+      );
+
+    }
+
+  }
+
+
+  document
+    .getElementById(
+      'addUserForm'
+    )
+    .reset();
+
+  saveStorageData();
+
+  render();
+
+}
+
+
+/* =========================================
+   הוספת השקעה
+========================================= */
+
+let investmentTargetUserId = null;
+
+
+function openInvestmentModal(userId) {
+
+  investmentTargetUserId =
+    userId;
+
+  const user =
+    findNode(
+      treeData,
+      userId
+    );
+
+  if (!user) return;
+
+  document.getElementById(
+    'investmentUserName'
+  ).innerText =
+    `הוספת השקעה עבור: ${user.name} (@${user.username})`;
+
+  document.getElementById(
+    'investmentAmount'
+  ).value = '';
+
+  document.getElementById(
+    'investmentMonthlyRate'
+  ).value = '';
+
+  document.getElementById(
+    'investmentMonths'
+  ).value = '';
+
+  openModal(
+    'investmentModal'
+  );
+
+}
+
+
+function addInvestment() {
+
+  const user =
+    findNode(
+      treeData,
+      investmentTargetUserId
+    );
+
+  if (!user) return;
+
+  let amount =
+    parseFloat(
+      document.getElementById(
+        'investmentAmount'
+      ).value
+    );
+
+  let monthlyRate =
+    parseFloat(
+      document.getElementById(
+        'investmentMonthlyRate'
+      ).value
+    );
+
+  let months =
+    parseFloat(
+      document.getElementById(
+        'investmentMonths'
+      ).value
+    );
+
+  let type =
+    document.getElementById(
+      'investmentType'
+    ).value;
+
+  if (
+    !isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    alert(
+      'יש להזין סכום השקעה תקין.'
+    );
+
+    return;
+
+  }
+
+  if (
+    !isFinite(monthlyRate) ||
+    monthlyRate < 0
+  ) {
+
+    alert(
+      'יש להזין תשואה חודשית תקינה.'
+    );
+
+    return;
+
+  }
+
+  if (
+    !isFinite(months) ||
+    months < 0
+  ) {
+
+    alert(
+      'יש להזין זמן משיכה תקין.'
+    );
+
+    return;
+
+  }
+
+  if (!Array.isArray(user.investments)) {
+    user.investments = [];
+  }
+
+  const now = Date.now();
+
+  user.investments.push({
+
+    id:
+      'inv-' +
+      now +
+      '-' +
+      Math.random()
+        .toString(36)
+        .substring(2,8),
+
+    type: type,
+
+    principal: amount,
+
+    monthlyRate: monthlyRate,
+
+    feeFreeMonths: months,
+
+    createdAt: now,
+
+    released: false,
+
+    walletInterest: 0
+
+  });
+
+
+  /*
+     שומר גם את השדה הישן
+     כדי לא לשבור את המערכת הישנה.
+  */
+
+  user.invest =
+    getTotalPrincipal(user);
+
+  saveStorageData();
+
+  closeModal(
+    'investmentModal'
+  );
+
+  render();
+
+}
+
+
+/* =========================================
+   Thunder:
+   הכנסת ריבית לקרן חדשה
+========================================= */
+
+function reinvestThunder(
+  userId,
+  investmentId
+) {
+
+  const user =
+    findNode(
+      treeData,
+      userId
+    );
+
+  if (!user) return;
+
+  const inv =
+    user.investments.find(
+      x => x.id === investmentId
+    );
+
+  if (!inv) return;
+
+  const interest =
+    calculateAccruedInterest(inv);
+
+  if (interest < 100) {
+
+    alert(
+      'ניתן ליצור השקעה חדשה מהריבית רק כאשר הצטברו לפחות $100.'
+    );
+
+    return;
+
+  }
+
+  const amount =
+    Math.floor(
+      interest * 100
+    ) / 100;
+
+  const confirmed =
+    confirm(
+      `הצטברו $${amount.toFixed(2)} ריבית.\n\nהאם להעביר את הריבית להשקעה חדשה?`
+    );
+
+  if (!confirmed) return;
+
+
+  /*
+     ההשקעה החדשה מקבלת את אותו
+     אחוז חודשי ואותו זמן שחרור.
+  */
+
+  user.investments.push({
+
+    id:
+      'inv-' +
+      Date.now() +
+      '-' +
+      Math.random()
+        .toString(36)
+        .substring(2,8),
+
+    type: 'thunder',
+
+    principal: amount,
+
+    monthlyRate:
+      parseFloat(
+        inv.monthlyRate || 0
+      ),
+
+    feeFreeMonths:
+      parseFloat(
+        inv.feeFreeMonths || 0
+      ),
+
+    createdAt: Date.now(),
+
+    released: false,
+
+    walletInterest: 0
+
+  });
+
+  /*
+     הריבית הועברה לקרן חדשה.
+     לכן היא כבר לא זמינה מההשקעה הישנה.
+  */
+
+  inv.createdAt =
+    Date.now();
+
+  /*
+     שומרים את הקרן המקורית.
+     איפוס הזמן של ההשקעה הישנה
+     מתחיל מחזור חדש של ריבית.
+  */
+
+  user.invest =
+    getTotalPrincipal(user);
+
+  saveStorageData();
+
+  render();
+
+}
+
+
+/* =========================================
+   מחיקת השקעה
+========================================= */
+
+function deleteInvestment(
+  userId,
+  investmentId
+) {
+
+  const user =
+    findNode(
+      treeData,
+      userId
+    );
+
+  if (!user) return;
+
+  const inv =
+    user.investments.find(
+      x => x.id === investmentId
+    );
+
+  if (!inv) return;
+
+  const confirmed =
+    confirm(
+      `למחוק את ההשקעה ${inv.type === 'unai' ? 'UNAI Engine' : 'Thunder Stake'}?`
+    );
+
+  if (!confirmed) return;
+
+  user.investments =
+    user.investments.filter(
+      x => x.id !== investmentId
+    );
+
+  user.invest =
+    getTotalPrincipal(user);
+
+  saveStorageData();
+
+  render();
+
+}
+
+
+/* =========================================
+   שינוי סיסמה
+========================================= */
+
+function changePassword(e) {
+
+  e.preventDefault();
+
+  let userId =
+    document.getElementById(
+      'passUserSelect'
+    ).value;
+
+  let newPass =
+    document.getElementById(
+      'newPassVal'
+    ).value;
+
+  let user =
+    findNode(
+      treeData,
+      userId
+    );
+
+  if (user) {
+
+    user.pass =
+      newPass;
+
+    saveStorageData();
+
+    alert(
+      `הסיסמה עבור @${user.username} עודכנה בהצלחה!`
+    );
+
+    document.getElementById(
+      'newPassVal'
+    ).value = '';
+
+    closeModal(
+      'passModal'
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   עריכת משתמש
+========================================= */
+
+function fillEditUserList() {
+
+  const select =
+    document.getElementById(
+      'editUserSelect'
+    );
+
+  select.innerHTML = '';
+
+  if (!treeData) return;
+
+  walkUsers(
+    treeData,
+    user => {
+
+      const opt =
+        document.createElement(
+          'option'
+        );
+
+      opt.value =
+        user.id;
+
+      opt.innerText =
+        `${user.username} — ${user.email}`;
+
+      select.appendChild(opt);
+
+    }
+  );
+
+  loadEditUser();
+
+}
+
+
+function loadEditUser() {
+
+  const id =
+    document.getElementById(
+      'editUserSelect'
+    ).value;
+
+  const user =
+    findNode(
+      treeData,
+      id
+    );
+
+  if (!user) return;
+
+  document.getElementById(
+    'editOrgId'
+  ).value =
+    user.orgId || '';
+
+  document.getElementById(
+    'editUsername'
+  ).value =
+    user.username || '';
+
+  document.getElementById(
+    'editName'
+  ).value =
+    user.name || '';
+
+  document.getElementById(
+    'editEmail'
+  ).value =
+    user.email || '';
+
+  document.getElementById(
+    'editPass'
+  ).value =
+    user.pass || '';
+
+}
+
+
+function saveEditedUser() {
+
+  const id =
+    document.getElementById(
+      'editUserSelect'
+    ).value;
+
+  const user =
+    findNode(
+      treeData,
+      id
+    );
+
+  if (!user) return;
+
+  user.orgId =
+    document.getElementById(
+      'editOrgId'
+    ).value;
+
+  user.username =
+    document.getElementById(
+      'editUsername'
+    ).value;
+
+  user.name =
+    document.getElementById(
+      'editName'
+    ).value;
+
+  user.email =
+    document.getElementById(
+      'editEmail'
+    ).value;
+
+  user.pass =
+    document.getElementById(
+      'editPass'
+    ).value;
+
+  saveStorageData();
+
+  closeModal(
+    'editUserModal'
+  );
+
+  render();
+
+  alert(
+    'פרטי המשתמש עודכנו בהצלחה.'
+  );
+
+}
+
+
+/* =========================================
+   מחיקת משתמש
+========================================= */
+
+function fillDeleteUserList() {
+
+  const select =
+    document.getElementById(
+      'deleteUserSelect'
+    );
+
+  select.innerHTML = '';
+
+  if (!treeData) return;
+
+  walkUsers(
+    treeData,
+    user => {
+
+      const opt =
+        document.createElement(
+          'option'
+        );
+
+      opt.value =
+        user.id;
+
+      opt.innerText =
+        `${user.username} — ${user.email}`;
+
+      select.appendChild(opt);
+
+    }
+  );
+
+}
+
+
+function deleteSelectedUser() {
+
+  const id =
+    document.getElementById(
+      'deleteUserSelect'
+    ).value;
+
+  if (!id) return;
+
+  const user =
+    findNode(
+      treeData,
+      id
+    );
+
+  if (!user) return;
+
+  if (user.id === treeData.id) {
+
+    const confirmed =
+      confirm(
+        'זהו מנהל המערכת הראשי. מחיקתו תמחק את כל הרשת. להמשיך?'
+      );
+
+    if (!confirmed) return;
+
+    treeData = null;
+
+    selectedId = null;
+
+  } else {
+
+    const confirmed =
+      confirm(
+        `האם למחוק את ${user.name} ואת כל המשתמשים שמתחתיו?`
+      );
+
+    if (!confirmed) return;
+
+    const parent =
+      findParent(
+        treeData,
+        id
+      );
+
+    if (parent) {
+
+      parent.children =
+        parent.children.filter(
+          child =>
+            child.id !== id
+        );
+
+    }
+
+    if (selectedId === id) {
+
+      selectedId =
+        parent
+          ? parent.id
+          : treeData.id;
+
+    }
+
+  }
+
+  saveStorageData();
+
+  closeModal(
+    'deleteUserModal'
+  );
+
+  render();
+
+}
+
+
+/* =========================================
+   מעבר על כל המשתמשים
+========================================= */
+
+function walkUsers(
+  node,
+  callback
+) {
+
+  if (!node) return;
+
+  callback(node);
+
+  if (node.children) {
+
+    node.children.forEach(
+      child =>
+        walkUsers(
+          child,
+          callback
+        )
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   Sponsors / Users
+========================================= */
+
+function updateSponsorsAndUsers() {
+
+  let sponsorSelect =
+    document.getElementById(
+      'uSponsor'
+    );
+
+  let passUserSelect =
+    document.getElementById(
+      'passUserSelect'
+    );
+
+  sponsorSelect.innerHTML = '';
+  passUserSelect.innerHTML = '';
+
+  if (!treeData) {
+
+    let opt =
+      document.createElement(
+        'option'
+      );
+
+    opt.value =
+      "root_new";
+
+    opt.innerText =
+      "מנהל מערכת (ראשי)";
+
+    sponsorSelect.appendChild(
+      opt
+    );
+
+    return;
+
+  }
+
+  function walk(node) {
+
+    let opt1 =
+      document.createElement(
+        'option'
+      );
+
+    opt1.value =
+      node.id;
+
+    /*
+       כאן המנהל המצרף
+       מוצג לפי מייל בלבד.
+    */
+
+    opt1.innerText =
+      node.email || '';
+
+    sponsorSelect.appendChild(
+      opt1
+    );
+
+
+    let opt2 =
+      document.createElement(
+        'option'
+      );
+
+    opt2.value =
+      node.id;
+
+    opt2.innerText =
+      `${node.username} (${node.email || 'ללא מייל'})`;
+
+    passUserSelect.appendChild(
+      opt2
+    );
+
+    if (node.children) {
+
+      node.children.forEach(
+        walk
+      );
+
+    }
+
+  }
+
+  walk(treeData);
+
+}
+
+
+/* =========================================
+   עץ
+========================================= */
+
+function renderTree() {
+
+  let container =
+    document.getElementById(
+      'tree'
+    );
+
+  container.innerHTML = '';
+
+  if (!treeData) {
+
+    container.innerHTML =
+      '<div class="no-data-msg">הרשת ריקה. הוסף משתמש ראשון כמנהל המערכת.</div>';
+
+    return;
+
+  }
+
+  let ul =
+    document.createElement(
+      'ul'
+    );
+
+  ul.appendChild(
+    buildNode(
+      treeData
+    )
+  );
+
+  container.appendChild(
+    ul
+  );
+
+}
+
+
+function buildNode(node) {
+
+  let li =
+    document.createElement(
+      'li'
+    );
+
+  let div =
+    document.createElement(
+      'div'
+    );
+
+  let extraClass =
+    node.id === selectedId
+      ? 'selected'
+      : '';
+
+  div.className =
+    `node ${extraClass}`;
+
+  div.onclick =
+    (e) => {
+
+      e.stopPropagation();
+
+      selectedId =
+        node.id;
+
+      render();
+
+    };
+
+
+  div.innerHTML = `
+
+    <i
+      class="fa-solid fa-user"
+      style="
+        font-size:0.9rem;
+        color:var(--accent-purple-light);
+      "
+    ></i>
+
+    <div class="node-name">
+      ${escapeHtml(node.name)}
+    </div>
+
+    <div class="node-email">
+      ${escapeHtml(node.email || '')}
+    </div>
+
+  `;
+
+  li.appendChild(
+    div
+  );
+
+
+  if (
+    node.children &&
+    node.children.length > 0
+  ) {
+
+    let ul =
+      document.createElement(
+        'ul'
+      );
+
+    node.children.forEach(
+      c =>
+        ul.appendChild(
+          buildNode(c)
+        )
+    );
+
+    li.appendChild(
+      ul
+    );
+
+  }
+
+  return li;
+
+}
+
+
+/* =========================================
+   הגדרות דרגה
+========================================= */
+
+function saveConfig() {
+
+  rankReq.sales =
+    parseFloat(
+      document.getElementById(
+        'cfgSales'
+      ).value
+    ) || 0;
+
+  rankReq.invest =
+    parseFloat(
+      document.getElementById(
+        'cfgInvest'
+      ).value
+    ) || 0;
+
+  rankReq.members =
+    parseFloat(
+      document.getElementById(
+        'cfgMembers'
+      ).value
+    ) || 0;
+
+  rankReq.grp =
+    parseFloat(
+      document.getElementById(
+        'cfgGrp'
+      ).value
+    ) || 0;
+
+  saveStorageData();
+
+  closeModal(
+    'rankModal'
+  );
+
+  render();
+
+}
+
+
+/* =========================================
+   איפוס
+========================================= */
+
+function resetSystemData() {
+
+  document
+    .getElementById(
+      'dropdownMenu'
+    )
+    .classList
+    .remove('active');
+
+  if (
+    confirm(
+      "איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?"
+    )
+  ) {
+
+    treeData = null;
+
+    selectedId = null;
+
+    localStorage.removeItem(
+      STORAGE_KEY_TREE
+    );
+
+    localStorage.removeItem(
+      STORAGE_KEY_RANK
+    );
+
+    render();
+
+  }
+
+}
+
+
+/* =========================================
+   מודאל
+========================================= */
+
+function openModal(id) {
+
+  if (
+    id === 'rankModal'
+  ) {
+
+    document.getElementById(
+      'cfgSales'
+    ).value =
+      rankReq.sales;
+
+    document.getElementById(
+      'cfgInvest'
+    ).value =
+      rankReq.invest;
+
+    document.getElementById(
+      'cfgMembers'
+    ).value =
+      rankReq.members;
+
+    document.getElementById(
+      'cfgGrp'
+    ).value =
+      rankReq.grp;
+
+  }
+
+  document
+    .getElementById(id)
+    .classList
+    .add('active');
+
+}
+
+
+function closeModal(id) {
+
+  document
+    .getElementById(id)
+    .classList
+    .remove('active');
+
+}
+
+
+/* =========================================
+   אבטחת תצוגת טקסט
+========================================= */
+
+function escapeHtml(value) {
+
+  return String(value || '')
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+</script>
+
+</body>
+    </html>
