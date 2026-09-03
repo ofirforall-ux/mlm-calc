@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון שיווק רשתי - Universe Pro</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .result-box {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .result-box .title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .result-box .value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--success);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>מחשבון תגמולים - Universe Pro</h1>
+        <p>חישוב רווחים, עמלות רשת ותחזית צמיחה</p>
+    </header>
+
+    <div class="card">
+        <div class="grid">
+            <div class="form-group">
+                <label for="investment">סכום השקעה אישית ($)</label>
+                <input type="number" id="investment" value="1000" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="directMembers">חברים ישירים (דור 1)</label>
+                <input type="number" id="directMembers" value="3" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="avgInvestment">השקעה ממוצעת לחבר ($)</label>
+                <input type="number" id="avgInvestment" value="500" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="networkDepth">עומק רשת (דורות)</label>
+                <input type="number" id="networkDepth" value="3" min="1" max="10">
+            </div>
+        </div>
+
+        <button onclick="calculateEarnings()">חשב רווחים</button>
+    </div>
+
+    <div class="card">
+        <h2>תחזית הכנסות</h2>
+        <div class="results">
+            <div class="result-box">
+                <div class="title">תשואה יומית אישית</div>
+                <div class="value" id="dailyPersonal">$0.00</div>
+            </div>
+            <div class="result-box">
+                <div class="title">עמלת דור 1 (ישירים)</div>
+                <div class="value" id="directBonus">$0.00</div>
+            </div>
+            <div class="result-box">
+                <div class="title">סה"כ חברי רשת</div>
+                <div class="value" id="totalNetworkSize">0</div>
+            </div>
+            <div class="result-box">
+                <div class="title">צפי הכנסה חודשית כוללת</div>
+                <div class="value" id="totalMonthly">$0.00</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateEarnings() {
+        const investment = parseFloat(document.getElementById('investment').value) || 0;
+        const directMembers = parseInt(document.getElementById('directMembers').value) || 0;
+        const avgInvestment = parseFloat(document.getElementById('avgInvestment').value) || 0;
+        const depth = parseInt(document.getElementById('networkDepth').value) || 1;
+
+        // חישוב תשואה יומית אישית (לפי 0.5% ביום)
+        const dailyRate = 0.005;
+        const dailyPersonal = investment * dailyRate;
+
+        // עמלת הישירים (דור 1 - לפי 10%)
+        const directRate = 0.10;
+        const directVolume = directMembers * avgInvestment;
+        const directBonus = directVolume * directRate;
+
+        // חישוב גודל הרשת הכולל (לפי מכפיל היררכי)
+        let totalMembers = 0;
+        for (let i = 1; i <= depth; i++) {
+            totalMembers += Math.pow(directMembers, i);
+        }
+
+        // צפי הכנסה חודשית (תשואה אישית + עמלות צוות משוערות)
+        const monthlyPersonal = dailyPersonal * 30;
+        const teamVolume = totalMembers * avgInvestment;
+        const estimatedMonthlyTeamBonus = teamVolume * 0.02; // עמלת רשת ממוצעת של 2%
+        const totalMonthly = monthlyPersonal + estimatedMonthlyTeamBonus;
+
+        // עדכון התוצאות במסך
+        document.getElementById('dailyPersonal').innerText = '$' + dailyPersonal.toFixed(2);
+        document.getElementById('directBonus').innerText = '$' + directBonus.toFixed(2);
+        document.getElementById('totalNetworkSize').innerText = totalMembers.toLocaleString();
+        document.getElementById('totalMonthly').innerText = '$' + totalMonthly.toFixed(2);
+    }
+
+    // הרצה ראשונית בעת טעינת הדף
+    calculateEarnings();
+</script>
+
+</body>
+</html>
