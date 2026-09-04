@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +28,7 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       padding: 20px;
+      direction: rtl;
     }
 
     .container {
@@ -100,12 +101,7 @@
       color: #000;
     }
 
-    .tender-option {
-      color: var(--accent-green);
-      font-weight: bold;
-    }
-
-    /* Tree Styling */
+    /* עץ ארגוני - חיבור קווים ועיגול */
     .tree-container {
       overflow-x: auto;
       padding: 20px 0;
@@ -148,7 +144,6 @@
       align-items: center;
     }
 
-    /* Visible Connecting Lines */
     .tree li::before, .tree li::after {
       content: '';
       position: absolute;
@@ -186,7 +181,6 @@
       border-radius: 5px 0 0 0;
     }
 
-    /* Circle Icon & Details */
     .node-circle {
       width: 60px;
       height: 60px;
@@ -216,7 +210,7 @@
       white-space: nowrap;
     }
 
-    /* Timers & Status Boxes */
+    /* טיימרים וסטטוסים */
     .timer-box {
       background: #0f172a;
       padding: 12px;
@@ -248,7 +242,7 @@
 
     th, td {
       padding: 10px;
-      text-align: left;
+      text-align: right;
       border-bottom: 1px solid var(--border-color);
     }
 
@@ -260,74 +254,74 @@
 <body>
 
 <div class="container">
-  <h2>Universe Pro Dashboard</h2>
+  <h2>מערכת ניהול Universe Pro</h2>
 
   <div class="grid-2">
-    <!-- Add User / Organization Member -->
+    <!-- הוספת משתמש / ארגון -->
     <div class="card">
-      <h3>Add Member</h3>
+      <h3>הוספת שותף לארגון</h3>
       <div class="form-group">
-        <label>Org Name</label>
-        <input type="text" id="userName" placeholder="Enter Org Name">
+        <label>שם בארגון</label>
+        <input type="text" id="userName" placeholder="הכנס שם בארגון">
       </div>
       <div class="form-group">
-        <label>Email</label>
+        <label>אימייל</label>
         <input type="email" id="userEmail" placeholder="user@example.com">
       </div>
       <div class="form-group">
-        <label>Org ID (Sponsor / Parent ID)</label>
-        <input type="number" id="parentId" placeholder="Leave empty for root">
+        <label>מזהה ארגון (מזהה הורה/ספונסר)</label>
+        <input type="number" id="parentId" placeholder="השאר ריק אם זה הראשי">
       </div>
-      <button onclick="addUser()">Add Member</button>
+      <button onclick="addUser()">הוסף משתמש</button>
     </div>
 
-    <!-- Process Investment / Transfer -->
+    <!-- ביצוע השקעה -->
     <div class="card">
-      <h3>New Investment</h3>
+      <h3>ביצוע השקעה / העברה</h3>
       <div class="form-group">
-        <label>Target Org ID</label>
-        <input type="number" id="investUserId" placeholder="Enter Org ID">
+        <label>מזהה ארגון מבוצע</label>
+        <input type="number" id="investUserId" placeholder="הכנס מזהה ארגון">
       </div>
       <div class="form-group">
-        <label>Amount ($)</label>
+        <label>סכום השקעה ($)</label>
         <input type="number" step="0.01" id="investAmount" placeholder="0.00">
       </div>
       <div class="form-group">
-        <label>Investment Type</label>
+        <label>סוג מסלול השקעה</label>
         <select id="investType">
-          <option value="unai">UNAI Engine - 2 Years Fund</option>
-          <option value="tender">Tender ⚡ (4 Months Pool)</option>
+          <option value="unai">קרן לשנתיים - UNAI Engine</option>
+          <option value="tender">טנדר ⚡ (4 חודשים)</option>
         </select>
       </div>
-      <button class="btn-success" onclick="processInvestment()">Submit Investment ⚡</button>
+      <button class="btn-success" onclick="processInvestment()">בצע השקעה ⚡</button>
     </div>
   </div>
 
-  <!-- Organization Tree -->
+  <!-- מפת העץ -->
   <div class="card">
-    <h3>Organization Tree</h3>
+    <h3>מפת ארגון (עץ שיווקי)</h3>
     <div class="tree-container">
       <div id="treeView" class="tree"></div>
     </div>
   </div>
 
-  <!-- Active Timers & Commission Releases -->
+  <!-- טיימרים וריבית יומית -->
   <div class="card">
-    <h3>Active Timers & Daily Yields</h3>
+    <h3>טיימרים וריבית יומית</h3>
     <div id="timersList"></div>
   </div>
 
-  <!-- Investment History -->
+  <!-- היסטוריית השקעות -->
   <div class="card">
-    <h3>Investment History</h3>
+    <h3>היסטוריית השקעות</h3>
     <table>
       <thead>
         <tr>
-          <th>Org ID</th>
-          <th>Org Name</th>
-          <th>Amount</th>
-          <th>Type</th>
-          <th>Date</th>
+          <th>מזהה ארגון</th>
+          <th>שם בארגון</th>
+          <th>סכום השקעה</th>
+          <th>מסלול</th>
+          <th>תאריך</th>
         </tr>
       </thead>
       <tbody id="investmentsTable"></tbody>
@@ -336,7 +330,7 @@
 </div>
 
 <script>
-  // Clean initialization - No previous user data stored
+  // איפוס נתונים להתחלה נקייה מאפס
   localStorage.removeItem('universe_pro_users');
   localStorage.removeItem('universe_pro_investments');
 
@@ -350,7 +344,7 @@
     const parentId = parseInt(document.getElementById('parentId').value) || null;
 
     if (!name || !email) {
-      alert('Please fill in Org Name and Email');
+      alert('נא למלא שם בארגון ואימייל');
       return;
     }
 
@@ -377,12 +371,12 @@
 
     const user = users.find(u => u.id === userId);
     if (!user) {
-      alert('Org ID not found');
+      alert('מזהה ארגון לא נמצא');
       return;
     }
 
     if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount');
+      alert('נא להזין סכום תקין');
       return;
     }
 
@@ -394,7 +388,6 @@
       type: type,
       startDate: new Date(),
       lastResetDate: new Date(),
-      status: 'active',
       withdrawn: false
     };
 
@@ -411,7 +404,7 @@
     treeContainer.innerHTML = '';
 
     if (users.length === 0) {
-      treeContainer.innerHTML = '<p style="color: var(--text-muted);">No members in organization yet</p>';
+      treeContainer.innerHTML = '<p style="color: var(--text-muted);">אין משתמשים בארגון כרגע</p>';
       return;
     }
 
@@ -427,7 +420,6 @@
   function buildTreeNode(user) {
     const li = document.createElement('li');
 
-    // Circular Icon containing Org ID, Email & Org Name underneath
     li.innerHTML = `
       <div class="node-circle">${user.id}</div>
       <div class="node-email">${user.email}</div>
@@ -452,13 +444,13 @@
 
     investments.forEach(inv => {
       const tr = document.createElement('tr');
-      const typeLabel = inv.type === 'tender' ? 'Tender ⚡ (4 Months)' : 'UNAI Engine (2 Years)';
+      const typeLabel = inv.type === 'tender' ? 'טנדר ⚡ (4 חודשים)' : 'קרן לשנתיים - UNAI Engine';
       tr.innerHTML = `
         <td>${inv.userId}</td>
         <td>${inv.userName}</td>
-        <td>$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td>$${inv.amount.toLocaleString('he-IL', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
         <td>${typeLabel}</td>
-        <td>${new Date(inv.startDate).toLocaleDateString()}</td>
+        <td>${new Date(inv.startDate).toLocaleDateString('he-IL')}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -469,7 +461,7 @@
     container.innerHTML = '';
 
     if (investments.length === 0) {
-      container.innerHTML = '<p style="color: var(--text-muted);">No active investments</p>';
+      container.innerHTML = '<p style="color: var(--text-muted);">אין השקעות פעילות</p>';
       return;
     }
 
@@ -479,16 +471,16 @@
 
       if (inv.type === 'unai') {
         box.innerHTML = `
-          <strong>Org ID: ${inv.userId} (${inv.userName})</strong> - UNAI Engine (2 Years Fund)<br>
-          Principal: $${inv.amount.toFixed(2)}<br>
-          <span class="status-yellow">Lock Period: 24 Months</span>
+          <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - קרן לשנתיים (UNAI Engine)<br>
+          סכום: $${inv.amount.toFixed(2)}<br>
+          <span class="status-yellow">זמן נעילה מתוכנן: 24 חודשים</span>
         `;
       } else if (inv.type === 'tender') {
         box.id = `timer-box-${inv.id}`;
         box.innerHTML = `
-          <strong>Org ID: ${inv.userId} (${inv.userName})</strong> - Tender ⚡ Pool<br>
-          Principal: $${inv.amount.toFixed(2)} | <span id="daily-yield-${inv.id}">Accumulating Daily Interest...</span><br>
-          Status: <span id="timer-status-${inv.id}">Calculating...</span>
+          <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - השקעת טנדר ⚡<br>
+          סכום: $${inv.amount.toFixed(2)} | <span id="daily-yield-${inv.id}">מחשב ריבית יומית...</span><br>
+          סטטוס טיימר: <span id="timer-status-${inv.id}">מחשב...</span>
         `;
       }
       container.appendChild(box);
@@ -507,34 +499,34 @@
       const yieldElem = document.getElementById(`daily-yield-${inv.id}`);
       if (!statusElem) return;
 
-      // Calculate Daily Interest (Estimated 0.5% per day)
+      // ריבית יומית מצטברת
       const daysElapsed = (now - new Date(inv.startDate).getTime()) / (1000 * 60 * 60 * 24);
       const accumulatedYield = (inv.amount * 0.005 * daysElapsed);
       if (yieldElem) {
-        yieldElem.innerHTML = `Daily Yield: <strong style="color:var(--accent-green)">+$${accumulatedYield.toFixed(4)}</strong>`;
+        yieldElem.innerHTML = `רווח יומי מצטבר: <strong style="color:var(--accent-green)">+$${accumulatedYield.toFixed(4)}</strong>`;
       }
 
+      // אם הקרן נמשכה - מציג ירוק
       if (inv.withdrawn) {
         statusElem.className = 'status-green';
-        statusElem.innerHTML = 'Principal Withdrawn Successfully! ✔';
+        statusElem.innerHTML = 'הקרן נמשכה בהצלחה! ✔';
         return;
       }
 
-      // Time definitions for logic
       const fourMonthsMs = 4 * 30 * 24 * 60 * 60 * 1000;
       const seventyTwoHoursMs = 72 * 60 * 60 * 1000;
 
       const elapsed = now - new Date(inv.lastResetDate).getTime();
 
       if (elapsed < fourMonthsMs) {
-        // Phase 1: 4 Months Locked (Red)
+        // 4 חודשים - באדום
         const remaining = fourMonthsMs - elapsed;
         const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
         const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         statusElem.className = 'status-red';
-        statusElem.innerHTML = `Locked for 4 Months (Remaining: ${days}d ${hours}h)`;
+        statusElem.innerHTML = `נעול ל-4 חודשים (נותרו ${days} ימים ו-${hours} שעות)`;
       } else if (elapsed < fourMonthsMs + seventyTwoHoursMs) {
-        // Phase 2: 72 Hours Window (Yellow) + Withdraw Button
+        // 72 שעות - בצהוב עם כפתור משיכה
         const windowElapsed = elapsed - fourMonthsMs;
         const remaining = seventyTwoHoursMs - windowElapsed;
         const hours = Math.floor(remaining / (1000 * 60 * 60));
@@ -542,12 +534,12 @@
 
         statusElem.className = 'status-yellow';
         statusElem.innerHTML = `
-          Withdrawal Window Open! (${hours}h ${minutes}m remaining)
+          חלון משיכה פתוח! (נותרו ${hours} שעות ו-${minutes} דקות)
           <br>
-          <button class="btn-warning" style="width: auto; padding: 5px 15px; margin-top: 8px;" onclick="withdrawPrincipal(${inv.id})">Withdraw Principal</button>
+          <button class="btn-warning" style="width: auto; padding: 5px 15px; margin-top: 8px;" onclick="withdrawPrincipal(${inv.id})">משוך קרן עכשיו</button>
         `;
       } else {
-        // Phase 3: Missed 72 Hours -> Reset back to 4 Months (Red)
+        // עברו 72 שעות ללא משיכה - מתאפס מחדש ל-4 חודשים באדום
         inv.lastResetDate = new Date();
         renderTimers();
       }
@@ -562,10 +554,8 @@
     }
   }
 
-  // Active Timer Loop
   setInterval(updateTenderTimers, 1000);
 
-  // Initialize
   renderTree();
   renderTimers();
 </script>
