@@ -50,12 +50,14 @@
       color: var(--text-main);
     }
 
+    /* Grid Layouts */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
+    /* Form Styles */
     .form-group {
       margin-bottom: 15px;
     }
@@ -101,7 +103,16 @@
       color: #000;
     }
 
-    /* עץ ארגוני - חיבור קווים ועיגול */
+    /* Tender Option styling */
+    .tender-badge {
+      color: var(--accent-green);
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Tree Visualization Styles */
     .tree-container {
       overflow-x: auto;
       padding: 20px 0;
@@ -144,6 +155,7 @@
       align-items: center;
     }
 
+    /* Visible connecting lines between nodes */
     .tree li::before, .tree li::after {
       content: '';
       position: absolute;
@@ -181,6 +193,7 @@
       border-radius: 5px 0 0 0;
     }
 
+    /* Circular Node Styling */
     .node-circle {
       width: 60px;
       height: 60px;
@@ -210,30 +223,26 @@
       white-space: nowrap;
     }
 
-    /* טיימרים וסטטוסים */
+    /* Timers & Status Badges */
     .timer-box {
       background: #0f172a;
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
       margin-top: 10px;
       border: 1px solid var(--border-color);
     }
 
-    .status-red {
+    .timer-red {
       color: var(--danger-color);
       font-weight: bold;
     }
 
-    .status-yellow {
+    .timer-yellow {
       color: var(--warning-color);
       font-weight: bold;
     }
 
-    .status-green {
-      color: var(--accent-green);
-      font-weight: bold;
-    }
-
+    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -275,7 +284,7 @@
       <button onclick="addUser()">הוסף משתמש</button>
     </div>
 
-    <!-- ביצוע השקעה -->
+    <!-- ביצוע השקעה / העברה -->
     <div class="card">
       <h3>ביצוע השקעה / העברה</h3>
       <div class="form-group">
@@ -283,21 +292,21 @@
         <input type="number" id="investUserId" placeholder="הכנס מזהה ארגון">
       </div>
       <div class="form-group">
-        <label>סכום השקעה ($)</label>
+        <label>סכום (תומך במספרים עשרוניים)</label>
         <input type="number" step="0.01" id="investAmount" placeholder="0.00">
       </div>
       <div class="form-group">
         <label>סוג מסלול השקעה</label>
         <select id="investType">
           <option value="unai">קרן לשנתיים - UNAI Engine</option>
-          <option value="tender">טנדר ⚡ (4 חודשים)</option>
+          <option value="tender">טנדר <span class="tender-badge">⚡ (4 חודשים)</span></option>
         </select>
       </div>
       <button class="btn-success" onclick="processInvestment()">בצע השקעה ⚡</button>
     </div>
   </div>
 
-  <!-- מפת העץ -->
+  <!-- תצוגת מפת הארגון (עץ) -->
   <div class="card">
     <h3>מפת ארגון (עץ שיווקי)</h3>
     <div class="tree-container">
@@ -305,15 +314,15 @@
     </div>
   </div>
 
-  <!-- טיימרים וריבית יומית -->
+  <!-- טיימרים וניהול עמלות -->
   <div class="card">
-    <h3>טיימרים וריבית יומית</h3>
+    <h3>טיימרים וקרנות פעילות</h3>
     <div id="timersList"></div>
   </div>
 
   <!-- היסטוריית השקעות -->
   <div class="card">
-    <h3>היסטוריית השקעות</h3>
+    <h3>היסטוריית השקעות (מספרים עשרוניים)</h3>
     <table>
       <thead>
         <tr>
@@ -330,13 +339,13 @@
 </div>
 
 <script>
-  // איפוס נתונים להתחלה נקייה מאפס
+  // איפוס מלא בטעינה הראשונית לפי הדרישה - להתחיל מאפס
   localStorage.removeItem('universe_pro_users');
   localStorage.removeItem('universe_pro_investments');
 
   let users = [];
   let investments = [];
-  let nextOrgId = 1001;
+  let nextOrgId = 1001; // מזהה ארגון נקי ראשוני
 
   function addUser() {
     const name = document.getElementById('userName').value;
@@ -352,7 +361,8 @@
       id: nextOrgId++,
       name: name,
       email: email,
-      parentId: parentId
+      parentId: parentId,
+      joinDate: new Date()
     };
 
     users.push(newUser);
@@ -376,19 +386,22 @@
     }
 
     if (isNaN(amount) || amount <= 0) {
-      alert('נא להזין סכום תקין');
+      alert('נא להזין סכום עשרוני תקין');
       return;
     }
+
+    const durationMonths = type === 'unai' ? 24 : 4;
 
     const newInvest = {
       id: Date.now(),
       userId: userId,
       userName: user.name,
-      amount: amount,
+      amount: amount.toFixed(2), // תמיכה עשרונית
       type: type,
+      durationMonths: durationMonths,
       startDate: new Date(),
       lastResetDate: new Date(),
-      withdrawn: false
+      status: 'active'
     };
 
     investments.push(newInvest);
@@ -404,7 +417,7 @@
     treeContainer.innerHTML = '';
 
     if (users.length === 0) {
-      treeContainer.innerHTML = '<p style="color: var(--text-muted);">אין משתמשים בארגון כרגע</p>';
+      treeContainer.innerHTML = '<p>אין משתמשים בארגון כרגע</p>';
       return;
     }
 
@@ -420,8 +433,9 @@
   function buildTreeNode(user) {
     const li = document.createElement('li');
 
+    // הרכבת המבנה: עיגול עם מזהה הארגון, ומתחתיו המייל והשם בארגון
     li.innerHTML = `
-      <div class="node-circle">${user.id}</div>
+      <div class="node-circle" title="${user.name}">${user.id}</div>
       <div class="node-email">${user.email}</div>
       <div class="node-name">${user.name}</div>
     `;
@@ -444,11 +458,11 @@
 
     investments.forEach(inv => {
       const tr = document.createElement('tr');
-      const typeLabel = inv.type === 'tender' ? 'טנדר ⚡ (4 חודשים)' : 'קרן לשנתיים - UNAI Engine';
+      const typeLabel = inv.type === 'tender' ? '⚡ טנדר (4 חודשים)' : 'קרן לשנתיים - UNAI Engine';
       tr.innerHTML = `
         <td>${inv.userId}</td>
         <td>${inv.userName}</td>
-        <td>$${inv.amount.toLocaleString('he-IL', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td>$${parseFloat(inv.amount).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</td>
         <td>${typeLabel}</td>
         <td>${new Date(inv.startDate).toLocaleDateString('he-IL')}</td>
       `;
@@ -461,7 +475,7 @@
     container.innerHTML = '';
 
     if (investments.length === 0) {
-      container.innerHTML = '<p style="color: var(--text-muted);">אין השקעות פעילות</p>';
+      container.innerHTML = '<p>אין טיימרים פעילים</p>';
       return;
     }
 
@@ -472,14 +486,14 @@
       if (inv.type === 'unai') {
         box.innerHTML = `
           <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - קרן לשנתיים (UNAI Engine)<br>
-          סכום: $${inv.amount.toFixed(2)}<br>
-          <span class="status-yellow">זמן נעילה מתוכנן: 24 חודשים</span>
+          סכום: $${inv.amount}<br>
+          <span class="timer-yellow">זמן מתוכנן לשחרור הקרן: 24 חודשים</span>
         `;
       } else if (inv.type === 'tender') {
         box.id = `timer-box-${inv.id}`;
         box.innerHTML = `
           <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - השקעת טנדר ⚡<br>
-          סכום: $${inv.amount.toFixed(2)} | <span id="daily-yield-${inv.id}">מחשב ריבית יומית...</span><br>
+          סכום: $${inv.amount}<br>
           סטטוס טיימר: <span id="timer-status-${inv.id}">מחשב...</span>
         `;
       }
@@ -489,6 +503,7 @@
     updateTenderTimers();
   }
 
+  // לוגיקת טיימר 4 חודשים (אדום) + 72 שעות (צהוב) בלולאה מחזורית
   function updateTenderTimers() {
     const now = new Date().getTime();
 
@@ -496,50 +511,36 @@
       if (inv.type !== 'tender') return;
 
       const statusElem = document.getElementById(`timer-status-${inv.id}`);
-      const yieldElem = document.getElementById(`daily-yield-${inv.id}`);
       if (!statusElem) return;
 
-      // ריבית יומית מצטברת
-      const daysElapsed = (now - new Date(inv.startDate).getTime()) / (1000 * 60 * 60 * 24);
-      const accumulatedYield = (inv.amount * 0.005 * daysElapsed);
-      if (yieldElem) {
-        yieldElem.innerHTML = `רווח יומי מצטבר: <strong style="color:var(--accent-green)">+$${accumulatedYield.toFixed(4)}</strong>`;
-      }
-
-      // אם הקרן נמשכה - מציג ירוק
-      if (inv.withdrawn) {
-        statusElem.className = 'status-green';
-        statusElem.innerHTML = 'הקרן נמשכה בהצלחה! ✔';
-        return;
-      }
-
+      // הגדרת זמנים במילישניות (לצורך סימולציה/תצוגה בזמן אמת)
       const fourMonthsMs = 4 * 30 * 24 * 60 * 60 * 1000;
       const seventyTwoHoursMs = 72 * 60 * 60 * 1000;
 
       const elapsed = now - new Date(inv.lastResetDate).getTime();
 
       if (elapsed < fourMonthsMs) {
-        // 4 חודשים - באדום
+        // שלב 1: 4 חודשים (באדום)
         const remaining = fourMonthsMs - elapsed;
         const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
         const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        statusElem.className = 'status-red';
+        statusElem.className = 'timer-red';
         statusElem.innerHTML = `נעול ל-4 חודשים (נותרו ${days} ימים ו-${hours} שעות)`;
       } else if (elapsed < fourMonthsMs + seventyTwoHoursMs) {
-        // 72 שעות - בצהוב עם כפתור משיכה
+        // שלב 2: 72 שעות בצהוב + כפתור משיכה
         const windowElapsed = elapsed - fourMonthsMs;
         const remaining = seventyTwoHoursMs - windowElapsed;
         const hours = Math.floor(remaining / (1000 * 60 * 60));
         const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
 
-        statusElem.className = 'status-yellow';
+        statusElem.className = 'timer-yellow';
         statusElem.innerHTML = `
           חלון משיכה פתוח! (נותרו ${hours} שעות ו-${minutes} דקות)
           <br>
-          <button class="btn-warning" style="width: auto; padding: 5px 15px; margin-top: 8px;" onclick="withdrawPrincipal(${inv.id})">משוך קרן עכשיו</button>
+          <button class="btn-warning" onclick="withdrawPrincipal(${inv.id})">משוך קרן עכשיו</button>
         `;
       } else {
-        // עברו 72 שעות ללא משיכה - מתאפס מחדש ל-4 חודשים באדום
+        // שלב 3: עברו 72 שעות ללא משיכה -> איפוס מחדש ל-4 חודשים
         inv.lastResetDate = new Date();
         renderTimers();
       }
@@ -547,15 +548,16 @@
   }
 
   function withdrawPrincipal(invId) {
-    const inv = investments.find(i => i.id === invId);
-    if (inv) {
-      inv.withdrawn = true;
-      renderTimers();
-    }
+    alert('הקרן נמשכה בהצלחה!');
+    investments = investments.filter(i => i.id !== invId);
+    renderInvestmentsTable();
+    renderTimers();
   }
 
+  // עדכון טיימרים פעיל כל שנייה
   setInterval(updateTenderTimers, 1000);
 
+  // טעינה ראשונית ריקה
   renderTree();
   renderTimers();
 </script>
