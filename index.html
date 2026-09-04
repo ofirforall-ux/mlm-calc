@@ -7,18 +7,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg: #080b14;
-      --card: #111827;
-      --card-border: #252b3d;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --accent: #8b5cf6;
-      --accent-hover: #7c3aed;
-      --accent-green: #22c55e;
-      --accent-red: #ef4444;
-      --accent-yellow: #f59e0b;
-      --accent-blue: #3b82f6;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg-dark: #0f0b16;
+      --bg-card: #181222;
+      --bg-card-light: #211832;
+      --border: #34264a;
+      --accent-purple: #8b5cf6;
+      --accent-purple-light: #a78bfa;
+      --text-main: #f5f3ff;
+      --text-muted: #aaa3b8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
     }
 
     * {
@@ -28,8 +27,8 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
     }
 
@@ -39,97 +38,76 @@
       font-family: inherit;
     }
 
-    button {
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1400px, 95%);
-      margin: 0 auto;
-      padding: 20px 0 40px;
-    }
-
-    .header {
+    .topbar {
+      height: 64px;
+      background: #120d1b;
+      border-bottom: 1px solid var(--border);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-purple-light);
     }
 
-    .brand-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #8b5cf6, #4c1d95);
-      box-shadow: 0 8px 25px rgba(139,92,246,.35);
-      font-size: 22px;
+    .menu-wrap {
+      position: relative;
     }
 
-    .brand h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--text-muted);
-      font-size: .9rem;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: 1px solid var(--card-border);
-      background: #151b2b;
-      color: var(--text);
-      border-radius: 9px;
+    .menu-btn {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: 10px 14px;
-      display: inline-flex;
+      cursor: pointer;
+      display: flex;
       align-items: center;
-      gap: 7px;
-      transition: .2s;
+      gap: 8px;
     }
 
-    .btn:hover {
-      border-color: var(--accent);
-      transform: translateY(-1px);
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 48px;
+      left: 0;
+      min-width: 220px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.4);
+      overflow: hidden;
+      z-index: 200;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
+    .dropdown.active {
+      display: block;
     }
 
-    .btn-primary:hover {
-      background: var(--accent-hover);
+    .dropdown button {
+      width: 100%;
+      padding: 13px 15px;
+      border: 0;
+      background: transparent;
+      color: var(--text-main);
+      text-align: right;
+      cursor: pointer;
     }
 
-    .btn-danger {
-      background: rgba(239,68,68,.1);
-      color: #fca5a5;
-      border-color: rgba(239,68,68,.35);
+    .dropdown button:hover {
+      background: var(--bg-card-light);
     }
 
-    .btn-green {
-      background: rgba(34,197,94,.12);
-      color: #86efac;
-      border-color: rgba(34,197,94,.3);
+    .container {
+      width: min(1500px, 96%);
+      margin: 20px auto;
     }
 
     .grid {
@@ -139,49 +117,47 @@
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
     }
 
     .card-title {
-      font-size: 1.05rem;
-      font-weight: bold;
+      font-size: 1.15rem;
+      font-weight: 700;
       margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      color: var(--accent-purple-light);
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 12px;
     }
 
-    .form-group {
+    .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .form-group.full {
+    .field.full {
       grid-column: 1 / -1;
     }
 
     label {
       color: var(--text-muted);
-      font-size: .85rem;
+      font-size: .9rem;
     }
 
     input,
     select {
       width: 100%;
-      border: 1px solid var(--card-border);
-      background: #0d121f;
-      color: var(--text);
+      background: #100c17;
+      color: var(--text-main);
+      border: 1px solid var(--border);
       border-radius: 9px;
       padding: 11px 12px;
       outline: none;
@@ -189,342 +165,369 @@
 
     input:focus,
     select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(139,92,246,.15);
+      border-color: var(--accent-purple);
     }
 
-    .radio-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .radio-card {
-      flex: 1;
-      min-width: 130px;
-      border: 1px solid var(--card-border);
-      background: #0d121f;
-      border-radius: 10px;
-      padding: 12px;
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 15px;
       cursor: pointer;
-      text-align: center;
-      transition: .2s;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .radio-card.active {
-      border-color: var(--accent);
-      background: rgba(139,92,246,.1);
+    .btn-primary {
+      background: var(--accent-purple);
+      color: white;
     }
 
-    .radio-card input {
-      display: none;
+    .btn-primary:hover {
+      filter: brightness(1.1);
     }
 
-    .tree-wrap {
-      overflow: auto;
-      padding: 20px 10px;
-      min-height: 380px;
+    .btn-success {
+      background: var(--success);
+      color: #06130a;
     }
 
-    .tree {
-      display: flex;
-      justify-content: center;
-      min-width: max-content;
+    .btn-danger {
+      background: var(--danger);
+      color: white;
     }
 
+    .btn-secondary {
+      background: #31233f;
+      color: var(--text-main);
+    }
+
+    .tree-card {
+      margin-top: 18px;
+    }
+
+    #tree {
+      overflow-x: auto;
+      padding: 25px 10px;
+      min-height: 220px;
+    }
+
+    .tree,
     .tree ul {
-      padding-top: 22px;
+      padding-top: 20px;
       position: relative;
+    }
+
+    #tree ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+      padding-right: 0;
       display: flex;
       justify-content: center;
-      gap: 35px;
-      margin: 0;
-      padding-right: 0;
-      list-style: none;
     }
 
-    .tree li {
-      text-align: center;
+    #tree li {
       position: relative;
-      padding-top: 22px;
+      padding: 20px 10px 0;
+      text-align: center;
     }
 
-    .tree li::before,
-    .tree li::after {
-      content: "";
+    #tree li::before,
+    #tree li::after {
+      content: '';
       position: absolute;
       top: 0;
       width: 50%;
-      height: 22px;
-      border-top: 1px solid #4b5563;
+      height: 20px;
+      border-top: 1px solid var(--border);
     }
 
-    .tree li::before {
+    #tree li::before {
       right: 50%;
     }
 
-    .tree li::after {
+    #tree li::after {
       left: 50%;
-      border-left: 1px solid #4b5563;
+      border-right: 1px solid var(--border);
     }
 
-    .tree li:only-child::before,
-    .tree li:only-child::after {
+    #tree li:only-child::before,
+    #tree li:only-child::after {
       display: none;
     }
 
-    .tree li:first-child::before {
+    #tree li:first-child::before {
       border: 0;
     }
 
-    .tree li:last-child::after {
+    #tree li:last-child::after {
       border: 0;
     }
 
-    .tree ul::before {
-      content: "";
+    #tree ul ul::before {
+      content: '';
       position: absolute;
       top: 0;
       right: 50%;
-      height: 22px;
-      border-left: 1px solid #4b5563;
-    }
-
-    .tree > ul {
-      padding-top: 0;
-    }
-
-    .tree > ul::before {
-      display: none;
+      width: 0;
+      height: 20px;
+      border-right: 1px solid var(--border);
     }
 
     .node {
-      position: relative;
       display: inline-flex;
-      flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      background: #211832;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 15px;
       cursor: pointer;
-      min-width: 105px;
-    }
-
-    .node-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
+      min-width: 150px;
       justify-content: center;
-      background: linear-gradient(135deg, #7c3aed, #4c1d95);
-      border: 3px solid #a78bfa;
-      box-shadow: 0 7px 22px rgba(124,58,237,.3);
-      transition: .2s;
+      transition: .15s;
     }
 
-    .node:hover .node-icon {
-      transform: scale(1.07);
-    }
-
-    .node.selected .node-icon {
-      box-shadow: 0 0 0 4px rgba(139,92,246,.2), 0 8px 30px rgba(139,92,246,.45);
+    .node:hover,
+    .node.selected {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 2px rgba(139,92,246,.15);
     }
 
     .node-name {
-      font-size: .78rem;
-      max-width: 130px;
-      overflow-wrap: anywhere;
-      color: var(--text);
+      font-weight: 700;
+      word-break: break-word;
     }
 
-    .node-rank {
-      font-size: .7rem;
-      color: var(--accent-yellow);
+    .selected-user-card {
+      margin-top: 18px;
+      display: none;
     }
 
-    .stats {
+    .selected-user-card.active {
+      display: block;
+    }
+
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .user-main-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .user-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .user-subtitle {
+      color: var(--text-muted);
+    }
+
+    .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0,1fr));
       gap: 10px;
+      margin-top: 15px;
     }
 
     .stat {
-      padding: 13px;
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      background: #0d121f;
+      background: #120d1b;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 12px;
     }
 
     .stat-label {
       color: var(--text-muted);
-      font-size: .75rem;
-      margin-bottom: 6px;
+      font-size: .82rem;
+      margin-bottom: 5px;
     }
 
     .stat-value {
-      font-size: 1.15rem;
-      font-weight: bold;
+      font-size: 1.1rem;
+      font-weight: 700;
     }
 
     .investment-card {
-      border: 1px solid var(--card-border);
-      border-radius: 13px;
-      padding: 15px;
-      background: #0d121f;
-      margin-top: 12px;
+      margin-top: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .investment-card.unlocked-card {
+      border-color: rgba(34,197,94,.55);
+    }
+
+    .investment-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .investment-item {
+      background: #120d1b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .investment-item.released {
+      opacity: .72;
     }
 
     .investment-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .investment-type {
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 700;
+      color: var(--accent-purple-light);
     }
 
-    .badge {
+    .investment-status {
+      font-size: .85rem;
       padding: 5px 8px;
-      border-radius: 999px;
-      font-size: .7rem;
-      border: 1px solid;
+      border-radius: 7px;
+      background: #31233f;
     }
 
-    .badge-thunder {
-      color: #fde68a;
-      background: rgba(245,158,11,.1);
-      border-color: rgba(245,158,11,.3);
-    }
-
-    .badge-unai {
-      color: #c4b5fd;
-      background: rgba(139,92,246,.1);
-      border-color: rgba(139,92,246,.3);
+    .investment-status.success {
+      background: rgba(34,197,94,.14);
+      color: #86efac;
     }
 
     .investment-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 12px;
     }
 
-    .investment-item {
+    .investment-stat {
+      background: #181222;
+      border-radius: 9px;
       padding: 9px;
-      border-radius: 8px;
-      background: #111827;
     }
 
-    .investment-item span {
+    .investment-stat-label {
       display: block;
       color: var(--text-muted);
-      font-size: .7rem;
+      font-size: .78rem;
       margin-bottom: 4px;
     }
 
-    .investment-item strong {
-      font-size: .85rem;
+    .investment-stat-value {
+      font-weight: 700;
     }
 
-    .timer {
+    .investment-actions {
       margin-top: 12px;
-      padding: 10px;
-      border-radius: 9px;
-      background: rgba(139,92,246,.08);
-      border: 1px solid rgba(139,92,246,.2);
-      text-align: center;
-      color: #c4b5fd;
-      font-weight: bold;
+      display: flex;
+      justify-content: flex-end;
     }
 
-    .empty {
+    .investment-timer-msg {
+      margin-top: 10px;
+      color: var(--text-muted);
+      min-height: 24px;
+    }
+
+    .unlocked-text {
+      color: #86efac;
+    }
+
+    .no-data-msg {
       text-align: center;
       color: var(--text-muted);
-      padding: 25px;
+      padding: 40px 15px;
     }
 
-    .wallet-panel {
-      margin-top: 18px;
-      padding: 15px;
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      background: #0d121f;
-    }
-
-    .wallet-balance {
-      font-size: 1.35rem;
-      font-weight: bold;
-      color: var(--accent-green);
-      text-align: center;
-      margin: 8px 0 12px;
-    }
-
-    .wallet-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .wallet-actions .btn {
-      flex: 1;
-      justify-content: center;
-    }
-
-    .release-btn {
-      width: 100%;
-      margin-top: 10px;
-      justify-content: center;
-      background: var(--accent-green);
-      color: #052e16;
-      border: none;
-      font-weight: bold;
-    }
-
-    .release-btn:hover {
-      background: #16a34a;
-    }
-
-    .released-to-wallet {
-      color: var(--accent-green);
-      font-weight: bold;
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .modal {
+    .modal-overlay {
+      display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,.72);
-      display: none;
+      z-index: 500;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
       padding: 15px;
     }
 
-    .modal.active {
+    .modal-overlay.active {
       display: flex;
     }
 
-    .modal-content {
-      width: min(500px, 100%);
+    .modal {
+      width: min(620px, 100%);
       max-height: 90vh;
       overflow-y: auto;
-      background: var(--card);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 20px;
-      box-shadow: var(--shadow);
     }
 
-    .footer-note {
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-purple-light);
+    }
+
+    .close-btn {
+      background: transparent;
+      border: 0;
       color: var(--text-muted);
-      font-size: .75rem;
-      margin-top: 18px;
-      line-height: 1.6;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .wallet-box {
+      margin-top: 15px;
+      background: #120d1b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .wallet-title {
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
+
+    .wallet-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 5px;
     }
 
     @media (max-width: 900px) {
@@ -532,345 +535,400 @@
         grid-template-columns: 1fr;
       }
 
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
       }
 
       .investment-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0,1fr));
       }
     }
 
     @media (max-width: 600px) {
+      .container {
+        width: 94%;
+      }
+
       .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .form-group.full {
+      .field.full {
         grid-column: auto;
       }
 
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
-
+      .stats-grid,
       .investment-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
       }
 
-      .header {
-        align-items: flex-start;
+      .topbar {
+        padding: 0 12px;
       }
 
-      .top-actions {
-        width: 100%;
-      }
-
-      .top-actions .btn {
-        flex: 1;
-        justify-content: center;
+      .brand {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
 
-    <div class="header">
-      <div class="brand">
-        <div class="brand-icon">
-          <i class="fa-solid fa-network-wired"></i>
-        </div>
-        <div>
-          <h1>ניהול שיווק רשתי</h1>
-          <p>מערכת לניהול משתמשים, השקעות, ארנקים ועץ הפצה</p>
-        </div>
-      </div>
+  <header class="topbar">
+    <div class="brand">ניהול שיווק רשתי</div>
 
-      <div class="top-actions">
-        <button class="btn" onclick="openPasswordModal()">
+    <div class="menu-wrap">
+      <button class="menu-btn" onclick="toggleDropdown()">
+        <i class="fa-solid fa-bars"></i>
+        תפריט
+      </button>
+
+      <div id="dropdownMenu" class="dropdown">
+        <button onclick="openModal('passModal'); closeDropdown();">
           <i class="fa-solid fa-key"></i>
           שינוי סיסמה לפי כינוי
         </button>
-
-        <button class="btn" onclick="openRankModal()">
+        <button onclick="openModal('rankModal'); closeDropdown();">
           <i class="fa-solid fa-ranking-star"></i>
           הגדרות דרגה
         </button>
-
-        <button class="btn btn-danger" onclick="resetData()">
-          <i class="fa-solid fa-trash"></i>
+        <button onclick="resetSystemData()">
+          <i class="fa-solid fa-rotate-left"></i>
           איפוס נתונים
         </button>
       </div>
     </div>
+  </header>
+
+  <main class="container">
 
     <div class="grid">
 
-      <div class="card">
+      <section class="card">
         <div class="card-title">
           <i class="fa-solid fa-user-plus"></i>
           הוספת משתמש
         </div>
 
-        <form id="userForm">
+        <form id="addUserForm" onsubmit="addUser(event)">
           <div class="form-grid">
 
-            <div class="form-group">
-              <label>שם מלא</label>
-              <input type="text" id="userName" required>
+            <div class="field">
+              <label>מנהל נותן חסות</label>
+              <select id="uSponsor"></select>
             </div>
 
-            <div class="form-group">
-              <label>אימייל</label>
-              <input type="email" id="userEmail" required>
+            <div class="field">
+              <label>מזהה ארגון</label>
+              <input id="uOrgId" type="text">
             </div>
 
-            <div class="form-group">
+            <div class="field">
               <label>כינוי</label>
-              <input type="text" id="userNickname" required>
+              <input id="uUsername" type="text" required>
             </div>
 
-            <div class="form-group">
+            <div class="field">
+              <label>שם</label>
+              <input id="uName" type="text" required>
+            </div>
+
+            <div class="field">
+              <label>אימייל</label>
+              <input id="uEmail" type="email">
+            </div>
+
+            <div class="field">
               <label>סיסמה</label>
-              <input type="text" id="userPassword" required>
+              <input id="uPass" type="password">
             </div>
 
-            <div class="form-group">
-              <label>מנהל מצרף</label>
-              <select id="userSponsor">
-                <option value="">ללא מנהל</option>
+            <div class="field">
+              <label>סכום השקעה</label>
+              <input id="uInvest" type="number" min="0" step="0.01">
+            </div>
+
+            <div class="field">
+              <label>סוג השקעה</label>
+              <select id="uInvestmentType">
+                <option value="thunder">Thunder Stake</option>
+                <option value="unai">UNAI Engine</option>
               </select>
             </div>
 
-            <div class="form-group">
-              <label>דרגה</label>
-              <select id="userRank">
-              </select>
+            <div class="field">
+              <label>ריבית חודשית (%)</label>
+              <input id="uMonthlyRate" type="number" min="0" step="0.01">
             </div>
 
-            <div class="form-group full">
-              <label>השקעה ראשונית</label>
-
-              <div class="radio-row">
-                <label class="radio-card active" id="thunderRadio">
-                  <input type="radio" name="investmentType" value="thunder" checked>
-                  <i class="fa-solid fa-bolt"></i>
-                  Thunder Stake
-                </label>
-
-                <label class="radio-card" id="unaiRadio">
-                  <input type="radio" name="investmentType" value="unai">
-                  <i class="fa-solid fa-atom"></i>
-                  UNAI Engine
-                </label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>סכום השקעה ($)</label>
-              <input type="number" id="investmentAmount" min="0" step="any" value="0">
-            </div>
-
-            <div class="form-group">
-              <label>תשואה חודשית (%)</label>
-              <input type="number" id="monthlyRate" min="0" step="any" value="0">
-            </div>
-
-            <div class="form-group">
+            <div class="field">
               <label>חודשים ללא עמלה</label>
-              <input type="number" id="feeFreeMonths" min="0" step="1" value="0">
+              <input id="uFeeFreeMonths" type="number" min="0" step="0.01">
             </div>
 
-            <div class="form-group full">
-              <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;">
-                <i class="fa-solid fa-plus"></i>
+            <div class="field full">
+              <button class="btn btn-primary" type="submit">
+                <i class="fa-solid fa-user-plus"></i>
                 הוסף משתמש
               </button>
             </div>
 
           </div>
         </form>
-      </div>
+      </section>
 
-      <div class="card">
+      <section class="card">
         <div class="card-title">
-          <i class="fa-solid fa-chart-line"></i>
-          סיכום המערכת
+          <i class="fa-solid fa-circle-info"></i>
+          מידע
         </div>
 
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-label">סה"כ משתמשים</div>
-            <div class="stat-value" id="totalUsers">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">סה"כ השקעות</div>
-            <div class="stat-value" id="totalInvestments">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">סה"כ קרן</div>
-            <div class="stat-value" id="totalPrincipal">$0.00</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">שווי נוכחי</div>
-            <div class="stat-value" id="totalCurrentValue">$0.00</div>
-          </div>
+        <div class="wallet-box">
+          <div class="wallet-title">המערכת</div>
+          <div class="wallet-value">ניהול רשת והשקעות</div>
         </div>
 
-        <div class="footer-note">
-          המערכת מחשבת תשואה יומית לפי חלוקה של התשואה החודשית ב־30.
-          Thunder Stake משלם את הריבית לארנק לאחר סיום תקופת הטיימר,
-          ואילו UNAI Engine ממשיך בריבית דריבית עד למועד הבשלות.
+        <div class="wallet-box">
+          <div class="wallet-title">UNAI Engine</div>
+          <div class="wallet-value">ריבית דריבית עד הבשלה של שנתיים</div>
         </div>
-      </div>
+
+        <div class="wallet-box">
+          <div class="wallet-title">Thunder Stake</div>
+          <div class="wallet-value">ריבית יומית לארנק + שחרור קרן</div>
+        </div>
+      </section>
 
     </div>
 
-    <div class="card" style="margin-top:18px;">
+    <section class="card tree-card">
       <div class="card-title">
         <i class="fa-solid fa-sitemap"></i>
-        עץ המשתמשים
+        עץ הרשת
       </div>
+      <div id="tree"></div>
+    </section>
 
-      <div class="tree-wrap">
-        <div id="treeContainer" class="tree"></div>
-      </div>
-    </div>
+    <section id="selectedUserCard" class="card selected-user-card">
 
-    <div class="card" id="userDetailsCard" style="display:none;margin-top:18px;">
-      <div class="card-title" id="selectedUserHeader">
-        <i class="fa-solid fa-chart-pie"></i>
-        מדדים עבור:
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-label">מספר השקעות</div>
-          <div class="stat-value" id="selectedUserInvestments">0</div>
+      <div class="user-header">
+        <div class="user-main-info">
+          <div id="selectedUserTitle" class="user-title"></div>
+          <div id="selectedUserSubtitle" class="user-subtitle"></div>
         </div>
 
-        <div class="stat">
-          <div class="stat-label">סה"כ קרן</div>
-          <div class="stat-value" id="selectedUserPrincipal">$0.00</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-label">שווי נוכחי</div>
-          <div class="stat-value" id="selectedUserCurrentValue">$0.00</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-label">רווח מצטבר</div>
-          <div class="stat-value" id="selectedUserProfit">$0.00</div>
-        </div>
-      </div>
-
-      <div class="wallet-panel">
-        <div class="card-title" style="margin-bottom:5px;">
-          <i class="fa-solid fa-wallet"></i>
-          ארנק המשתמש
-        </div>
-
-        <div class="wallet-balance">
-          $<span id="selectedUserWallet">0.00</span>
-        </div>
-
-        <div class="wallet-actions">
+        <div>
           <button class="btn btn-primary" onclick="openTransferModal()">
-            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <i class="fa-solid fa-money-bill-transfer"></i>
             העברת כסף
           </button>
         </div>
       </div>
 
-      <div id="userInvestments"></div>
-    </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">ארנק</div>
+          <div id="walletBalance" class="stat-value">$0.00</div>
+        </div>
 
+        <div class="stat">
+          <div class="stat-label">השקעה כוללת</div>
+          <div id="totalInvest" class="stat-value">$0.00</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">מכירות</div>
+          <div id="salesValue" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">חברי קבוצה</div>
+          <div id="membersValue" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <div id="investCard" class="investment-card">
+        <div class="card-title">
+          <i class="fa-solid fa-chart-line"></i>
+          השקעות
+        </div>
+
+        <div id="investmentList" class="investment-list"></div>
+
+        <div id="investTimerMsg" class="investment-timer-msg"></div>
+
+        <button class="btn btn-primary" style="width:100%; margin-top:10px; justify-content:center;" onclick="openInvestmentModal()">
+          <i class="fa-solid fa-plus"></i>
+          הוסף השקעה למשתמש
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <div id="investmentModal" class="modal-overlay">
+    <div class="modal">
+
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-coins"></i>
+          הוספת השקעה
+        </div>
+        <button class="close-btn" onclick="closeModal('investmentModal')">&times;</button>
+      </div>
+
+      <div id="investmentModalUser" class="user-subtitle"></div>
+
+      <div class="form-grid" style="margin-top:15px;">
+
+        <div class="field">
+          <label>סכום השקעה</label>
+          <input id="newInvestmentAmount" type="number" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label>ריבית חודשית (%)</label>
+          <input id="newInvestmentMonthlyRate" type="number" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label>חודשים ללא עמלה</label>
+          <input id="newInvestmentFeeMonths" type="number" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label>סוג השקעה</label>
+          <select id="newInvestmentType">
+            <option value="thunder">Thunder Stake</option>
+            <option value="unai">UNAI Engine</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('investmentModal')">ביטול</button>
+        <button class="btn btn-primary" onclick="addInvestmentToSelectedUser()">הוסף השקעה</button>
+      </div>
+
+    </div>
   </div>
 
-  <div id="passwordModal" class="modal">
-    <div class="modal-content">
-      <div class="card-title">
-        <i class="fa-solid fa-key"></i>
-        שינוי סיסמה לפי כינוי
+  <div id="transferModal" class="modal-overlay">
+    <div class="modal">
+
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-money-bill-transfer"></i>
+          העברת כסף
+        </div>
+        <button class="close-btn" onclick="closeModal('transferModal')">&times;</button>
       </div>
 
-      <div class="form-group">
-        <label>כינוי</label>
-        <input type="text" id="passwordNickname">
+      <div id="transferFromUser" class="user-subtitle"></div>
+
+      <div class="form-grid" style="margin-top:15px;">
+
+        <div class="field">
+          <label>העברה אל</label>
+          <select id="transferToUser"></select>
+        </div>
+
+        <div class="field">
+          <label>סכום</label>
+          <input id="transferAmount" type="number" min="0" step="0.01">
+        </div>
+
       </div>
 
-      <div class="form-group" style="margin-top:10px;">
-        <label>סיסמה חדשה</label>
-        <input type="text" id="newPassword">
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('transferModal')">ביטול</button>
+        <button class="btn btn-primary" onclick="transferWalletMoney()">העבר כסף</button>
       </div>
 
-      <button class="btn btn-primary" style="width:100%;margin-top:12px;justify-content:center;" onclick="changePassword()">
-        שמור סיסמה
-      </button>
-
-      <button class="btn" style="width:100%;margin-top:5px;justify-content:center;" onclick="closeModal('passwordModal')">
-        ביטול
-      </button>
     </div>
   </div>
 
-  <div id="rankModal" class="modal">
-    <div class="modal-content">
-      <div class="card-title">
-        <i class="fa-solid fa-ranking-star"></i>
-        הגדרות דרגה
+  <div id="passModal" class="modal-overlay">
+    <div class="modal">
+
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-key"></i>
+          שינוי סיסמה
+        </div>
+        <button class="close-btn" onclick="closeModal('passModal')">&times;</button>
       </div>
 
-      <div id="rankSettings"></div>
+      <div class="form-grid">
 
-      <button class="btn btn-primary" style="width:100%;margin-top:12px;justify-content:center;" onclick="saveRanks()">
-        שמור
-      </button>
+        <div class="field">
+          <label>משתמש</label>
+          <select id="passUserSelect"></select>
+        </div>
 
-      <button class="btn" style="width:100%;margin-top:5px;justify-content:center;" onclick="closeModal('rankModal')">
-        ביטול
-      </button>
+        <div class="field">
+          <label>סיסמה חדשה</label>
+          <input id="newPassVal" type="password">
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('passModal')">ביטול</button>
+        <button class="btn btn-primary" onclick="changePassword(event)">שמור</button>
+      </div>
+
     </div>
   </div>
 
-  <div id="transferModal" class="modal">
-    <div class="modal-content">
-      <div class="card-title">
-        <i class="fa-solid fa-arrow-right-arrow-left"></i>
-        העברת כסף בין משתמשים
+  <div id="rankModal" class="modal-overlay">
+    <div class="modal">
+
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-ranking-star"></i>
+          הגדרות דרגה
+        </div>
+        <button class="close-btn" onclick="closeModal('rankModal')">&times;</button>
       </div>
 
-      <div id="transferFromUser" style="color:var(--text-muted);margin-bottom:12px;"></div>
+      <div class="form-grid">
 
-      <div class="form-group">
-        <label>העבר אל:</label>
-        <select id="transferToUser" required></select>
+        <div class="field">
+          <label>מכירות</label>
+          <input id="cfgSales" type="number" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label>השקעה</label>
+          <input id="cfgInvest" type="number" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label>חברים</label>
+          <input id="cfgMembers" type="number" min="0" step="1">
+        </div>
+
+        <div class="field">
+          <label>קבוצה</label>
+          <input id="cfgGrp" type="number" min="0" step="0.01">
+        </div>
+
       </div>
 
-      <div class="form-group" style="margin-top:10px;">
-        <label>סכום להעברה ($):</label>
-        <input type="number" step="any" id="transferAmount" min="0.01" required>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('rankModal')">ביטול</button>
+        <button class="btn btn-primary" onclick="saveConfig()">שמור</button>
       </div>
 
-      <button class="btn btn-primary" style="width:100%;margin-top:10px;justify-content:center;" onclick="transferWalletMoney()">
-        העבר כסף
-      </button>
-
-      <button class="btn" style="width:100%;margin-top:5px;justify-content:center;" onclick="closeModal('transferModal')">
-        ביטול
-      </button>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY_TREE = 'mlm_purple_tree_v2';
-    const STORAGE_KEY_RANK = 'mlm_purple_rank_v2';
+    const STORAGE_KEY_TREE = 'mlm_tree_data_v2';
+    const STORAGE_KEY_RANK = 'mlm_rank_req_v2';
 
     const DAY_MS = 24 * 60 * 60 * 1000;
     const UNAI_MATURITY_MS = 2 * 365 * DAY_MS;
@@ -879,39 +937,1102 @@
     let treeData = null;
     let selectedId = null;
 
-    let rankSettings = [
-      { name: 'מתחיל', minUsers: 0 },
-      { name: 'ברונזה', minUsers: 3 },
-      { name: 'כסף', minUsers: 10 },
-      { name: 'זהב', minUsers: 25 },
-      { name: 'פלטינה', minUsers: 50 }
-    ];
-
-    function createId() {
-      return 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
-    }
+    let rankReq = {
+      sales: 0,
+      invest: 0,
+      members: 0,
+      grp: 0
+    };
 
     function formatMoney(value) {
-      return Number(value || 0).toLocaleString('en-US', {
+      const num = parseFloat(value || 0);
+      return num.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
     }
 
     function getDailyRate(monthlyRate) {
-      return (parseFloat(monthlyRate || 0) / 100) / 30;
+      const rate = parseFloat(monthlyRate || 0);
+      if (!Number.isFinite(rate) || rate <= 0) return 0;
+      return (rate / 100) / 30;
     }
 
     function findNode(node, id) {
-      if (!node) return null;
-      if (node.id === id) return node;
+      if (!node || id == null) return null;
+      if (String(node.id) === String(id)) return node;
 
-      for (const child of (node.children || [])) {
-        const result = findNode(child, id);
-        if (result) return result;
+      if (Array.isArray(node.children)) {
+        for (const child of node.children) {
+          const found = findNode(child, id);
+          if (found) return found;
+        }
       }
 
       return null;
+    }
+
+    function getInvestmentCurrentValue(inv) {
+      if (inv.releasedToWallet) return 0;
+
+      const amount = parseFloat(inv.amount || 0);
+      const monthlyRate = parseFloat(inv.monthlyRate || 0);
+
+      if (amount <= 0 || monthlyRate <= 0) return amount;
+
+      const elapsedMs = Math.max(
+        0,
+        Date.now() - (inv.createdAt || Date.now())
+      );
+
+      const elapsedDays = elapsedMs / DAY_MS;
+      const dailyRate = getDailyRate(monthlyRate);
+
+      // הריבית מחושבת לפי האחוז החודשי / 30 ומצטברת בריבית דריבית בכל יום.
+      // ב-UNAI Engine החישוב ממשיך גם לאחר סיום הטיימר הראשוני ועד להבשלה של שנתיים.
+      return amount * Math.pow(1 + dailyRate, elapsedDays);
+    }
+
+    function getFeeFreeEnd(inv) {
+      const feeFreeMonths = parseFloat(inv.feeFreeMonths || 0);
+      const createdAt = inv.createdAt || Date.now();
+
+      if (feeFreeMonths <= 0) return createdAt;
+
+      return createdAt + (feeFreeMonths * 30.4375 * DAY_MS);
+    }
+
+    function getUnaiMaturityEnd(inv) {
+      return (inv.createdAt || Date.now()) + UNAI_MATURITY_MS;
+    }
+
+    function getThunderWindowStart(inv) {
+      if (!inv.thunderWindowStart) return getFeeFreeEnd(inv);
+      return inv.thunderWindowStart;
+    }
+
+    function getThunderWindowEnd(inv) {
+      return getThunderWindowStart(inv) + THUNDER_RELEASE_WINDOW_MS;
+    }
+
+    function isThunderEligible(inv) {
+      return inv.type === 'thunder' &&
+        !inv.principalReleased &&
+        Date.now() >= getFeeFreeEnd(inv);
+    }
+
+    function isInvestmentReleased(inv) {
+      if (!inv) return true;
+
+      if (inv.type === 'unai') {
+        return !!inv.releasedToWallet;
+      }
+
+      if (inv.type === 'thunder') {
+        return !!inv.releasedToWallet;
+      }
+
+      return !!inv.releasedToWallet;
+    }
+
+    function getInvestmentTimerText(inv) {
+      if (!inv) return '';
+
+      if (inv.releasedToWallet) {
+        return 'ההשקעה כבר שוחררה לארנק';
+      }
+
+      const now = Date.now();
+
+      if (inv.type === 'unai') {
+        const maturity = getUnaiMaturityEnd(inv);
+        const remaining = maturity - now;
+
+        if (remaining <= 0) {
+          return 'ההשקעה הגיעה להבשלה. הקרן והרווחים משתחררים לארנק.';
+        }
+
+        return `UNAI Engine — זמן עד הבשלה: ${formatDuration(remaining)} | הריבית ממשיכה להצטבר בריבית דריבית`;
+      }
+
+      if (inv.type === 'thunder') {
+        const feeEnd = getFeeFreeEnd(inv);
+
+        if (now < feeEnd) {
+          return `Thunder Stake — זמן עד סיום התקופה ללא עמלה: ${formatDuration(feeEnd - now)}`;
+        }
+
+        const windowStart = getThunderWindowStart(inv);
+        const windowEnd = getThunderWindowEnd(inv);
+
+        if (now < windowEnd) {
+          return `Thunder Stake — חלון שחרור הקרן פתוח לעוד: ${formatDuration(windowEnd - now)} | הריבית היומית עוברת לארנק`;
+        }
+
+        return `Thunder Stake — חלון השחרור הסתיים | הריבית היומית ממשיכה לעבור לארנק`;
+      }
+
+      return '';
+    }
+
+    function formatDuration(ms) {
+      ms = Math.max(0, ms);
+
+      const totalSeconds = Math.floor(ms / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      if (days > 0) {
+        return `${days} ימים ${hours} שעות ${minutes} דקות`;
+      }
+
+      if (hours > 0) {
+        return `${hours} שעות ${minutes} דקות ${seconds} שניות`;
+      }
+
+      if (minutes > 0) {
+        return `${minutes} דקות ${seconds} שניות`;
+      }
+
+      return `${seconds} שניות`;
+    }
+
+    function syncLegacyInvestValue(user) {
+      if (!user) return;
+
+      if (!Array.isArray(user.investments)) {
+        user.investments = [];
+      }
+
+      user.invest = user.investments
+        .filter(inv => !inv.releasedToWallet)
+        .reduce((sum, inv) => {
+          return sum + parseFloat(inv.amount || 0);
+        }, 0);
+    }
+
+    function normalizeInvestment(inv) {
+      if (!inv || typeof inv !== 'object') return null;
+
+      if (!inv.id) {
+        inv.id = 'inv-' + Date.now().toString() + '-' +
+          Math.random().toString(16).slice(2);
+      }
+
+      inv.type = inv.type === 'unai' ? 'unai' : 'thunder';
+      inv.amount = Number.isFinite(parseFloat(inv.amount))
+        ? parseFloat(inv.amount)
+        : 0;
+
+      inv.monthlyRate = Number.isFinite(parseFloat(inv.monthlyRate))
+        ? parseFloat(inv.monthlyRate)
+        : 0;
+
+      inv.feeFreeMonths = Number.isFinite(parseFloat(inv.feeFreeMonths))
+        ? parseFloat(inv.feeFreeMonths)
+        : 0;
+
+      inv.createdAt = Number.isFinite(parseFloat(inv.createdAt))
+        ? parseFloat(inv.createdAt)
+        : Date.now();
+
+      inv.releasedToWallet = !!inv.releasedToWallet;
+      inv.principalReleased = !!inv.principalReleased;
+      inv.maturityReleased = !!inv.maturityReleased;
+
+      if (!Number.isFinite(parseFloat(inv.thunderWindowStart))) {
+        inv.thunderWindowStart = null;
+      }
+
+      if (!Number.isFinite(parseFloat(inv.lastThunderInterestPayoutAt))) {
+        inv.lastThunderInterestPayoutAt = inv.createdAt;
+      }
+
+      inv.thunderInterestPaid = Number.isFinite(
+        parseFloat(inv.thunderInterestPaid)
+      )
+        ? parseFloat(inv.thunderInterestPaid)
+        : 0;
+
+      return inv;
+    }
+
+    function normalizeTreeData(node) {
+      if (!node || typeof node !== 'object') return;
+
+      if (!node.children || !Array.isArray(node.children)) {
+        node.children = [];
+      }
+
+      if (!Array.isArray(node.investments)) {
+        node.investments = [];
+      }
+
+      node.investments = node.investments
+        .map(normalizeInvestment)
+        .filter(Boolean);
+
+      if (!Number.isFinite(parseFloat(node.walletBalance))) {
+        node.walletBalance = 0;
+      }
+
+      node.walletBalance = parseFloat(node.walletBalance || 0);
+
+      if (!Number.isFinite(parseFloat(node.sales))) {
+        node.sales = 0;
+      }
+
+      node.createdAt = Number.isFinite(parseFloat(node.createdAt))
+        ? parseFloat(node.createdAt)
+        : Date.now();
+
+      syncLegacyInvestValue(node);
+
+      node.children.forEach(normalizeTreeData);
+    }
+
+    function loadStorageData() {
+      try {
+        const treeRaw = localStorage.getItem(STORAGE_KEY_TREE);
+        const rankRaw = localStorage.getItem(STORAGE_KEY_RANK);
+
+        treeData = treeRaw ? JSON.parse(treeRaw) : null;
+
+        if (rankRaw) {
+          const parsedRank = JSON.parse(rankRaw);
+
+          rankReq = {
+            sales: parseFloat(parsedRank.sales || 0),
+            invest: parseFloat(parsedRank.invest || 0),
+            members: parseFloat(parsedRank.members || 0),
+            grp: parseFloat(parsedRank.grp || 0)
+          };
+        }
+
+        if (treeData) {
+          normalizeTreeData(treeData);
+        }
+      } catch (err) {
+        console.error(err);
+        treeData = null;
+      }
+    }
+
+    function saveStorageData() {
+      try {
+        if (treeData) {
+          normalizeTreeData(treeData);
+          localStorage.setItem(
+            STORAGE_KEY_TREE,
+            JSON.stringify(treeData)
+          );
+        } else {
+          localStorage.removeItem(STORAGE_KEY_TREE);
+        }
+
+        localStorage.setItem(
+          STORAGE_KEY_RANK,
+          JSON.stringify(rankReq)
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function processInvestmentWalletEvents(user) {
+      if (!user || !Array.isArray(user.investments)) return false;
+
+      let changed = false;
+      const now = Date.now();
+
+      if (!Number.isFinite(parseFloat(user.walletBalance))) {
+        user.walletBalance = 0;
+      }
+
+      user.walletBalance = parseFloat(user.walletBalance || 0);
+
+      user.investments.forEach(inv => {
+        if (inv.releasedToWallet) return;
+
+        // UNAI Engine: ממשיך בריבית דריבית עד שנתיים מההשקעה, ואז הקרן + הרווחים נכנסים לארנק.
+        if (inv.type === 'unai') {
+          if (now >= getUnaiMaturityEnd(inv)) {
+            const value = getInvestmentCurrentValue(inv);
+
+            if (value > 0) {
+              user.walletBalance += value;
+              inv.releasedToWallet = true;
+              inv.maturityReleased = true;
+              inv.releasedAt = now;
+              inv.releasedAmount = value;
+              changed = true;
+            }
+          }
+
+          return;
+        }
+
+        // Thunder Stake: לאחר סיום הטיימר, הריבית היומית עוברת לארנק ואינה מצטרפת לקרן.
+        if (inv.type === 'thunder') {
+          const feeEnd = getFeeFreeEnd(inv);
+
+          if (now < feeEnd || inv.principalReleased) return;
+
+          if (!inv.thunderWindowStart) {
+            inv.thunderWindowStart = feeEnd;
+            changed = true;
+          }
+
+          const last = inv.lastThunderInterestPayoutAt || feeEnd;
+
+          const completedDays = Math.floor(
+            Math.max(0, now - last) / DAY_MS
+          );
+
+          const dailyRate = getDailyRate(inv.monthlyRate);
+          const principal = parseFloat(inv.amount || 0);
+
+          if (completedDays > 0 && principal > 0 && dailyRate > 0) {
+            // ריבית יומית על הקרן המקורית, ללא צירוף לקרן.
+            const payout = principal * dailyRate * completedDays;
+
+            user.walletBalance += payout;
+
+            inv.lastThunderInterestPayoutAt =
+              last + completedDays * DAY_MS;
+
+            inv.thunderInterestPaid =
+              parseFloat(inv.thunderInterestPaid || 0) + payout;
+
+            changed = true;
+          }
+        }
+      });
+
+      return changed;
+    }
+
+    function render() {
+      if (treeData) {
+        normalizeTreeData(treeData);
+      }
+
+      updateSponsorsAndUsers();
+      renderTree();
+      renderSelectedUser();
+
+      if (selectedId) {
+        const user = findNode(treeData, selectedId);
+
+        if (user) {
+          processInvestmentWalletEvents(user);
+          renderSelectedUser();
+          updateInvestmentTimer();
+        }
+      }
+    }
+
+    function renderSelectedUser() {
+      const card = document.getElementById('selectedUserCard');
+
+      if (!treeData || !selectedId) {
+        card.classList.remove('active');
+        return;
+      }
+
+      const user = findNode(treeData, selectedId);
+
+      if (!user) {
+        card.classList.remove('active');
+        return;
+      }
+
+      card.classList.add('active');
+
+      document.getElementById('selectedUserTitle').innerText =
+        user.name || user.username || 'משתמש';
+
+      document.getElementById('selectedUserSubtitle').innerText =
+        `${user.email || '(ללא אימייל)'} | @${user.username || ''}`;
+
+      document.getElementById('walletBalance').innerText =
+        `$${formatMoney(user.walletBalance)}`;
+
+      const totalInvest = (user.investments || [])
+        .filter(inv => !inv.releasedToWallet)
+        .reduce((sum, inv) => {
+          return sum + parseFloat(inv.amount || 0);
+        }, 0);
+
+      document.getElementById('totalInvest').innerText =
+        `$${formatMoney(totalInvest)}`;
+
+      document.getElementById('salesValue').innerText =
+        formatMoney(user.sales || 0);
+
+      document.getElementById('membersValue').innerText =
+        countMembers(user);
+
+      renderUserInvestments(user);
+    }
+
+    function countMembers(user) {
+      let count = 0;
+
+      function walk(node) {
+        if (!node || !Array.isArray(node.children)) return;
+
+        node.children.forEach(child => {
+          count++;
+          walk(child);
+        });
+      }
+
+      walk(user);
+      return count;
+    }
+
+    function renderUserInvestments(user) {
+      const list = document.getElementById('investmentList');
+
+      if (!user || !Array.isArray(user.investments) ||
+          user.investments.length === 0) {
+        list.innerHTML =
+          '<div class="no-data-msg">אין השקעות למשתמש זה.</div>';
+        return;
+      }
+
+      const totalCurrent = user.investments.reduce((sum, inv) => {
+        return sum + getInvestmentCurrentValue(inv);
+      }, 0);
+
+      const totalPrincipal = user.investments.reduce((sum, inv) => {
+        return sum + parseFloat(inv.amount || 0);
+      }, 0);
+
+      const totalProfit = Math.max(
+        0,
+        totalCurrent - totalPrincipal
+      );
+
+      list.innerHTML = user.investments.map(inv => {
+        const current = getInvestmentCurrentValue(inv);
+        const principal = parseFloat(inv.amount || 0);
+        const profit = Math.max(0, current - principal);
+
+        const isReleased = !!inv.releasedToWallet;
+
+        let typeName =
+          inv.type === 'unai'
+            ? 'UNAI Engine'
+            : 'Thunder Stake';
+
+        let status = '';
+        let statusClass = '';
+
+        if (isReleased) {
+          status = 'שוחרר לארנק';
+          statusClass = 'success';
+        } else if (inv.type === 'unai') {
+          status = 'פעיל';
+        } else {
+          status = 'פעיל';
+        }
+
+        let actionHtml = '';
+
+        if (inv.type === 'thunder' && !isReleased) {
+          actionHtml = `
+            <button class="btn btn-success"
+                    onclick="releaseInvestmentToWallet('${inv.id}')">
+              <i class="fa-solid fa-wallet"></i>
+              שחרר קרן לארנק
+            </button>`;
+        }
+
+        return `
+          <div class="investment-item ${isReleased ? 'released' : ''}">
+            <div class="investment-head">
+              <div class="investment-type">${typeName}</div>
+              <div class="investment-status ${statusClass}">
+                ${status}
+              </div>
+            </div>
+
+            <div class="investment-grid">
+
+              <div class="investment-stat">
+                <span class="investment-stat-label">קרן</span>
+                <span class="investment-stat-value">
+                  $${formatMoney(principal)}
+                </span>
+              </div>
+
+              <div class="investment-stat">
+                <span class="investment-stat-label">ריבית חודשית</span>
+                <span class="investment-stat-value">
+                  ${formatMoney(inv.monthlyRate)}%
+                </span>
+              </div>
+
+              <div class="investment-stat">
+                <span class="investment-stat-label">שווי נוכחי</span>
+                <span class="investment-stat-value">
+                  $${formatMoney(current)}
+                </span>
+              </div>
+
+              <div class="investment-stat">
+                <span class="investment-stat-label">רווח</span>
+                <span class="investment-stat-value">
+                  $${formatMoney(profit)}
+                </span>
+              </div>
+
+            </div>
+
+            <div class="investment-timer-msg">
+              <i class="fa-solid fa-clock"></i>
+              ${getInvestmentTimerText(inv)}
+            </div>
+
+            ${actionHtml}
+          </div>
+        `;
+      }).join('');
+
+      list.insertAdjacentHTML('beforeend', `
+        <div class="investment-grid" style="margin-top:14px;">
+
+          <div class="investment-stat">
+            <span class="investment-stat-label">שווי נוכחי כולל</span>
+            <span class="investment-stat-value">
+              $${formatMoney(totalCurrent)}
+            </span>
+          </div>
+
+          <div class="investment-stat">
+            <span class="investment-stat-label">רווח מצטבר כולל</span>
+            <span class="investment-stat-value">
+              $${formatMoney(totalProfit)}
+            </span>
+          </div>
+
+          <div class="investment-stat">
+            <span class="investment-stat-label">מספר השקעות</span>
+            <span class="investment-stat-value">
+              ${user.investments.length}
+            </span>
+          </div>
+
+        </div>
+      `);
+    }
+
+    function updateInvestmentTimer() {
+      let user = findNode(treeData, selectedId);
+      let investCard = document.getElementById('investCard');
+      let msgElem = document.getElementById('investTimerMsg');
+
+      if (!user || !user.investments ||
+          user.investments.length === 0) {
+
+        investCard.classList.remove('unlocked-card');
+        msgElem.className = 'investment-timer-msg';
+        msgElem.innerText = '';
+        return;
+      }
+
+      const allReleased =
+        user.investments.every(isInvestmentReleased);
+
+      if (allReleased) {
+        investCard.classList.add('unlocked-card');
+        msgElem.className =
+          'investment-timer-msg unlocked-text';
+
+        msgElem.innerHTML =
+          `<i class="fa-solid fa-circle-check"></i> ההשקעות פתוחות למשיכה ללא עמלות`;
+      } else {
+        investCard.classList.remove('unlocked-card');
+        msgElem.className = 'investment-timer-msg';
+
+        const active =
+          user.investments.find(inv => !isInvestmentReleased(inv));
+
+        msgElem.innerHTML =
+          `<i class="fa-solid fa-clock"></i> ${getInvestmentTimerText(active)}`;
+      }
+    }
+
+    function updateInvestmentTimers() {
+      const user = findNode(treeData, selectedId);
+
+      if (!user) return;
+
+      const changed =
+        processInvestmentWalletEvents(user);
+
+      if (changed) saveStorageData();
+
+      renderUserInvestments(user);
+      updateInvestmentTimer();
+    }
+
+    function setCircle(cId, pId, vId, current, target, unit) {
+      let pct =
+        target > 0
+          ? Math.min(100, (current / target) * 100)
+          : 100;
+
+      let offset =
+        283 - (pct / 100) * 283;
+
+      document.getElementById(cId).style.strokeDashoffset =
+        offset;
+
+      document.getElementById(pId).innerText =
+        Math.round(pct) + '%';
+
+      let currStr =
+        Number.isInteger(current)
+          ? current
+          : current.toFixed(2);
+
+      let targetStr =
+        Number.isInteger(target)
+          ? target
+          : target.toFixed(2);
+
+      document.getElementById(vId).innerText =
+        `${currStr}${unit}/${targetStr}${unit}`;
+    }
+
+    function renderTree() {
+      let container = document.getElementById('tree');
+      container.innerHTML = '';
+
+      if (!treeData) {
+        container.innerHTML =
+          '<div class="no-data-msg">הרשת ריקה. הוסף משתמש ראשון כמנהל המערכת.</div>';
+        return;
+      }
+
+      let ul = document.createElement('ul');
+      ul.appendChild(buildNode(treeData));
+      container.appendChild(ul);
+    }
+
+    function buildNode(node) {
+      let li = document.createElement('li');
+      let div = document.createElement('div');
+
+      let extraClass =
+        node.id === selectedId
+          ? 'selected'
+          : '';
+
+      div.className =
+        `node ${extraClass}`;
+
+      div.onclick = (e) => {
+        e.stopPropagation();
+        selectedId = node.id;
+        render();
+      };
+
+      div.innerHTML = `
+        <i class="fa-solid fa-user"
+           style="font-size:0.9rem; color: var(--accent-purple-light);"></i>
+        <div class="node-name">${node.name}</div>
+      `;
+
+      li.appendChild(div);
+
+      if (node.children &&
+          node.children.length > 0) {
+
+        let ul = document.createElement('ul');
+
+        node.children.forEach(c =>
+          ul.appendChild(buildNode(c))
+        );
+
+        li.appendChild(ul);
+      }
+
+      return li;
+    }
+
+    function updateSponsorsAndUsers() {
+      let sponsorSelect =
+        document.getElementById('uSponsor');
+
+      let passUserSelect =
+        document.getElementById('passUserSelect');
+
+      sponsorSelect.innerHTML = '';
+      passUserSelect.innerHTML = '';
+
+      if (!treeData) {
+        let opt = document.createElement('option');
+
+        opt.value = "root_new";
+        opt.innerText = "מנהל מערכת (ראשי)";
+
+        sponsorSelect.appendChild(opt);
+        return;
+      }
+
+      function walk(node) {
+        let opt1 =
+          document.createElement('option');
+
+        opt1.value = node.id;
+
+        // כאן מוצג רק האימייל של המנהל המצטרף
+        opt1.innerText =
+          node.email || '(ללא אימייל)';
+
+        sponsorSelect.appendChild(opt1);
+
+        let opt2 =
+          document.createElement('option');
+
+        opt2.value = node.id;
+
+        opt2.innerText =
+          `${node.username} (${node.name})`;
+
+        passUserSelect.appendChild(opt2);
+
+        if (node.children) {
+          node.children.forEach(walk);
+        }
+      }
+
+      walk(treeData);
+    }
+
+    function createInvestmentFromInputs(prefix) {
+      const amount =
+        parseFloat(
+          document.getElementById(
+            prefix + 'Amount'
+          ).value
+        );
+
+      const monthlyRate =
+        parseFloat(
+          document.getElementById(
+            prefix + 'MonthlyRate'
+          ).value
+        );
+
+      const feeFreeMonths =
+        parseFloat(
+          document.getElementById(
+            prefix + 'FeeMonths'
+          ).value
+        );
+
+      const type =
+        document.getElementById(
+          prefix + 'Type'
+        ).value;
+
+      return {
+        id:
+          'inv-' +
+          Date.now().toString() +
+          '-' +
+          Math.random().toString(16).slice(2),
+
+        type: type,
+
+        amount:
+          isNaN(amount)
+            ? 0
+            : amount,
+
+        monthlyRate:
+          isNaN(monthlyRate)
+            ? 0
+            : monthlyRate,
+
+        feeFreeMonths:
+          isNaN(feeFreeMonths)
+            ? 0
+            : feeFreeMonths,
+
+        createdAt: Date.now()
+      };
+    }
+
+    function addUser(e) {
+      e.preventDefault();
+
+      let sponsorId =
+        document.getElementById('uSponsor').value;
+
+      const investVal =
+        parseFloat(
+          document.getElementById('uInvest').value || 0
+        );
+
+      let newUser = {
+        id: Date.now().toString(),
+
+        orgId:
+          document.getElementById('uOrgId').value,
+
+        username:
+          document.getElementById('uUsername').value,
+
+        name:
+          document.getElementById('uName').value,
+
+        email:
+          document.getElementById('uEmail').value,
+
+        pass:
+          document.getElementById('uPass').value,
+
+        invest: 0,
+
+        walletBalance: 0,
+
+        investments: [],
+
+        feeFreeMonths: 0,
+
+        createdAt: Date.now(),
+
+        sales: 0,
+
+        children: []
+      };
+
+      // אם הוזנה השקעה, היא נשמרת כהשקעה עצמאית עם הנתונים שלה
+      if (investVal > 0) {
+        newUser.investments.push({
+          id:
+            'inv-' +
+            Date.now().toString() +
+            '-' +
+            Math.random().toString(16).slice(2),
+
+          type:
+            document.getElementById(
+              'uInvestmentType'
+            ).value,
+
+          amount: investVal,
+
+          monthlyRate:
+            parseFloat(
+              document.getElementById(
+                'uMonthlyRate'
+              ).value || 0
+            ),
+
+          feeFreeMonths:
+            parseFloat(
+              document.getElementById(
+                'uFeeFreeMonths'
+              ).value || 0
+            ),
+
+          createdAt: Date.now()
+        });
+      }
+
+      syncLegacyInvestValue(newUser);
+
+      if (!treeData || sponsorId === "root_new") {
+        treeData = newUser;
+        selectedId = null;
+      } else {
+        let parent =
+          findNode(treeData, sponsorId);
+
+        if (parent) {
+          parent.children.push(newUser);
+        }
+      }
+
+      document.getElementById(
+        'addUserForm'
+      ).reset();
+
+      saveStorageData();
+      render();
+    }
+
+    function openInvestmentModal() {
+      const user =
+        findNode(treeData, selectedId);
+
+      if (!user) {
+        alert(
+          'בחר משתמש בעץ לפני הוספת השקעה.'
+        );
+        return;
+      }
+
+      document.getElementById(
+        'investmentModalUser'
+      ).innerText =
+        `השקעה חדשה עבור: ${user.name} (@${user.username})`;
+
+      document.getElementById(
+        'newInvestmentAmount'
+      ).value = '';
+
+      document.getElementById(
+        'newInvestmentMonthlyRate'
+      ).value = '';
+
+      document.getElementById(
+        'newInvestmentFeeMonths'
+      ).value = '';
+
+      document.getElementById(
+        'newInvestmentType'
+      ).value = 'thunder';
+
+      document.getElementById(
+        'investmentModal'
+      ).classList.add('active');
+    }
+
+    function addInvestmentToSelectedUser() {
+      const user =
+        findNode(treeData, selectedId);
+
+      if (!user) return;
+
+      if (!Array.isArray(user.investments)) {
+        user.investments = [];
+      }
+
+      const amount =
+        parseFloat(
+          document.getElementById(
+            'newInvestmentAmount'
+          ).value || 0
+        );
+
+      const monthlyRate =
+        parseFloat(
+          document.getElementById(
+            'newInvestmentMonthlyRate'
+          ).value || 0
+        );
+
+      const feeFreeMonths =
+        parseFloat(
+          document.getElementById(
+            'newInvestmentFeeMonths'
+          ).value || 0
+        );
+
+      const type =
+        document.getElementById(
+          'newInvestmentType'
+        ).value;
+
+      if (amount <= 0) {
+        alert(
+          'יש להזין סכום השקעה גדול מאפס.'
+        );
+        return;
+      }
+
+      user.investments.push({
+        id:
+          'inv-' +
+          Date.now().toString() +
+          '-' +
+          Math.random().toString(16).slice(2),
+
+        type: type,
+
+        amount: amount,
+
+        monthlyRate: monthlyRate,
+
+        feeFreeMonths: feeFreeMonths,
+
+        createdAt: Date.now()
+      });
+
+      syncLegacyInvestValue(user);
+
+      saveStorageData();
+
+      closeModal('investmentModal');
+
+      render();
+    }
+
+    function releaseInvestmentToWallet(investmentId) {
+      const user =
+        findNode(treeData, selectedId);
+
+      if (!user ||
+          !Array.isArray(user.investments)) {
+        return;
+      }
+
+      const inv =
+        user.investments.find(
+          i => i.id === investmentId
+        );
+
+      if (!inv ||
+          inv.releasedToWallet) {
+        return;
+      }
+
+      if (inv.type !== 'thunder') {
+        alert(
+          'ב-UNAI Engine הקרן והרווחים משתחררים אוטומטית לארנק רק לאחר שנתיים ממועד ההשקעה.'
+        );
+        return;
+      }
+
+      if (!isThunderEligible(inv)) {
+        alert(
+          'הקרן עדיין אינה זמינה לשחרור.'
+        );
+        return;
+      }
+
+      // לפני שחרור הקרן, משלמים את כל הריבית היומית שהצטברה עד עכשיו.
+      processInvestmentWalletEvents(user);
+
+      const principal =
+        parseFloat(inv.amount || 0);
+
+      if (principal <= 0) return;
+
+      user.walletBalance =
+        parseFloat(user.walletBalance || 0) +
+        principal;
+
+      inv.releasedToWallet = true;
+      inv.principalReleased = true;
+      inv.releasedAt = Date.now();
+      inv.releasedAmount = principal;
+
+      syncLegacyInvestValue(user);
+
+      saveStorageData();
+
+      render();
     }
 
     function getAllUsers() {
@@ -926,1155 +2047,28 @@
       }
 
       walk(treeData);
+
       return users;
-    }
-
-    function normalizeInvestment(inv) {
-      if (!inv.id) inv.id = createId();
-
-      inv.type = inv.type || 'thunder';
-      inv.amount = parseFloat(inv.amount || 0);
-      inv.monthlyRate = parseFloat(inv.monthlyRate || 0);
-      inv.feeFreeMonths = parseFloat(inv.feeFreeMonths || 0);
-      inv.createdAt = inv.createdAt || Date.now();
-
-      if (inv.lastThunderInterestPayoutAt == null) {
-        inv.lastThunderInterestPayoutAt = null;
-      }
-
-      if (inv.thunderWindowStart == null) {
-        inv.thunderWindowStart = null;
-      }
-
-      if (inv.principalReleased == null) {
-        inv.principalReleased = false;
-      }
-
-      if (inv.maturityReleased == null) {
-        inv.maturityReleased = false;
-      }
-
-      if (inv.releasedToWallet == null) {
-        inv.releasedToWallet = false;
-      }
-
-      return inv;
-    }
-
-    function normalizeUser(user) {
-      if (!user) return;
-
-      if (!Array.isArray(user.children)) {
-        user.children = [];
-      }
-
-      if (!Array.isArray(user.investments)) {
-        user.investments = [];
-      }
-
-      user.investments = user.investments.map(normalizeInvestment);
-
-      if (!Number.isFinite(parseFloat(user.walletBalance))) {
-        user.walletBalance = 0;
-      }
-
-      user.walletBalance = parseFloat(user.walletBalance || 0);
-
-      user.investments.forEach(inv => {
-        if (inv.type === 'thunder' && inv.lastThunderInterestPayoutAt == null) {
-          const feeEnd = getFeeFreeEnd(inv);
-
-          if (Date.now() >= feeEnd) {
-            inv.lastThunderInterestPayoutAt = feeEnd;
-          }
-        }
-      });
-
-      user.children.forEach(normalizeUser);
-    }
-
-    function getInvestmentCurrentValue(inv) {
-      if (inv.releasedToWallet) return 0;
-
-      const amount = parseFloat(inv.amount || 0);
-      const monthlyRate = parseFloat(inv.monthlyRate || 0);
-
-      if (amount <= 0 || monthlyRate <= 0) {
-        return amount;
-      }
-
-      const elapsedMs = Math.max(
-        0,
-        Date.now() - (inv.createdAt || Date.now())
-      );
-
-      const elapsedDays = elapsedMs / DAY_MS;
-      const dailyRate = getDailyRate(monthlyRate);
-
-      return amount * Math.pow(1 + dailyRate, elapsedDays);
-    }
-
-    function getFeeFreeEnd(inv) {
-      const feeFreeMonths = parseFloat(inv.feeFreeMonths || 0);
-      const createdAt = inv.createdAt || Date.now();
-
-      if (feeFreeMonths <= 0) {
-        return createdAt;
-      }
-
-      return createdAt + (feeFreeMonths * 30.4375 * DAY_MS);
-    }
-
-    function getUnaiMaturityEnd(inv) {
-      return (inv.createdAt || Date.now()) + UNAI_MATURITY_MS;
-    }
-
-    function isInvestmentReleased(inv) {
-      if (inv.type === 'unai') {
-        return !!inv.releasedToWallet;
-      }
-
-      if (inv.type === 'thunder') {
-        return !!inv.principalReleased;
-      }
-
-      const feeFreeEnd = getFeeFreeEnd(inv);
-
-      return Date.now() >= feeFreeEnd;
-    }
-
-    function isThunderEligible(inv) {
-      return inv.type === 'thunder'
-        && !inv.principalReleased
-        && Date.now() >= getFeeFreeEnd(inv);
-    }
-
-    function getThunderWindowStart(inv) {
-      const first = getFeeFreeEnd(inv);
-      const now = Date.now();
-
-      if (now < first) {
-        return first;
-      }
-
-      const cycles = Math.floor(
-        (now - first) / THUNDER_RELEASE_WINDOW_MS
-      );
-
-      const currentStart =
-        first + cycles * THUNDER_RELEASE_WINDOW_MS;
-
-      inv.thunderWindowStart = currentStart;
-
-      return currentStart;
-    }
-
-    function getThunderWindowEnd(inv) {
-      return getThunderWindowStart(inv) + THUNDER_RELEASE_WINDOW_MS;
-    }
-
-    function processInvestmentWalletEvents(user) {
-      if (!user || !Array.isArray(user.investments)) {
-        return false;
-      }
-
-      let changed = false;
-      const now = Date.now();
-
-      if (!Number.isFinite(parseFloat(user.walletBalance))) {
-        user.walletBalance = 0;
-      }
-
-      user.walletBalance = parseFloat(user.walletBalance || 0);
-
-      user.investments.forEach(inv => {
-        if (inv.releasedToWallet) {
-          return;
-        }
-
-        if (inv.type === 'unai') {
-          if (now >= getUnaiMaturityEnd(inv)) {
-            const value = getInvestmentCurrentValue(inv);
-
-            if (value > 0) {
-              user.walletBalance += value;
-
-              inv.releasedToWallet = true;
-              inv.maturityReleased = true;
-              inv.releasedAt = now;
-              inv.releasedAmount = value;
-
-              changed = true;
-            }
-          }
-
-          return;
-        }
-
-        if (inv.type === 'thunder') {
-          const feeEnd = getFeeFreeEnd(inv);
-
-          if (now < feeEnd || inv.principalReleased) {
-            return;
-          }
-
-          if (!inv.thunderWindowStart) {
-            inv.thunderWindowStart = feeEnd;
-            changed = true;
-          }
-
-          const last =
-            inv.lastThunderInterestPayoutAt || feeEnd;
-
-          const completedDays = Math.floor(
-            Math.max(0, now - last) / DAY_MS
-          );
-
-          const dailyRate =
-            getDailyRate(inv.monthlyRate);
-
-          const principal =
-            parseFloat(inv.amount || 0);
-
-          if (
-            completedDays > 0 &&
-            principal > 0 &&
-            dailyRate > 0
-          ) {
-            const payout =
-              principal *
-              dailyRate *
-              completedDays;
-
-            user.walletBalance += payout;
-
-            inv.lastThunderInterestPayoutAt =
-              last + completedDays * DAY_MS;
-
-            inv.thunderInterestPaid =
-              parseFloat(inv.thunderInterestPaid || 0) +
-              payout;
-
-            changed = true;
-          }
-        }
-      });
-
-      return changed;
-    }
-
-    function syncLegacyInvestValue(user) {
-      if (!user) return;
-
-      const activeInvestments =
-        (user.investments || [])
-          .filter(inv => !inv.releasedToWallet);
-
-      user.investValue =
-        activeInvestments.reduce(
-          (sum, inv) =>
-            sum + getInvestmentCurrentValue(inv),
-          0
-        );
-    }
-
-    function saveStorageData() {
-      localStorage.setItem(
-        STORAGE_KEY_TREE,
-        JSON.stringify(treeData)
-      );
-
-      localStorage.setItem(
-        STORAGE_KEY_RANK,
-        JSON.stringify(rankSettings)
-      );
-    }
-
-    function loadStorageData() {
-      const savedTree =
-        localStorage.getItem(STORAGE_KEY_TREE);
-
-      const savedRanks =
-        localStorage.getItem(STORAGE_KEY_RANK);
-
-      if (savedTree) {
-        try {
-          treeData = JSON.parse(savedTree);
-        } catch (e) {
-          treeData = null;
-        }
-      }
-
-      if (savedRanks) {
-        try {
-          rankSettings = JSON.parse(savedRanks);
-        } catch (e) {
-        }
-      }
-
-      if (!treeData) {
-        treeData = {
-          id: createId(),
-          name: 'מנהל ראשי',
-          email: 'admin@example.com',
-          nickname: 'admin',
-          password: '1234',
-          rank: 'מתחיל',
-          sponsorId: '',
-          walletBalance: 0,
-          investValue: 0,
-          investments: [],
-          children: []
-        };
-      }
-
-      normalizeUser(treeData);
-
-      selectedId = null;
-
-      saveStorageData();
-    }
-
-    function populateSponsorSelect() {
-      const select =
-        document.getElementById('userSponsor');
-
-      if (!select) return;
-
-      select.innerHTML =
-        '<option value="">ללא מנהל</option>';
-
-      getAllUsers().forEach(node => {
-        const option =
-          document.createElement('option');
-
-        option.value = node.id;
-
-        option.innerText =
-          node.email || '(ללא אימייל)';
-
-        select.appendChild(option);
-      });
-    }
-
-    function populateRankSelect() {
-      const select =
-        document.getElementById('userRank');
-
-      if (!select) return;
-
-      select.innerHTML = '';
-
-      rankSettings.forEach(rank => {
-        const option =
-          document.createElement('option');
-
-        option.value = rank.name;
-        option.innerText = rank.name;
-
-        select.appendChild(option);
-      });
-    }
-
-    function updateRadioCards() {
-      const type =
-        document.querySelector(
-          'input[name="investmentType"]:checked'
-        )?.value || 'thunder';
-
-      document
-        .getElementById('thunderRadio')
-        .classList.toggle(
-          'active',
-          type === 'thunder'
-        );
-
-      document
-        .getElementById('unaiRadio')
-        .classList.toggle(
-          'active',
-          type === 'unai'
-        );
-    }
-
-    function addUser(event) {
-      event.preventDefault();
-
-      const name =
-        document
-          .getElementById('userName')
-          .value
-          .trim();
-
-      const email =
-        document
-          .getElementById('userEmail')
-          .value
-          .trim();
-
-      const nickname =
-        document
-          .getElementById('userNickname')
-          .value
-          .trim();
-
-      const password =
-        document
-          .getElementById('userPassword')
-          .value
-          .trim();
-
-      const sponsorId =
-        document.getElementById('userSponsor').value;
-
-      const rank =
-        document.getElementById('userRank').value;
-
-      const investmentType =
-        document.querySelector(
-          'input[name="investmentType"]:checked'
-        )?.value || 'thunder';
-
-      const amount =
-        parseFloat(
-          document.getElementById(
-            'investmentAmount'
-          ).value || 0
-        );
-
-      const monthlyRate =
-        parseFloat(
-          document.getElementById(
-            'monthlyRate'
-          ).value || 0
-        );
-
-      const feeFreeMonths =
-        parseFloat(
-          document.getElementById(
-            'feeFreeMonths'
-          ).value || 0
-        );
-
-      if (!name || !email || !nickname || !password) {
-        alert('יש למלא את כל פרטי המשתמש.');
-        return;
-      }
-
-      const allUsers = getAllUsers();
-
-      if (
-        allUsers.some(
-          u =>
-            String(u.email || '').toLowerCase() ===
-            email.toLowerCase()
-        )
-      ) {
-        alert('אימייל זה כבר קיים במערכת.');
-        return;
-      }
-
-      if (
-        allUsers.some(
-          u =>
-            String(u.nickname || '').toLowerCase() ===
-            nickname.toLowerCase()
-        )
-      ) {
-        alert('כינוי זה כבר קיים במערכת.');
-        return;
-      }
-
-      const newUser = {
-        id: createId(),
-        name,
-        email,
-        nickname,
-        password,
-        rank:
-          rank ||
-          rankSettings[0]?.name ||
-          'מתחיל',
-        sponsorId,
-        walletBalance: 0,
-        investValue: 0,
-        investments: [],
-        children: []
-      };
-
-      if (amount > 0) {
-        const investment =
-          normalizeInvestment({
-            id: createId(),
-            type: investmentType,
-            amount,
-            monthlyRate,
-            feeFreeMonths,
-            createdAt: Date.now(),
-            lastThunderInterestPayoutAt: null,
-            thunderWindowStart: null,
-            principalReleased: false,
-            maturityReleased: false,
-            releasedToWallet: false
-          });
-
-        newUser.investments.push(
-          investment
-        );
-      }
-
-      let parent = null;
-
-      if (sponsorId) {
-        parent =
-          findNode(treeData, sponsorId);
-      }
-
-      if (!parent) {
-        parent = treeData;
-      }
-
-      parent.children.push(newUser);
-
-      syncLegacyInvestValue(newUser);
-
-      saveStorageData();
-
-      document
-        .getElementById('userForm')
-        .reset();
-
-      document.querySelector(
-        'input[name="investmentType"][value="thunder"]'
-      ).checked = true;
-
-      updateRadioCards();
-
-      render();
-
-      alert('המשתמש נוסף בהצלחה.');
-    }
-
-    function buildNode(node) {
-      const li =
-        document.createElement('li');
-
-      const wrapper =
-        document.createElement('div');
-
-      wrapper.className =
-        'node' +
-        (
-          selectedId === node.id
-            ? ' selected'
-            : ''
-        );
-
-      wrapper.onclick =
-        function() {
-          selectedId = node.id;
-          render();
-        };
-
-      wrapper.innerHTML = `
-        <div class="node-icon">
-          <i class="fa-solid fa-user"></i>
-        </div>
-        <div class="node-name">${node.name || '(ללא שם)'}</div>
-        <div class="node-rank">${node.rank || ''}</div>
-      `;
-
-      li.appendChild(wrapper);
-
-      if (
-        node.children &&
-        node.children.length
-      ) {
-        const ul =
-          document.createElement('ul');
-
-        node.children.forEach(child => {
-          ul.appendChild(
-            buildNode(child)
-          );
-        });
-
-        li.appendChild(ul);
-      }
-
-      return li;
-    }
-
-    function renderTree() {
-      const container =
-        document.getElementById(
-          'treeContainer'
-        );
-
-      container.innerHTML = '';
-
-      if (!treeData) return;
-
-      const ul =
-        document.createElement('ul');
-
-      ul.appendChild(
-        buildNode(treeData)
-      );
-
-      container.appendChild(ul);
-    }
-
-    function getUserTotals(user) {
-      processInvestmentWalletEvents(user);
-
-      let principal = 0;
-      let currentValue = 0;
-
-      (user.investments || [])
-        .forEach(inv => {
-          if (inv.releasedToWallet) {
-            return;
-          }
-
-          principal +=
-            parseFloat(inv.amount || 0);
-
-          currentValue +=
-            getInvestmentCurrentValue(inv);
-        });
-
-      return {
-        principal,
-        currentValue,
-        profit:
-          currentValue - principal
-      };
-    }
-
-    function formatDuration(ms) {
-      const totalSeconds =
-        Math.max(
-          0,
-          Math.floor(ms / 1000)
-        );
-
-      const days =
-        Math.floor(
-          totalSeconds / 86400
-        );
-
-      const hours =
-        Math.floor(
-          (totalSeconds % 86400) /
-          3600
-        );
-
-      const minutes =
-        Math.floor(
-          (totalSeconds % 3600) /
-          60
-        );
-
-      const seconds =
-        totalSeconds % 60;
-
-      return `${days} ימים ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-    }
-
-    function investmentStatusHtml(inv) {
-      const now = Date.now();
-
-      if (inv.type === 'unai') {
-        const maturity =
-          getUnaiMaturityEnd(inv);
-
-        if (inv.releasedToWallet) {
-          return `
-            <div class="released-to-wallet">
-              <i class="fa-solid fa-circle-check"></i>
-              הקרן והרווחים שוחררו לארנק
-            </div>
-          `;
-        }
-
-        if (now >= maturity) {
-          return `
-            <div class="timer">
-              הקרן והרווחים מוכנים לשחרור לארנק
-            </div>
-          `;
-        }
-
-        return `
-          <div class="timer">
-            ✦ UNAI Engine — זמן עד שחרור הקרן והרווחים:
-            ${formatDuration(maturity - now)}
-          </div>
-        `;
-      }
-
-      if (inv.type === 'thunder') {
-        const feeEnd =
-          getFeeFreeEnd(inv);
-
-        if (inv.principalReleased) {
-          return `
-            <div class="released-to-wallet">
-              <i class="fa-solid fa-circle-check"></i>
-              הקרן שוחררה לארנק
-            </div>
-          `;
-        }
-
-        if (now < feeEnd) {
-          return `
-            <div class="timer">
-              זמן עד סיום הטיימר:
-              ${formatDuration(feeEnd - now)}
-            </div>
-          `;
-        }
-
-        const start =
-          getThunderWindowStart(inv);
-
-        const end =
-          start +
-          THUNDER_RELEASE_WINDOW_MS;
-
-        return `
-          <div class="timer">
-            ⚡ חלון שחרור קרן:
-            ${formatDuration(
-              Math.max(0, end - now)
-            )}
-          </div>
-        `;
-      }
-
-      return '';
-    }
-
-    function investmentCardHtml(inv) {
-      const amount =
-        parseFloat(inv.amount || 0);
-
-      const monthlyRate =
-        parseFloat(inv.monthlyRate || 0);
-
-      const dailyRate =
-        getDailyRate(monthlyRate);
-
-      const currentValue =
-        getInvestmentCurrentValue(inv);
-
-      const profit =
-        currentValue - amount;
-
-      const typeName =
-        inv.type === 'unai'
-          ? 'UNAI Engine'
-          : 'Thunder Stake';
-
-      const icon =
-        inv.type === 'unai'
-          ? 'fa-atom'
-          : 'fa-bolt';
-
-      const badgeClass =
-        inv.type === 'unai'
-          ? 'badge-unai'
-          : 'badge-thunder';
-
-      let extraText = '';
-
-      if (inv.type === 'thunder') {
-        extraText = `
-          <div class="footer-note">
-            ⚡ לאחר סיום הטיימר:
-            ${formatMoney(dailyRate * 100)}% ליום
-            נכנס לארנק ואינו מצטרף לקרן.
-            הריבית ממשיכה להיכנס לארנק בכל יום
-            עד שהקרן משתחררת.
-          </div>
-        `;
-      } else {
-        extraText = `
-          <div class="footer-note">
-            ✦ הריבית ממשיכה בריבית דריבית
-            מרגע ההשקעה ועד שנתיים ממועד ההשקעה,
-            ולאחר מכן הקרן והרווחים נכנסים לארנק.
-          </div>
-        `;
-      }
-
-      let releaseButton = '';
-
-      if (
-        inv.type === 'thunder' &&
-        isThunderEligible(inv) &&
-        !inv.principalReleased
-      ) {
-        releaseButton = `
-          <button
-            class="btn release-btn"
-            onclick="releaseInvestmentToWallet('${inv.id}')"
-          >
-            <i class="fa-solid fa-wallet"></i>
-            שחרור קרן לארנק
-          </button>
-        `;
-      }
-
-      if (inv.releasedToWallet) {
-        releaseButton = `
-          <div class="released-to-wallet">
-            <i class="fa-solid fa-circle-check"></i>
-            ${
-              inv.type === 'unai'
-                ? 'הקרן והרווחים שוחררו לארנק'
-                : 'הקרן שוחררה לארנק'
-            }
-          </div>
-        `;
-      }
-
-      return `
-        <div class="investment-card">
-
-          <div class="investment-head">
-            <div class="investment-type">
-              <i class="fa-solid ${icon}"></i>
-              ${typeName}
-            </div>
-
-            <div class="badge ${badgeClass}">
-              ${
-                inv.type === 'unai'
-                  ? 'UNAI'
-                  : 'THUNDER'
-              }
-            </div>
-          </div>
-
-          <div class="investment-grid">
-
-            <div class="investment-item">
-              <span>סכום השקעה</span>
-              <strong>$${formatMoney(amount)}</strong>
-            </div>
-
-            <div class="investment-item">
-              <span>תשואה חודשית</span>
-              <strong>${formatMoney(monthlyRate)}%</strong>
-            </div>
-
-            <div class="investment-item">
-              <span>תשואה יומית</span>
-              <strong>${formatMoney(dailyRate * 100)}%</strong>
-            </div>
-
-            <div class="investment-item">
-              <span>שווי נוכחי</span>
-              <strong>$${formatMoney(currentValue)}</strong>
-            </div>
-
-            <div class="investment-item">
-              <span>רווח מצטבר</span>
-              <strong>$${formatMoney(profit)}</strong>
-            </div>
-
-            <div class="investment-item">
-              <span>חודשים ללא עמלה</span>
-              <strong>${formatMoney(inv.feeFreeMonths)}</strong>
-            </div>
-
-          </div>
-
-          ${extraText}
-
-          ${investmentStatusHtml(inv)}
-
-          ${releaseButton}
-
-        </div>
-      `;
-    }    function updateDashboard() {
-      const allUsers =
-        getAllUsers();
-
-      let totalInvestments = 0;
-      let totalPrincipal = 0;
-      let totalCurrentValue = 0;
-
-      allUsers.forEach(user => {
-        processInvestmentWalletEvents(user);
-
-        (user.investments || [])
-          .forEach(inv => {
-            if (inv.releasedToWallet) {
-              return;
-            }
-
-            totalInvestments++;
-
-            totalPrincipal +=
-              parseFloat(inv.amount || 0);
-
-            totalCurrentValue +=
-              getInvestmentCurrentValue(inv);
-          });
-
-        syncLegacyInvestValue(user);
-      });
-
-      document.getElementById(
-        'totalUsers'
-      ).innerText =
-        allUsers.length;
-
-      document.getElementById(
-        'totalInvestments'
-      ).innerText =
-        totalInvestments;
-
-      document.getElementById(
-        'totalPrincipal'
-      ).innerText =
-        '$' +
-        formatMoney(totalPrincipal);
-
-      document.getElementById(
-        'totalCurrentValue'
-      ).innerText =
-        '$' +
-        formatMoney(totalCurrentValue);
-
-      const user =
-        selectedId
-          ? findNode(
-              treeData,
-              selectedId
-            )
-          : null;
-
-      const details =
-        document.getElementById(
-          'userDetailsCard'
-        );
-
-      details.style.display =
-        user ? 'block' : 'none';
-
-      if (!user) {
-        return;
-      }
-
-      const totals =
-        getUserTotals(user);
-
-      document.getElementById(
-        'selectedUserHeader'
-      ).innerHTML = `
-        <i class="fa-solid fa-chart-pie"></i>
-        מדדים עבור: ${user.email || '(ללא אימייל)'}
-      `;
-
-      document.getElementById(
-        'selectedUserInvestments'
-      ).innerText =
-        (user.investments || [])
-          .filter(
-            inv => !inv.releasedToWallet
-          )
-          .length;
-
-      document.getElementById(
-        'selectedUserPrincipal'
-      ).innerText =
-        '$' +
-        formatMoney(
-          totals.principal
-        );
-
-      document.getElementById(
-        'selectedUserCurrentValue'
-      ).innerText =
-        '$' +
-        formatMoney(
-          totals.currentValue
-        );
-
-      document.getElementById(
-        'selectedUserProfit'
-      ).innerText =
-        '$' +
-        formatMoney(
-          totals.profit
-        );
-
-      document.getElementById(
-        'selectedUserWallet'
-      ).innerText =
-        formatMoney(
-          user.walletBalance || 0
-        );
-
-      const investments =
-        document.getElementById(
-          'userInvestments'
-        );
-
-      if (
-        !user.investments ||
-        user.investments.length === 0
-      ) {
-        investments.innerHTML = `
-          <div class="empty">
-            <i class="fa-solid fa-box-open"></i>
-            אין השקעות למשתמש זה.
-          </div>
-        `;
-      } else {
-        investments.innerHTML = `
-          <div class="card-title" style="margin-top:18px;">
-            <i class="fa-solid fa-coins"></i>
-            השקעות המשתמש
-          </div>
-
-          ${user.investments
-            .map(
-              investmentCardHtml
-            )
-            .join('')}
-        `;
-      }
-    }
-
-    function render() {
-      renderTree();
-      populateSponsorSelect();
-      populateRankSelect();
-      updateDashboard();
-    }
-
-    function releaseInvestmentToWallet(
-      investmentId
-    ) {
-      const user =
-        findNode(
-          treeData,
-          selectedId
-        );
-
-      if (
-        !user ||
-        !Array.isArray(
-          user.investments
-        )
-      ) {
-        return;
-      }
-
-      const inv =
-        user.investments.find(
-          i =>
-            i.id === investmentId
-        );
-
-      if (
-        !inv ||
-        inv.releasedToWallet
-      ) {
-        return;
-      }
-
-      if (inv.type !== 'thunder') {
-        alert(
-          'ב-UNAI Engine הקרן והרווחים משתחררים אוטומטית לארנק לאחר שנתיים ממועד ההשקעה.'
-        );
-
-        return;
-      }
-
-      if (!isThunderEligible(inv)) {
-        alert(
-          'הקרן עדיין אינה זמינה לשחרור.'
-        );
-
-        return;
-      }
-
-      processInvestmentWalletEvents(
-        user
-      );
-
-      const principal =
-        parseFloat(
-          inv.amount || 0
-        );
-
-      if (principal <= 0) {
-        return;
-      }
-
-      user.walletBalance =
-        parseFloat(
-          user.walletBalance || 0
-        ) +
-        principal;
-
-      inv.releasedToWallet =
-        true;
-
-      inv.principalReleased =
-        true;
-
-      inv.releasedAt =
-        Date.now();
-
-      inv.releasedAmount =
-        principal;
-
-      syncLegacyInvestValue(
-        user
-      );
-
-      saveStorageData();
-
-      render();
-
-      alert(
-        `הקרן בסך $${formatMoney(principal)} הועברה לארנק בהצלחה.`
-      );
     }
 
     function openTransferModal() {
       const user =
-        findNode(
-          treeData,
-          selectedId
-        );
+        findNode(treeData, selectedId);
 
       if (!user) {
         alert(
           'בחר משתמש בעץ לפני העברת כסף.'
         );
-
         return;
       }
 
       const balance =
-        parseFloat(
-          user.walletBalance || 0
-        );
+        parseFloat(user.walletBalance || 0);
 
       if (balance <= 0) {
         alert(
           'אין מספיק כסף בארנק להעברה.'
         );
-
         return;
       }
 
@@ -2086,35 +2080,23 @@
       select.innerHTML = '';
 
       getAllUsers()
-        .filter(
-          u =>
-            u.id !== user.id
-        )
+        .filter(u => u.id !== user.id)
         .forEach(u => {
           const option =
-            document.createElement(
-              'option'
-            );
+            document.createElement('option');
 
-          option.value =
-            u.id;
+          option.value = u.id;
 
           option.innerText =
-            u.email ||
-            '(ללא אימייל)';
+            u.email || '(ללא אימייל)';
 
-          select.appendChild(
-            option
-          );
+          select.appendChild(option);
         });
 
-      if (
-        select.options.length === 0
-      ) {
+      if (select.options.length === 0) {
         alert(
           'אין משתמש אחר שאליו ניתן להעביר כסף.'
         );
-
         return;
       }
 
@@ -2127,19 +2109,14 @@
         'transferAmount'
       ).value = '';
 
-      document
-        .getElementById(
-          'transferModal'
-        )
-        .classList.add('active');
+      document.getElementById(
+        'transferModal'
+      ).classList.add('active');
     }
 
     function transferWalletMoney() {
       const from =
-        findNode(
-          treeData,
-          selectedId
-        );
+        findNode(treeData, selectedId);
 
       const to =
         findNode(
@@ -2156,28 +2133,22 @@
           ).value || 0
         );
 
-      if (!from || !to) {
-        return;
-      }
+      if (!from || !to) return;
 
       if (amount <= 0) {
         alert(
           'יש להזין סכום גדול מאפס.'
         );
-
         return;
       }
 
       const fromBalance =
-        parseFloat(
-          from.walletBalance || 0
-        );
+        parseFloat(from.walletBalance || 0);
 
       if (amount > fromBalance) {
         alert(
           'אין מספיק כסף בארנק להעברה.'
         );
-
         return;
       }
 
@@ -2185,16 +2156,12 @@
         fromBalance - amount;
 
       to.walletBalance =
-        parseFloat(
-          to.walletBalance || 0
-        ) +
+        parseFloat(to.walletBalance || 0) +
         amount;
 
       saveStorageData();
 
-      closeModal(
-        'transferModal'
-      );
+      closeModal('transferModal');
 
       render();
 
@@ -2203,251 +2170,166 @@
       );
     }
 
-    function openPasswordModal() {
-      document
-        .getElementById(
-          'passwordModal'
-        )
-        .classList.add('active');
-    }
+    function changePassword(e) {
+      e.preventDefault();
 
-    function openRankModal() {
-      const container =
+      let userId =
         document.getElementById(
-          'rankSettings'
+          'passUserSelect'
+        ).value;
+
+      let newPass =
+        document.getElementById(
+          'newPassVal'
+        ).value;
+
+      let user =
+        findNode(treeData, userId);
+
+      if (user) {
+        user.pass = newPass;
+
+        saveStorageData();
+
+        alert(
+          `הסיסמה עבור @${user.username} עודכנה בהצלחה!`
         );
 
-      container.innerHTML =
-        rankSettings
-          .map(
-            (rank, index) => `
-              <div class="form-grid" style="margin-bottom:10px;">
+        document.getElementById(
+          'newPassVal'
+        ).value = '';
 
-                <div class="form-group">
-                  <label>שם דרגה</label>
-
-                  <input
-                    type="text"
-                    id="rankName_${index}"
-                    value="${rank.name}"
-                  >
-                </div>
-
-                <div class="form-group">
-                  <label>מינימום משתמשים</label>
-
-                  <input
-                    type="number"
-                    min="0"
-                    id="rankMin_${index}"
-                    value="${rank.minUsers}"
-                  >
-                </div>
-
-              </div>
-            `
-          )
-          .join('');
-
-      document
-        .getElementById(
-          'rankModal'
-        )
-        .classList.add('active');
+        closeModal('passModal');
+      }
     }
 
-    function saveRanks() {
-      rankSettings =
-        rankSettings.map(
-          (rank, index) => ({
-            name:
-              document.getElementById(
-                `rankName_${index}`
-              ).value.trim()
-              ||
-              rank.name,
+    function saveConfig() {
+      rankReq.sales =
+        parseFloat(
+          document.getElementById(
+            'cfgSales'
+          ).value
+        ) || 0;
 
-            minUsers:
-              parseInt(
-                document.getElementById(
-                  `rankMin_${index}`
-                ).value || 0,
-                10
-              )
-          })
-        );
+      rankReq.invest =
+        parseFloat(
+          document.getElementById(
+            'cfgInvest'
+          ).value
+        ) || 0;
+
+      rankReq.members =
+        parseFloat(
+          document.getElementById(
+            'cfgMembers'
+          ).value
+        ) || 0;
+
+      rankReq.grp =
+        parseFloat(
+          document.getElementById(
+            'cfgGrp'
+          ).value
+        ) || 0;
 
       saveStorageData();
 
-      populateRankSelect();
+      closeModal('rankModal');
 
       render();
-
-      closeModal(
-        'rankModal'
-      );
     }
 
-    function changePassword() {
-      const nickname =
-        document.getElementById(
-          'passwordNickname'
-        ).value.trim();
+    function resetSystemData() {
+      document.getElementById(
+        'dropdownMenu'
+      ).classList.remove('active');
 
-      const password =
-        document.getElementById(
-          'newPassword'
-        ).value.trim();
+      if (
+        confirm(
+          "איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?"
+        )
+      ) {
+        treeData = null;
+        selectedId = null;
 
-      if (!nickname || !password) {
-        alert(
-          'יש להזין כינוי וסיסמה חדשה.'
+        localStorage.removeItem(
+          STORAGE_KEY_TREE
         );
 
-        return;
+        localStorage.removeItem(
+          STORAGE_KEY_RANK
+        );
+
+        render();
+      }
+    }
+
+    function openModal(id) {
+      if (id === 'rankModal') {
+        document.getElementById(
+          'cfgSales'
+        ).value = rankReq.sales;
+
+        document.getElementById(
+          'cfgInvest'
+        ).value = rankReq.invest;
+
+        document.getElementById(
+          'cfgMembers'
+        ).value = rankReq.members;
+
+        document.getElementById(
+          'cfgGrp'
+        ).value = rankReq.grp;
       }
 
-      const user =
-        getAllUsers().find(
-          u =>
-            String(
-              u.nickname || ''
-            ).toLowerCase() ===
-            nickname.toLowerCase()
-        );
-
-      if (!user) {
-        alert(
-          'לא נמצא משתמש עם הכינוי הזה.'
-        );
-
-        return;
-      }
-
-      user.password =
-        password;
-
-      saveStorageData();
-
-      closeModal(
-        'passwordModal'
-      );
-
       document.getElementById(
-        'passwordNickname'
-      ).value = '';
-
-      document.getElementById(
-        'newPassword'
-      ).value = '';
-
-      alert(
-        'הסיסמה שונתה בהצלחה.'
-      );
+        id
+      ).classList.add('active');
     }
 
     function closeModal(id) {
-      document
-        .getElementById(id)
-        .classList.remove(
-          'active'
-        );
+      document.getElementById(
+        id
+      ).classList.remove('active');
     }
 
-    function resetData() {
-      const ok =
-        confirm(
-          'האם אתה בטוח שברצונך למחוק את כל נתוני המערכת?'
-        );
+    function toggleDropdown() {
+      document.getElementById(
+        'dropdownMenu'
+      ).classList.toggle('active');
+    }
 
-      if (!ok) {
-        return;
+    function closeDropdown() {
+      document.getElementById(
+        'dropdownMenu'
+      ).classList.remove('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu =
+        document.querySelector('.menu-wrap');
+
+      if (!menu.contains(e.target)) {
+        closeDropdown();
       }
+    });
 
-      localStorage.removeItem(
-        STORAGE_KEY_TREE
-      );
-
-      localStorage.removeItem(
-        STORAGE_KEY_RANK
-      );
-
-      location.reload();
-    }
-
-    document
-      .querySelectorAll(
-        'input[name="investmentType"]'
-      )
-      .forEach(input => {
-        input.addEventListener(
-          'change',
-          updateRadioCards
-        );
+    document.querySelectorAll('.modal-overlay')
+      .forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) {
+            overlay.classList.remove('active');
+          }
+        });
       });
 
-    document
-      .getElementById(
-        'userForm'
-      )
-      .addEventListener(
-        'submit',
-        addUser
-      );
-
-    window.addEventListener(
-      'click',
-      function(event) {
-        document
-          .querySelectorAll(
-            '.modal.active'
-          )
-          .forEach(modal => {
-            if (
-              event.target === modal
-            ) {
-              modal.classList.remove(
-                'active'
-              );
-            }
-          });
-      }
-    );
-
     loadStorageData();
-
-    updateRadioCards();
-
     render();
 
-    setInterval(
-      () => {
-        let changed = false;
-
-        getAllUsers().forEach(
-          user => {
-            if (
-              processInvestmentWalletEvents(
-                user
-              )
-            ) {
-              changed = true;
-            }
-
-            syncLegacyInvestValue(
-              user
-            );
-          }
-        );
-
-        if (changed) {
-          saveStorageData();
-        }
-
-        updateDashboard();
-      },
-      1000
-    );
+    setInterval(() => {
+      updateInvestmentTimers();
+    }, 1000);
   </script>
 </body>
-</html>
+  </html>
