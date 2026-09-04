@@ -198,6 +198,11 @@
       color: white;
     }
 
+    .btn-warning {
+      background: var(--warning);
+      color: #1b1200;
+    }
+
     .btn-secondary {
       background: #31233f;
       color: var(--text-main);
@@ -241,7 +246,7 @@
       top: 0;
       width: 50%;
       height: 20px;
-      border-top: 1px solid var(--border);
+      border-top: 2px solid var(--accent-purple);
     }
 
     #tree li::before {
@@ -250,7 +255,7 @@
 
     #tree li::after {
       left: 50%;
-      border-right: 1px solid var(--border);
+      border-right: 2px solid var(--accent-purple);
     }
 
     #tree li:only-child::before,
@@ -273,19 +278,19 @@
       right: 50%;
       width: 0;
       height: 20px;
-      border-right: 1px solid var(--border);
+      border-right: 2px solid var(--accent-purple);
     }
 
     .node {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: #211832;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 11px 15px;
+      padding: 10px 15px;
       cursor: pointer;
-      min-width: 150px;
+      min-width: 180px;
       justify-content: center;
       transition: .15s;
     }
@@ -296,9 +301,36 @@
       box-shadow: 0 0 0 2px rgba(139,92,246,.15);
     }
 
+    .org-circle {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      background: var(--accent-purple);
+      color: white;
+      border: 2px solid var(--accent-purple-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: .7rem;
+      font-weight: 700;
+      line-height: 1.05;
+      overflow: hidden;
+      word-break: break-word;
+      padding: 4px;
+      box-shadow: 0 0 12px rgba(139,92,246,.25);
+    }
+
     .node-name {
       font-weight: 700;
       word-break: break-word;
+    }
+
+    .node-org-name {
+      color: var(--text-muted);
+      font-size: .75rem;
+      margin-top: 3px;
     }
 
     .selected-user-card {
@@ -411,6 +443,16 @@
       color: #86efac;
     }
 
+    .investment-status.danger {
+      background: rgba(239,68,68,.16);
+      color: #fca5a5;
+    }
+
+    .investment-status.warning {
+      background: rgba(245,158,11,.18);
+      color: #fcd34d;
+    }
+
     .investment-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -445,6 +487,21 @@
       margin-top: 10px;
       color: var(--text-muted);
       min-height: 24px;
+    }
+
+    .timer-red {
+      color: #f87171;
+      font-weight: 700;
+    }
+
+    .timer-yellow {
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    .timer-green {
+      color: #86efac;
+      font-weight: 700;
     }
 
     .unlocked-text {
@@ -569,6 +626,16 @@
       .brand {
         font-size: 1rem;
       }
+
+      .node {
+        min-width: 150px;
+      }
+
+      .org-circle {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+      }
     }
   </style>
 </head>
@@ -629,7 +696,7 @@
             </div>
 
             <div class="field">
-              <label>שם</label>
+              <label>שם בארגון</label>
               <input id="uName" type="text" required>
             </div>
 
@@ -931,8 +998,13 @@
     const STORAGE_KEY_RANK = 'mlm_rank_req_v2';
 
     const DAY_MS = 24 * 60 * 60 * 1000;
+
     const UNAI_MATURITY_MS = 2 * 365 * DAY_MS;
-    const THUNDER_RELEASE_WINDOW_MS = 72 * 60 * 60 * 1000;
+
+    const FOUR_MONTHS_MS = 4 * 30.4375 * DAY_MS;
+
+    const THUNDER_RELEASE_WINDOW_MS =
+      72 * 60 * 60 * 1000;
 
     let treeData = null;
     let selectedId = null;
@@ -946,6 +1018,7 @@
 
     function formatMoney(value) {
       const num = parseFloat(value || 0);
+
       return num.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -954,18 +1027,28 @@
 
     function getDailyRate(monthlyRate) {
       const rate = parseFloat(monthlyRate || 0);
-      if (!Number.isFinite(rate) || rate <= 0) return 0;
+
+      if (!Number.isFinite(rate) || rate <= 0) {
+        return 0;
+      }
+
       return (rate / 100) / 30;
     }
 
     function findNode(node, id) {
       if (!node || id == null) return null;
-      if (String(node.id) === String(id)) return node;
+
+      if (String(node.id) === String(id)) {
+        return node;
+      }
 
       if (Array.isArray(node.children)) {
         for (const child of node.children) {
           const found = findNode(child, id);
-          if (found) return found;
+
+          if (found) {
+            return found;
+          }
         }
       }
 
@@ -973,12 +1056,16 @@
     }
 
     function getInvestmentCurrentValue(inv) {
-      if (inv.releasedToWallet) return 0;
+      if (inv.releasedToWallet) {
+        return 0;
+      }
 
       const amount = parseFloat(inv.amount || 0);
       const monthlyRate = parseFloat(inv.monthlyRate || 0);
 
-      if (amount <= 0 || monthlyRate <= 0) return amount;
+      if (amount <= 0 || monthlyRate <= 0) {
+        return amount;
+      }
 
       const elapsedMs = Math.max(
         0,
@@ -988,41 +1075,95 @@
       const elapsedDays = elapsedMs / DAY_MS;
       const dailyRate = getDailyRate(monthlyRate);
 
-      // הריבית מחושבת לפי האחוז החודשי / 30 ומצטברת בריבית דריבית בכל יום.
-      // ב-UNAI Engine החישוב ממשיך גם לאחר סיום הטיימר הראשוני ועד להבשלה של שנתיים.
-      return amount * Math.pow(1 + dailyRate, elapsedDays);
+      return amount * Math.pow(
+        1 + dailyRate,
+        elapsedDays
+      );
     }
 
     function getFeeFreeEnd(inv) {
-      const feeFreeMonths = parseFloat(inv.feeFreeMonths || 0);
-      const createdAt = inv.createdAt || Date.now();
+      const feeFreeMonths =
+        parseFloat(inv.feeFreeMonths || 0);
 
-      if (feeFreeMonths <= 0) return createdAt;
+      const createdAt =
+        inv.createdAt || Date.now();
 
-      return createdAt + (feeFreeMonths * 30.4375 * DAY_MS);
+      if (feeFreeMonths <= 0) {
+        return createdAt;
+      }
+
+      return createdAt +
+        (feeFreeMonths * 30.4375 * DAY_MS);
     }
 
     function getUnaiMaturityEnd(inv) {
-      return (inv.createdAt || Date.now()) + UNAI_MATURITY_MS;
+      return (inv.createdAt || Date.now()) +
+        UNAI_MATURITY_MS;
+    }
+
+    function getThunderCycleStart(inv) {
+      if (Number.isFinite(
+        parseFloat(inv.thunderCycleStart)
+      )) {
+        return parseFloat(
+          inv.thunderCycleStart
+        );
+      }
+
+      return inv.createdAt || Date.now();
+    }
+
+    function getThunderCycleEnd(inv) {
+      return getThunderCycleStart(inv) +
+        FOUR_MONTHS_MS;
     }
 
     function getThunderWindowStart(inv) {
-      if (!inv.thunderWindowStart) return getFeeFreeEnd(inv);
-      return inv.thunderWindowStart;
+      return getThunderCycleEnd(inv);
     }
 
     function getThunderWindowEnd(inv) {
-      return getThunderWindowStart(inv) + THUNDER_RELEASE_WINDOW_MS;
+      return getThunderWindowStart(inv) +
+        THUNDER_RELEASE_WINDOW_MS;
+    }
+
+    function getThunderState(inv) {
+      if (!inv || inv.releasedToWallet) {
+        return 'released';
+      }
+
+      const now = Date.now();
+
+      const cycleStart =
+        getThunderCycleStart(inv);
+
+      const cycleEnd =
+        cycleStart + FOUR_MONTHS_MS;
+
+      const windowEnd =
+        cycleEnd + THUNDER_RELEASE_WINDOW_MS;
+
+      if (now < cycleEnd) {
+        return 'locked';
+      }
+
+      if (now < windowEnd) {
+        return 'window';
+      }
+
+      return 'restart';
     }
 
     function isThunderEligible(inv) {
       return inv.type === 'thunder' &&
         !inv.principalReleased &&
-        Date.now() >= getFeeFreeEnd(inv);
+        getThunderState(inv) === 'window';
     }
 
     function isInvestmentReleased(inv) {
-      if (!inv) return true;
+      if (!inv) {
+        return true;
+      }
 
       if (inv.type === 'unai') {
         return !!inv.releasedToWallet;
@@ -1036,7 +1177,9 @@
     }
 
     function getInvestmentTimerText(inv) {
-      if (!inv) return '';
+      if (!inv) {
+        return '';
+      }
 
       if (inv.releasedToWallet) {
         return 'ההשקעה כבר שוחררה לארנק';
@@ -1045,31 +1188,95 @@
       const now = Date.now();
 
       if (inv.type === 'unai') {
-        const maturity = getUnaiMaturityEnd(inv);
-        const remaining = maturity - now;
+        const maturity =
+          getUnaiMaturityEnd(inv);
+
+        const remaining =
+          maturity - now;
 
         if (remaining <= 0) {
-          return 'ההשקעה הגיעה להבשלה. הקרן והרווחים משתחררים לארנק.';
+          return `
+            <span class="timer-green">
+              UNAI Engine — ההשקעה הגיעה להבשלה.
+              הקרן והרווחים משתחררים לארנק.
+            </span>
+          `;
         }
 
-        return `UNAI Engine — זמן עד הבשלה: ${formatDuration(remaining)} | הריבית ממשיכה להצטבר בריבית דריבית`;
+        return `
+          <span>
+            UNAI Engine — זמן עד הבשלה:
+            <strong>${formatDuration(remaining)}</strong>
+            | הריבית ממשיכה להצטבר בריבית דריבית
+          </span>
+        `;
       }
 
       if (inv.type === 'thunder') {
-        const feeEnd = getFeeFreeEnd(inv);
+
+        const feeEnd =
+          getFeeFreeEnd(inv);
+
+        let feeText = '';
 
         if (now < feeEnd) {
-          return `Thunder Stake — זמן עד סיום התקופה ללא עמלה: ${formatDuration(feeEnd - now)}`;
+          feeText = `
+            <span>
+              משוחרר מעמלות:
+              <strong>${formatDuration(feeEnd - now)}</strong>
+            </span>
+          `;
+        } else {
+          feeText = `
+            <span class="timer-green">
+              משוחרר מעמלות: הסתיים
+            </span>
+          `;
         }
 
-        const windowStart = getThunderWindowStart(inv);
-        const windowEnd = getThunderWindowEnd(inv);
+        const state =
+          getThunderState(inv);
 
-        if (now < windowEnd) {
-          return `Thunder Stake — חלון שחרור הקרן פתוח לעוד: ${formatDuration(windowEnd - now)} | הריבית היומית עוברת לארנק`;
+        if (state === 'locked') {
+          const cycleEnd =
+            getThunderCycleEnd(inv);
+
+          return `
+            ${feeText}
+            <br>
+            <span class="timer-red">
+              קרן — נעולה ל־4 חודשים.
+              זמן שנותר:
+              ${formatDuration(cycleEnd - now)}
+            </span>
+          `;
         }
 
-        return `Thunder Stake — חלון השחרור הסתיים | הריבית היומית ממשיכה לעבור לארנק`;
+        if (state === 'window') {
+          const windowEnd =
+            getThunderWindowEnd(inv);
+
+          return `
+            ${feeText}
+            <br>
+            <span class="timer-yellow">
+              קרן — חלון משיכה פתוח.
+              נותרו:
+              ${formatDuration(windowEnd - now)}
+            </span>
+          `;
+        }
+
+        if (state === 'restart') {
+          return `
+            ${feeText}
+            <br>
+            <span class="timer-red">
+              חלון 72 השעות הסתיים.
+              טיימר הקרן התחיל מחדש ל־4 חודשים.
+            </span>
+          `;
+        }
       }
 
       return '';
@@ -1078,91 +1285,209 @@
     function formatDuration(ms) {
       ms = Math.max(0, ms);
 
-      const totalSeconds = Math.floor(ms / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+      const totalSeconds =
+        Math.floor(ms / 1000);
+
+      const days =
+        Math.floor(totalSeconds / 86400);
+
+      const hours =
+        Math.floor(
+          (totalSeconds % 86400) / 3600
+        );
+
+      const minutes =
+        Math.floor(
+          (totalSeconds % 3600) / 60
+        );
+
+      const seconds =
+        totalSeconds % 60;
 
       if (days > 0) {
-        return `${days} ימים ${hours} שעות ${minutes} דקות`;
+        return `
+          ${days} ימים
+          ${hours} שעות
+          ${minutes} דקות
+          ${seconds} שניות
+        `;
       }
 
       if (hours > 0) {
-        return `${hours} שעות ${minutes} דקות ${seconds} שניות`;
+        return `
+          ${hours} שעות
+          ${minutes} דקות
+          ${seconds} שניות
+        `;
       }
 
       if (minutes > 0) {
-        return `${minutes} דקות ${seconds} שניות`;
+        return `
+          ${minutes} דקות
+          ${seconds} שניות
+        `;
       }
 
       return `${seconds} שניות`;
     }
 
+    function syncThunderCycle(inv) {
+      if (!inv || inv.type !== 'thunder') {
+        return false;
+      }
+
+      if (inv.releasedToWallet) {
+        return false;
+      }
+
+      const now = Date.now();
+
+      if (!Number.isFinite(
+        parseFloat(inv.thunderCycleStart)
+      )) {
+        inv.thunderCycleStart =
+          inv.createdAt || now;
+
+        return true;
+      }
+
+      let changed = false;
+
+      let cycleStart =
+        parseFloat(inv.thunderCycleStart);
+
+      let cycleEnd =
+        cycleStart + FOUR_MONTHS_MS;
+
+      let windowEnd =
+        cycleEnd + THUNDER_RELEASE_WINDOW_MS;
+
+      while (now >= windowEnd) {
+        cycleStart = windowEnd;
+
+        inv.thunderCycleStart =
+          cycleStart;
+
+        cycleEnd =
+          cycleStart + FOUR_MONTHS_MS;
+
+        windowEnd =
+          cycleEnd + THUNDER_RELEASE_WINDOW_MS;
+
+        changed = true;
+      }
+
+      return changed;
+    }
+
     function syncLegacyInvestValue(user) {
-      if (!user) return;
+      if (!user) {
+        return;
+      }
 
       if (!Array.isArray(user.investments)) {
         user.investments = [];
       }
 
-      user.invest = user.investments
-        .filter(inv => !inv.releasedToWallet)
-        .reduce((sum, inv) => {
-          return sum + parseFloat(inv.amount || 0);
-        }, 0);
+      user.invest =
+        user.investments
+          .filter(inv => !inv.releasedToWallet)
+          .reduce((sum, inv) => {
+            return sum +
+              parseFloat(inv.amount || 0);
+          }, 0);
     }
 
     function normalizeInvestment(inv) {
-      if (!inv || typeof inv !== 'object') return null;
+      if (!inv ||
+          typeof inv !== 'object') {
+        return null;
+      }
 
       if (!inv.id) {
-        inv.id = 'inv-' + Date.now().toString() + '-' +
-          Math.random().toString(16).slice(2);
+        inv.id =
+          'inv-' +
+          Date.now().toString() +
+          '-' +
+          Math.random()
+            .toString(16)
+            .slice(2);
       }
 
-      inv.type = inv.type === 'unai' ? 'unai' : 'thunder';
-      inv.amount = Number.isFinite(parseFloat(inv.amount))
-        ? parseFloat(inv.amount)
-        : 0;
+      inv.type =
+        inv.type === 'unai'
+          ? 'unai'
+          : 'thunder';
 
-      inv.monthlyRate = Number.isFinite(parseFloat(inv.monthlyRate))
-        ? parseFloat(inv.monthlyRate)
-        : 0;
+      inv.amount =
+        Number.isFinite(
+          parseFloat(inv.amount)
+        )
+          ? parseFloat(inv.amount)
+          : 0;
 
-      inv.feeFreeMonths = Number.isFinite(parseFloat(inv.feeFreeMonths))
-        ? parseFloat(inv.feeFreeMonths)
-        : 0;
+      inv.monthlyRate =
+        Number.isFinite(
+          parseFloat(inv.monthlyRate)
+        )
+          ? parseFloat(inv.monthlyRate)
+          : 0;
 
-      inv.createdAt = Number.isFinite(parseFloat(inv.createdAt))
-        ? parseFloat(inv.createdAt)
-        : Date.now();
+      inv.feeFreeMonths =
+        Number.isFinite(
+          parseFloat(inv.feeFreeMonths)
+        )
+          ? parseFloat(inv.feeFreeMonths)
+          : 0;
 
-      inv.releasedToWallet = !!inv.releasedToWallet;
-      inv.principalReleased = !!inv.principalReleased;
-      inv.maturityReleased = !!inv.maturityReleased;
+      inv.createdAt =
+        Number.isFinite(
+          parseFloat(inv.createdAt)
+        )
+          ? parseFloat(inv.createdAt)
+          : Date.now();
 
-      if (!Number.isFinite(parseFloat(inv.thunderWindowStart))) {
-        inv.thunderWindowStart = null;
+      inv.releasedToWallet =
+        !!inv.releasedToWallet;
+
+      inv.principalReleased =
+        !!inv.principalReleased;
+
+      inv.maturityReleased =
+        !!inv.maturityReleased;
+
+      if (!Number.isFinite(
+        parseFloat(inv.thunderCycleStart)
+      )) {
+        inv.thunderCycleStart =
+          inv.createdAt;
       }
 
-      if (!Number.isFinite(parseFloat(inv.lastThunderInterestPayoutAt))) {
-        inv.lastThunderInterestPayoutAt = inv.createdAt;
+      if (!Number.isFinite(
+        parseFloat(inv.lastThunderInterestPayoutAt)
+      )) {
+        inv.lastThunderInterestPayoutAt =
+          inv.createdAt;
       }
 
-      inv.thunderInterestPaid = Number.isFinite(
-        parseFloat(inv.thunderInterestPaid)
-      )
-        ? parseFloat(inv.thunderInterestPaid)
-        : 0;
+      inv.thunderInterestPaid =
+        Number.isFinite(
+          parseFloat(inv.thunderInterestPaid)
+        )
+          ? parseFloat(inv.thunderInterestPaid)
+          : 0;
 
       return inv;
     }
 
     function normalizeTreeData(node) {
-      if (!node || typeof node !== 'object') return;
+      if (!node ||
+          typeof node !== 'object') {
+        return;
+      }
 
-      if (!node.children || !Array.isArray(node.children)) {
+      if (!node.children ||
+          !Array.isArray(node.children)) {
         node.children = [];
       }
 
@@ -1170,50 +1495,90 @@
         node.investments = [];
       }
 
-      node.investments = node.investments
-        .map(normalizeInvestment)
-        .filter(Boolean);
+      node.investments =
+        node.investments
+          .map(normalizeInvestment)
+          .filter(Boolean);
 
-      if (!Number.isFinite(parseFloat(node.walletBalance))) {
+      if (!Number.isFinite(
+        parseFloat(node.walletBalance)
+      )) {
         node.walletBalance = 0;
       }
 
-      node.walletBalance = parseFloat(node.walletBalance || 0);
+      node.walletBalance =
+        parseFloat(
+          node.walletBalance || 0
+        );
 
-      if (!Number.isFinite(parseFloat(node.sales))) {
+      if (!Number.isFinite(
+        parseFloat(node.sales)
+      )) {
         node.sales = 0;
       }
 
-      node.createdAt = Number.isFinite(parseFloat(node.createdAt))
-        ? parseFloat(node.createdAt)
-        : Date.now();
+      node.createdAt =
+        Number.isFinite(
+          parseFloat(node.createdAt)
+        )
+          ? parseFloat(node.createdAt)
+          : Date.now();
 
       syncLegacyInvestValue(node);
 
-      node.children.forEach(normalizeTreeData);
+      node.children.forEach(
+        normalizeTreeData
+      );
     }
 
     function loadStorageData() {
       try {
-        const treeRaw = localStorage.getItem(STORAGE_KEY_TREE);
-        const rankRaw = localStorage.getItem(STORAGE_KEY_RANK);
+        const treeRaw =
+          localStorage.getItem(
+            STORAGE_KEY_TREE
+          );
 
-        treeData = treeRaw ? JSON.parse(treeRaw) : null;
+        const rankRaw =
+          localStorage.getItem(
+            STORAGE_KEY_RANK
+          );
+
+        treeData =
+          treeRaw
+            ? JSON.parse(treeRaw)
+            : null;
 
         if (rankRaw) {
-          const parsedRank = JSON.parse(rankRaw);
+          const parsedRank =
+            JSON.parse(rankRaw);
 
           rankReq = {
-            sales: parseFloat(parsedRank.sales || 0),
-            invest: parseFloat(parsedRank.invest || 0),
-            members: parseFloat(parsedRank.members || 0),
-            grp: parseFloat(parsedRank.grp || 0)
+            sales:
+              parseFloat(
+                parsedRank.sales || 0
+              ),
+
+            invest:
+              parseFloat(
+                parsedRank.invest || 0
+              ),
+
+            members:
+              parseFloat(
+                parsedRank.members || 0
+              ),
+
+            grp:
+              parseFloat(
+                parsedRank.grp || 0
+              )
           };
         }
 
         if (treeData) {
           normalizeTreeData(treeData);
         }
+
       } catch (err) {
         console.error(err);
         treeData = null;
@@ -1222,51 +1587,77 @@
 
     function saveStorageData() {
       try {
+
         if (treeData) {
           normalizeTreeData(treeData);
+
           localStorage.setItem(
             STORAGE_KEY_TREE,
             JSON.stringify(treeData)
           );
+
         } else {
-          localStorage.removeItem(STORAGE_KEY_TREE);
+          localStorage.removeItem(
+            STORAGE_KEY_TREE
+          );
         }
 
         localStorage.setItem(
           STORAGE_KEY_RANK,
           JSON.stringify(rankReq)
         );
+
       } catch (err) {
         console.error(err);
       }
     }
 
     function processInvestmentWalletEvents(user) {
-      if (!user || !Array.isArray(user.investments)) return false;
+      if (!user ||
+          !Array.isArray(user.investments)) {
+        return false;
+      }
 
       let changed = false;
+
       const now = Date.now();
 
-      if (!Number.isFinite(parseFloat(user.walletBalance))) {
+      if (!Number.isFinite(
+        parseFloat(user.walletBalance)
+      )) {
         user.walletBalance = 0;
       }
 
-      user.walletBalance = parseFloat(user.walletBalance || 0);
+      user.walletBalance =
+        parseFloat(
+          user.walletBalance || 0
+        );
 
       user.investments.forEach(inv => {
-        if (inv.releasedToWallet) return;
 
-        // UNAI Engine: ממשיך בריבית דריבית עד שנתיים מההשקעה, ואז הקרן + הרווחים נכנסים לארנק.
+        if (inv.releasedToWallet) {
+          return;
+        }
+
         if (inv.type === 'unai') {
-          if (now >= getUnaiMaturityEnd(inv)) {
-            const value = getInvestmentCurrentValue(inv);
+
+          if (
+            now >=
+            getUnaiMaturityEnd(inv)
+          ) {
+
+            const value =
+              getInvestmentCurrentValue(inv);
 
             if (value > 0) {
+
               user.walletBalance += value;
+
               inv.releasedToWallet = true;
               inv.maturityReleased = true;
               inv.releasedAt = now;
               inv.releasedAmount = value;
+
               changed = true;
             }
           }
@@ -1274,37 +1665,63 @@
           return;
         }
 
-        // Thunder Stake: לאחר סיום הטיימר, הריבית היומית עוברת לארנק ואינה מצטרפת לקרן.
         if (inv.type === 'thunder') {
-          const feeEnd = getFeeFreeEnd(inv);
 
-          if (now < feeEnd || inv.principalReleased) return;
-
-          if (!inv.thunderWindowStart) {
-            inv.thunderWindowStart = feeEnd;
+          if (syncThunderCycle(inv)) {
             changed = true;
           }
 
-          const last = inv.lastThunderInterestPayoutAt || feeEnd;
+          const cycleEnd =
+            getThunderCycleEnd(inv);
 
-          const completedDays = Math.floor(
-            Math.max(0, now - last) / DAY_MS
-          );
+          if (now < cycleEnd) {
+            return;
+          }
 
-          const dailyRate = getDailyRate(inv.monthlyRate);
-          const principal = parseFloat(inv.amount || 0);
+          const last =
+            inv.lastThunderInterestPayoutAt ||
+            inv.createdAt;
 
-          if (completedDays > 0 && principal > 0 && dailyRate > 0) {
-            // ריבית יומית על הקרן המקורית, ללא צירוף לקרן.
-            const payout = principal * dailyRate * completedDays;
+          const completedDays =
+            Math.floor(
+              Math.max(
+                0,
+                now - last
+              ) / DAY_MS
+            );
 
-            user.walletBalance += payout;
+          const dailyRate =
+            getDailyRate(
+              inv.monthlyRate
+            );
+
+          const principal =
+            parseFloat(
+              inv.amount || 0
+            );
+
+          if (
+            completedDays > 0 &&
+            principal > 0 &&
+            dailyRate > 0
+          ) {
+
+            const payout =
+              principal *
+              dailyRate *
+              completedDays;
+
+            user.walletBalance +=
+              payout;
 
             inv.lastThunderInterestPayoutAt =
-              last + completedDays * DAY_MS;
+              last +
+              completedDays * DAY_MS;
 
             inv.thunderInterestPaid =
-              parseFloat(inv.thunderInterestPaid || 0) + payout;
+              parseFloat(
+                inv.thunderInterestPaid || 0
+              ) + payout;
 
             changed = true;
           }
@@ -1315,74 +1732,145 @@
     }
 
     function render() {
+
       if (treeData) {
         normalizeTreeData(treeData);
       }
 
       updateSponsorsAndUsers();
+
       renderTree();
+
       renderSelectedUser();
 
       if (selectedId) {
-        const user = findNode(treeData, selectedId);
+
+        const user =
+          findNode(
+            treeData,
+            selectedId
+          );
 
         if (user) {
-          processInvestmentWalletEvents(user);
+
+          const changed =
+            processInvestmentWalletEvents(
+              user
+            );
+
+          if (changed) {
+            saveStorageData();
+          }
+
           renderSelectedUser();
+
           updateInvestmentTimer();
         }
       }
     }
 
     function renderSelectedUser() {
-      const card = document.getElementById('selectedUserCard');
 
-      if (!treeData || !selectedId) {
-        card.classList.remove('active');
+      const card =
+        document.getElementById(
+          'selectedUserCard'
+        );
+
+      if (!treeData ||
+          !selectedId) {
+
+        card.classList.remove(
+          'active'
+        );
+
         return;
       }
 
-      const user = findNode(treeData, selectedId);
+      const user =
+        findNode(
+          treeData,
+          selectedId
+        );
 
       if (!user) {
-        card.classList.remove('active');
+
+        card.classList.remove(
+          'active'
+        );
+
         return;
       }
 
       card.classList.add('active');
 
-      document.getElementById('selectedUserTitle').innerText =
-        user.name || user.username || 'משתמש';
+      document.getElementById(
+        'selectedUserTitle'
+      ).innerText =
+        user.name ||
+        user.username ||
+        'משתמש';
 
-      document.getElementById('selectedUserSubtitle').innerText =
-        `${user.email || '(ללא אימייל)'} | @${user.username || ''}`;
+      document.getElementById(
+        'selectedUserSubtitle'
+      ).innerText =
+        `${user.email || '(ללא אימייל)'} | @${user.username || ''} | מזהה ארגון: ${user.orgId || '(ללא מזהה)'}`;
 
-      document.getElementById('walletBalance').innerText =
-        `$${formatMoney(user.walletBalance)}`;
+      document.getElementById(
+        'walletBalance'
+      ).innerText =
+        `$${formatMoney(
+          user.walletBalance
+        )}`;
 
-      const totalInvest = (user.investments || [])
-        .filter(inv => !inv.releasedToWallet)
-        .reduce((sum, inv) => {
-          return sum + parseFloat(inv.amount || 0);
-        }, 0);
+      const totalInvest =
+        (user.investments || [])
+          .filter(
+            inv => !inv.releasedToWallet
+          )
+          .reduce(
+            (sum, inv) => {
+              return sum +
+                parseFloat(
+                  inv.amount || 0
+                );
+            },
+            0
+          );
 
-      document.getElementById('totalInvest').innerText =
-        `$${formatMoney(totalInvest)}`;
+      document.getElementById(
+        'totalInvest'
+      ).innerText =
+        `$${formatMoney(
+          totalInvest
+        )}`;
 
-      document.getElementById('salesValue').innerText =
-        formatMoney(user.sales || 0);
+      document.getElementById(
+        'salesValue'
+      ).innerText =
+        formatMoney(
+          user.sales || 0
+        );
 
-      document.getElementById('membersValue').innerText =
+      document.getElementById(
+        'membersValue'
+      ).innerText =
         countMembers(user);
 
       renderUserInvestments(user);
     }
 
     function countMembers(user) {
+
       let count = 0;
 
       function walk(node) {
-        if (!node || !Array.isArray(node.children)) return;
+
+        if (
+          !node ||
+          !Array.isArray(node.children)
+        ) {
+          return;
+        }
 
         node.children.forEach(child => {
           count++;
@@ -1391,209 +1879,403 @@
       }
 
       walk(user);
+
       return count;
     }
 
     function renderUserInvestments(user) {
-      const list = document.getElementById('investmentList');
 
-      if (!user || !Array.isArray(user.investments) ||
-          user.investments.length === 0) {
+      const list =
+        document.getElementById(
+          'investmentList'
+        );
+
+      if (
+        !user ||
+        !Array.isArray(user.investments) ||
+        user.investments.length === 0
+      ) {
+
         list.innerHTML =
           '<div class="no-data-msg">אין השקעות למשתמש זה.</div>';
+
         return;
       }
 
-      const totalCurrent = user.investments.reduce((sum, inv) => {
-        return sum + getInvestmentCurrentValue(inv);
-      }, 0);
+      const totalCurrent =
+        user.investments.reduce(
+          (sum, inv) => {
+            return sum +
+              getInvestmentCurrentValue(inv);
+          },
+          0
+        );
 
-      const totalPrincipal = user.investments.reduce((sum, inv) => {
-        return sum + parseFloat(inv.amount || 0);
-      }, 0);
+      const totalPrincipal =
+        user.investments.reduce(
+          (sum, inv) => {
+            return sum +
+              parseFloat(
+                inv.amount || 0
+              );
+          },
+          0
+        );
 
-      const totalProfit = Math.max(
-        0,
-        totalCurrent - totalPrincipal
-      );
+      const totalProfit =
+        Math.max(
+          0,
+          totalCurrent -
+          totalPrincipal
+        );
 
-      list.innerHTML = user.investments.map(inv => {
-        const current = getInvestmentCurrentValue(inv);
-        const principal = parseFloat(inv.amount || 0);
-        const profit = Math.max(0, current - principal);
+      list.innerHTML =
+        user.investments.map(inv => {
 
-        const isReleased = !!inv.releasedToWallet;
+          const current =
+            getInvestmentCurrentValue(inv);
 
-        let typeName =
-          inv.type === 'unai'
-            ? 'UNAI Engine'
-            : 'Thunder Stake';
+          const principal =
+            parseFloat(
+              inv.amount || 0
+            );
 
-        let status = '';
-        let statusClass = '';
+          const profit =
+            Math.max(
+              0,
+              current -
+              principal
+            );
 
-        if (isReleased) {
-          status = 'שוחרר לארנק';
-          statusClass = 'success';
-        } else if (inv.type === 'unai') {
-          status = 'פעיל';
-        } else {
-          status = 'פעיל';
-        }
+          const isReleased =
+            !!inv.releasedToWallet;
 
-        let actionHtml = '';
+          let typeName =
+            inv.type === 'unai'
+              ? 'UNAI Engine'
+              : 'Thunder Stake';
 
-        if (inv.type === 'thunder' && !isReleased) {
-          actionHtml = `
-            <button class="btn btn-success"
+          let status = '';
+          let statusClass = '';
+
+          let actionHtml = '';
+
+          if (isReleased) {
+
+            status =
+              'שוחרר לארנק';
+
+            statusClass =
+              'success';
+
+          } else if (
+            inv.type === 'unai'
+          ) {
+
+            status =
+              'פעיל';
+
+          } else {
+
+            const thunderState =
+              getThunderState(inv);
+
+            if (
+              thunderState === 'locked'
+            ) {
+
+              status =
+                'קרן נעולה ל־4 חודשים';
+
+              statusClass =
+                'danger';
+
+            } else if (
+              thunderState === 'window'
+            ) {
+
+              status =
+                'חלון משיכה פתוח';
+
+              statusClass =
+                'warning';
+
+              actionHtml = `
+                <div class="investment-actions">
+                  <button
+                    class="btn btn-warning"
                     onclick="releaseInvestmentToWallet('${inv.id}')">
-              <i class="fa-solid fa-wallet"></i>
-              שחרר קרן לארנק
-            </button>`;
-        }
+                    <i class="fa-solid fa-wallet"></i>
+                    משוך קרן
+                  </button>
+                </div>
+              `;
 
-        return `
-          <div class="investment-item ${isReleased ? 'released' : ''}">
-            <div class="investment-head">
-              <div class="investment-type">${typeName}</div>
-              <div class="investment-status ${statusClass}">
-                ${status}
+            } else {
+
+              status =
+                'הטיימר התחיל מחדש';
+
+              statusClass =
+                'danger';
+            }
+          }
+
+          return `
+            <div class="investment-item ${isReleased ? 'released' : ''}">
+
+              <div class="investment-head">
+
+                <div class="investment-type">
+                  ${typeName}
+                </div>
+
+                <div class="investment-status ${statusClass}">
+                  ${status}
+                </div>
+
               </div>
+
+              <div class="investment-grid">
+
+                <div class="investment-stat">
+                  <span class="investment-stat-label">
+                    קרן
+                  </span>
+
+                  <span class="investment-stat-value">
+                    $${formatMoney(principal)}
+                  </span>
+                </div>
+
+                <div class="investment-stat">
+                  <span class="investment-stat-label">
+                    ריבית חודשית
+                  </span>
+
+                  <span class="investment-stat-value">
+                    ${formatMoney(inv.monthlyRate)}%
+                  </span>
+                </div>
+
+                <div class="investment-stat">
+                  <span class="investment-stat-label">
+                    שווי נוכחי
+                  </span>
+
+                  <span class="investment-stat-value">
+                    $${formatMoney(current)}
+                  </span>
+                </div>
+
+                <div class="investment-stat">
+                  <span class="investment-stat-label">
+                    רווח
+                  </span>
+
+                  <span class="investment-stat-value">
+                    $${formatMoney(profit)}
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="investment-timer-msg">
+                <i class="fa-solid fa-clock"></i>
+                ${getInvestmentTimerText(inv)}
+              </div>
+
+              ${actionHtml}
+
+            </div>
+          `;
+
+        }).join('');
+
+      list.insertAdjacentHTML(
+        'beforeend',
+        `
+          <div
+            class="investment-grid"
+            style="margin-top:14px;">
+
+            <div class="investment-stat">
+
+              <span class="investment-stat-label">
+                שווי נוכחי כולל
+              </span>
+
+              <span class="investment-stat-value">
+                $${formatMoney(totalCurrent)}
+              </span>
+
             </div>
 
-            <div class="investment-grid">
+            <div class="investment-stat">
 
-              <div class="investment-stat">
-                <span class="investment-stat-label">קרן</span>
-                <span class="investment-stat-value">
-                  $${formatMoney(principal)}
-                </span>
-              </div>
+              <span class="investment-stat-label">
+                רווח מצטבר כולל
+              </span>
 
-              <div class="investment-stat">
-                <span class="investment-stat-label">ריבית חודשית</span>
-                <span class="investment-stat-value">
-                  ${formatMoney(inv.monthlyRate)}%
-                </span>
-              </div>
-
-              <div class="investment-stat">
-                <span class="investment-stat-label">שווי נוכחי</span>
-                <span class="investment-stat-value">
-                  $${formatMoney(current)}
-                </span>
-              </div>
-
-              <div class="investment-stat">
-                <span class="investment-stat-label">רווח</span>
-                <span class="investment-stat-value">
-                  $${formatMoney(profit)}
-                </span>
-              </div>
+              <span class="investment-stat-value">
+                $${formatMoney(totalProfit)}
+              </span>
 
             </div>
 
-            <div class="investment-timer-msg">
-              <i class="fa-solid fa-clock"></i>
-              ${getInvestmentTimerText(inv)}
+            <div class="investment-stat">
+
+              <span class="investment-stat-label">
+                מספר השקעות
+              </span>
+
+              <span class="investment-stat-value">
+                ${user.investments.length}
+              </span>
+
             </div>
 
-            ${actionHtml}
           </div>
-        `;
-      }).join('');
-
-      list.insertAdjacentHTML('beforeend', `
-        <div class="investment-grid" style="margin-top:14px;">
-
-          <div class="investment-stat">
-            <span class="investment-stat-label">שווי נוכחי כולל</span>
-            <span class="investment-stat-value">
-              $${formatMoney(totalCurrent)}
-            </span>
-          </div>
-
-          <div class="investment-stat">
-            <span class="investment-stat-label">רווח מצטבר כולל</span>
-            <span class="investment-stat-value">
-              $${formatMoney(totalProfit)}
-            </span>
-          </div>
-
-          <div class="investment-stat">
-            <span class="investment-stat-label">מספר השקעות</span>
-            <span class="investment-stat-value">
-              ${user.investments.length}
-            </span>
-          </div>
-
-        </div>
-      `);
+        `
+      );
     }
 
     function updateInvestmentTimer() {
-      let user = findNode(treeData, selectedId);
-      let investCard = document.getElementById('investCard');
-      let msgElem = document.getElementById('investTimerMsg');
 
-      if (!user || !user.investments ||
-          user.investments.length === 0) {
+      const user =
+        findNode(
+          treeData,
+          selectedId
+        );
 
-        investCard.classList.remove('unlocked-card');
-        msgElem.className = 'investment-timer-msg';
+      const investCard =
+        document.getElementById(
+          'investCard'
+        );
+
+      const msgElem =
+        document.getElementById(
+          'investTimerMsg'
+        );
+
+      if (
+        !user ||
+        !user.investments ||
+        user.investments.length === 0
+      ) {
+
+        investCard.classList.remove(
+          'unlocked-card'
+        );
+
+        msgElem.className =
+          'investment-timer-msg';
+
         msgElem.innerText = '';
+
         return;
       }
 
       const allReleased =
-        user.investments.every(isInvestmentReleased);
+        user.investments.every(
+          isInvestmentReleased
+        );
 
       if (allReleased) {
-        investCard.classList.add('unlocked-card');
+
+        investCard.classList.add(
+          'unlocked-card'
+        );
+
         msgElem.className =
           'investment-timer-msg unlocked-text';
 
         msgElem.innerHTML =
-          `<i class="fa-solid fa-circle-check"></i> ההשקעות פתוחות למשיכה ללא עמלות`;
+          `
+            <i class="fa-solid fa-circle-check"></i>
+            ההשקעות פתוחות למשיכה ללא עמלות
+          `;
+
       } else {
-        investCard.classList.remove('unlocked-card');
-        msgElem.className = 'investment-timer-msg';
+
+        investCard.classList.remove(
+          'unlocked-card'
+        );
+
+        msgElem.className =
+          'investment-timer-msg';
 
         const active =
-          user.investments.find(inv => !isInvestmentReleased(inv));
+          user.investments.find(
+            inv =>
+              !isInvestmentReleased(inv)
+          );
 
-        msgElem.innerHTML =
-          `<i class="fa-solid fa-clock"></i> ${getInvestmentTimerText(active)}`;
+        if (active) {
+          msgElem.innerHTML =
+            `
+              <i class="fa-solid fa-clock"></i>
+              ${getInvestmentTimerText(active)}
+            `;
+        }
       }
     }
 
     function updateInvestmentTimers() {
-      const user = findNode(treeData, selectedId);
 
-      if (!user) return;
+      const user =
+        findNode(
+          treeData,
+          selectedId
+        );
+
+      if (!user) {
+        return;
+      }
 
       const changed =
-        processInvestmentWalletEvents(user);
+        processInvestmentWalletEvents(
+          user
+        );
 
-      if (changed) saveStorageData();
+      if (changed) {
+        saveStorageData();
+      }
 
       renderUserInvestments(user);
+
       updateInvestmentTimer();
     }
 
-    function setCircle(cId, pId, vId, current, target, unit) {
+    function setCircle(
+      cId,
+      pId,
+      vId,
+      current,
+      target,
+      unit
+    ) {
+
       let pct =
         target > 0
-          ? Math.min(100, (current / target) * 100)
+          ? Math.min(
+              100,
+              (current / target) * 100
+            )
           : 100;
 
       let offset =
-        283 - (pct / 100) * 283;
+        283 -
+        (pct / 100) * 283;
 
-      document.getElementById(cId).style.strokeDashoffset =
+      document.getElementById(
+        cId
+      ).style.strokeDashoffset =
         offset;
 
-      document.getElementById(pId).innerText =
+      document.getElementById(
+        pId
+      ).innerText =
         Math.round(pct) + '%';
 
       let currStr =
@@ -1606,30 +2288,48 @@
           ? target
           : target.toFixed(2);
 
-      document.getElementById(vId).innerText =
+      document.getElementById(
+        vId
+      ).innerText =
         `${currStr}${unit}/${targetStr}${unit}`;
     }
 
     function renderTree() {
-      let container = document.getElementById('tree');
+
+      const container =
+        document.getElementById(
+          'tree'
+        );
+
       container.innerHTML = '';
 
       if (!treeData) {
+
         container.innerHTML =
           '<div class="no-data-msg">הרשת ריקה. הוסף משתמש ראשון כמנהל המערכת.</div>';
+
         return;
       }
 
-      let ul = document.createElement('ul');
-      ul.appendChild(buildNode(treeData));
+      const ul =
+        document.createElement('ul');
+
+      ul.appendChild(
+        buildNode(treeData)
+      );
+
       container.appendChild(ul);
     }
 
     function buildNode(node) {
-      let li = document.createElement('li');
-      let div = document.createElement('div');
 
-      let extraClass =
+      const li =
+        document.createElement('li');
+
+      const div =
+        document.createElement('div');
+
+      const extraClass =
         node.id === selectedId
           ? 'selected'
           : '';
@@ -1638,27 +2338,63 @@
         `node ${extraClass}`;
 
       div.onclick = (e) => {
+
         e.stopPropagation();
-        selectedId = node.id;
+
+        selectedId =
+          node.id;
+
         render();
       };
 
-      div.innerHTML = `
-        <i class="fa-solid fa-user"
-           style="font-size:0.9rem; color: var(--accent-purple-light);"></i>
-        <div class="node-name">${node.name}</div>
-      `;
+      const orgName =
+        node.name ||
+        node.username ||
+        'ארגון';
+
+      const orgId =
+        node.orgId ||
+        'ארגון';
+
+      div.innerHTML =
+        `
+          <div
+            class="org-circle"
+            title="${escapeHtml(orgName)}">
+
+            ${escapeHtml(orgName)}
+
+          </div>
+
+          <div>
+
+            <div class="node-name">
+              ${escapeHtml(orgName)}
+            </div>
+
+            <div class="node-org-name">
+              מזהה ארגון:
+              ${escapeHtml(orgId)}
+            </div>
+
+          </div>
+        `;
 
       li.appendChild(div);
 
-      if (node.children &&
-          node.children.length > 0) {
+      if (
+        node.children &&
+        node.children.length > 0
+      ) {
 
-        let ul = document.createElement('ul');
+        const ul =
+          document.createElement('ul');
 
-        node.children.forEach(c =>
-          ul.appendChild(buildNode(c))
-        );
+        node.children.forEach(c => {
+          ul.appendChild(
+            buildNode(c)
+          );
+        });
 
         li.appendChild(ul);
       }
@@ -1666,47 +2402,104 @@
       return li;
     }
 
-    function updateSponsorsAndUsers() {
-      let sponsorSelect =
-        document.getElementById('uSponsor');
+    function escapeHtml(value) {
 
-      let passUserSelect =
-        document.getElementById('passUserSelect');
+      return String(
+        value == null
+          ? ''
+          : value
+      )
+        .replace(
+          /&/g,
+          '&amp;'
+        )
+        .replace(
+          /</g,
+          '&lt;'
+        )
+        .replace(
+          />/g,
+          '&gt;'
+        )
+        .replace(
+          /"/g,
+          '&quot;'
+        )
+        .replace(
+          /'/g,
+          '&#039;'
+        );
+    }
+
+    function updateSponsorsAndUsers() {
+
+      const sponsorSelect =
+        document.getElementById(
+          'uSponsor'
+        );
+
+      const passUserSelect =
+        document.getElementById(
+          'passUserSelect'
+        );
 
       sponsorSelect.innerHTML = '';
+
       passUserSelect.innerHTML = '';
 
       if (!treeData) {
-        let opt = document.createElement('option');
 
-        opt.value = "root_new";
-        opt.innerText = "מנהל מערכת (ראשי)";
+        const opt =
+          document.createElement(
+            'option'
+          );
 
-        sponsorSelect.appendChild(opt);
+        opt.value =
+          'root_new';
+
+        opt.innerText =
+          'מנהל מערכת (ראשי)';
+
+        sponsorSelect.appendChild(
+          opt
+        );
+
         return;
       }
 
       function walk(node) {
-        let opt1 =
-          document.createElement('option');
 
-        opt1.value = node.id;
+        const opt1 =
+          document.createElement(
+            'option'
+          );
 
-        // כאן מוצג רק האימייל של המנהל המצטרף
+        opt1.value =
+          node.id;
+
         opt1.innerText =
-          node.email || '(ללא אימייל)';
+          node.name ||
+          node.username ||
+          '(ללא שם)';
 
-        sponsorSelect.appendChild(opt1);
+        sponsorSelect.appendChild(
+          opt1
+        );
 
-        let opt2 =
-          document.createElement('option');
+        const opt2 =
+          document.createElement(
+            'option'
+          );
 
-        opt2.value = node.id;
+        opt2.value =
+          node.id;
 
         opt2.innerText =
-          `${node.username} (${node.name})`;
+          `${node.username || ''} (${node.name || ''})`;
 
-        passUserSelect.appendChild(opt2);
+        passUserSelect.appendChild(
+          opt2
+        );
 
         if (node.children) {
           node.children.forEach(walk);
@@ -1716,7 +2509,10 @@
       walk(treeData);
     }
 
-    function createInvestmentFromInputs(prefix) {
+    function createInvestmentFromInputs(
+      prefix
+    ) {
+
       const amount =
         parseFloat(
           document.getElementById(
@@ -1743,12 +2539,18 @@
           prefix + 'Type'
         ).value;
 
+      const createdAt =
+        Date.now();
+
       return {
+
         id:
           'inv-' +
-          Date.now().toString() +
+          createdAt.toString() +
           '-' +
-          Math.random().toString(16).slice(2),
+          Math.random()
+            .toString(16)
+            .slice(2),
 
         type: type,
 
@@ -1767,38 +2569,64 @@
             ? 0
             : feeFreeMonths,
 
-        createdAt: Date.now()
+        createdAt:
+
+          createdAt,
+
+        thunderCycleStart:
+
+          createdAt
       };
     }
 
     function addUser(e) {
+
       e.preventDefault();
 
-      let sponsorId =
-        document.getElementById('uSponsor').value;
+      const sponsorId =
+        document.getElementById(
+          'uSponsor'
+        ).value;
 
       const investVal =
         parseFloat(
-          document.getElementById('uInvest').value || 0
+          document.getElementById(
+            'uInvest'
+          ).value || 0
         );
 
-      let newUser = {
-        id: Date.now().toString(),
+      const createdAt =
+        Date.now();
+
+      const newUser = {
+
+        id:
+          createdAt.toString(),
 
         orgId:
-          document.getElementById('uOrgId').value,
+          document.getElementById(
+            'uOrgId'
+          ).value,
 
         username:
-          document.getElementById('uUsername').value,
+          document.getElementById(
+            'uUsername'
+          ).value,
 
         name:
-          document.getElementById('uName').value,
+          document.getElementById(
+            'uName'
+          ).value,
 
         email:
-          document.getElementById('uEmail').value,
+          document.getElementById(
+            'uEmail'
+          ).value,
 
         pass:
-          document.getElementById('uPass').value,
+          document.getElementById(
+            'uPass'
+          ).value,
 
         invest: 0,
 
@@ -1808,28 +2636,37 @@
 
         feeFreeMonths: 0,
 
-        createdAt: Date.now(),
+        createdAt:
+
+          createdAt,
 
         sales: 0,
 
         children: []
       };
 
-      // אם הוזנה השקעה, היא נשמרת כהשקעה עצמאית עם הנתונים שלה
       if (investVal > 0) {
+
+        const investmentCreatedAt =
+          Date.now();
+
         newUser.investments.push({
+
           id:
             'inv-' +
-            Date.now().toString() +
+            investmentCreatedAt.toString() +
             '-' +
-            Math.random().toString(16).slice(2),
+            Math.random()
+              .toString(16)
+              .slice(2),
 
           type:
             document.getElementById(
               'uInvestmentType'
             ).value,
 
-          amount: investVal,
+          amount:
+            investVal,
 
           monthlyRate:
             parseFloat(
@@ -1845,21 +2682,41 @@
               ).value || 0
             ),
 
-          createdAt: Date.now()
+          createdAt:
+            investmentCreatedAt,
+
+          thunderCycleStart:
+            investmentCreatedAt
         });
       }
 
-      syncLegacyInvestValue(newUser);
+      syncLegacyInvestValue(
+        newUser
+      );
 
-      if (!treeData || sponsorId === "root_new") {
-        treeData = newUser;
-        selectedId = null;
+      if (
+        !treeData ||
+        sponsorId === 'root_new'
+      ) {
+
+        treeData =
+          newUser;
+
+        selectedId =
+          null;
+
       } else {
-        let parent =
-          findNode(treeData, sponsorId);
+
+        const parent =
+          findNode(
+            treeData,
+            sponsorId
+          );
 
         if (parent) {
-          parent.children.push(newUser);
+          parent.children.push(
+            newUser
+          );
         }
       }
 
@@ -1868,17 +2725,24 @@
       ).reset();
 
       saveStorageData();
+
       render();
     }
 
     function openInvestmentModal() {
+
       const user =
-        findNode(treeData, selectedId);
+        findNode(
+          treeData,
+          selectedId
+        );
 
       if (!user) {
+
         alert(
           'בחר משתמש בעץ לפני הוספת השקעה.'
         );
+
         return;
       }
 
@@ -1901,20 +2765,31 @@
 
       document.getElementById(
         'newInvestmentType'
-      ).value = 'thunder';
+      ).value =
+        'thunder';
 
       document.getElementById(
         'investmentModal'
-      ).classList.add('active');
+      ).classList.add(
+        'active'
+      );
     }
 
     function addInvestmentToSelectedUser() {
+
       const user =
-        findNode(treeData, selectedId);
+        findNode(
+          treeData,
+          selectedId
+        );
 
-      if (!user) return;
+      if (!user) {
+        return;
+      }
 
-      if (!Array.isArray(user.investments)) {
+      if (!Array.isArray(
+        user.investments
+      )) {
         user.investments = [];
       }
 
@@ -1945,90 +2820,148 @@
         ).value;
 
       if (amount <= 0) {
+
         alert(
           'יש להזין סכום השקעה גדול מאפס.'
         );
+
         return;
       }
 
+      const createdAt =
+        Date.now();
+
       user.investments.push({
+
         id:
           'inv-' +
-          Date.now().toString() +
+          createdAt.toString() +
           '-' +
-          Math.random().toString(16).slice(2),
+          Math.random()
+            .toString(16)
+            .slice(2),
 
-        type: type,
+        type:
+          type,
 
-        amount: amount,
+        amount:
+          amount,
 
-        monthlyRate: monthlyRate,
+        monthlyRate:
+          monthlyRate,
 
-        feeFreeMonths: feeFreeMonths,
+        feeFreeMonths:
+          feeFreeMonths,
 
-        createdAt: Date.now()
+        createdAt:
+          createdAt,
+
+        thunderCycleStart:
+          createdAt
       });
 
-      syncLegacyInvestValue(user);
+      syncLegacyInvestValue(
+        user
+      );
 
       saveStorageData();
 
-      closeModal('investmentModal');
+      closeModal(
+        'investmentModal'
+      );
 
       render();
     }
 
-    function releaseInvestmentToWallet(investmentId) {
-      const user =
-        findNode(treeData, selectedId);
+    function releaseInvestmentToWallet(
+      investmentId
+    ) {
 
-      if (!user ||
-          !Array.isArray(user.investments)) {
+      const user =
+        findNode(
+          treeData,
+          selectedId
+        );
+
+      if (
+        !user ||
+        !Array.isArray(
+          user.investments
+        )
+      ) {
         return;
       }
 
       const inv =
         user.investments.find(
-          i => i.id === investmentId
+          i =>
+            i.id ===
+            investmentId
         );
 
-      if (!inv ||
-          inv.releasedToWallet) {
+      if (
+        !inv ||
+        inv.releasedToWallet
+      ) {
         return;
       }
 
-      if (inv.type !== 'thunder') {
+      if (
+        inv.type !== 'thunder'
+      ) {
+
         alert(
           'ב-UNAI Engine הקרן והרווחים משתחררים אוטומטית לארנק רק לאחר שנתיים ממועד ההשקעה.'
         );
+
         return;
       }
 
-      if (!isThunderEligible(inv)) {
+      if (
+        !isThunderEligible(inv)
+      ) {
+
         alert(
-          'הקרן עדיין אינה זמינה לשחרור.'
+          'הקרן זמינה למשיכה רק במהלך חלון 72 השעות שלאחר 4 חודשי ההמתנה.'
         );
+
         return;
       }
 
-      // לפני שחרור הקרן, משלמים את כל הריבית היומית שהצטברה עד עכשיו.
-      processInvestmentWalletEvents(user);
+      processInvestmentWalletEvents(
+        user
+      );
 
       const principal =
-        parseFloat(inv.amount || 0);
+        parseFloat(
+          inv.amount || 0
+        );
 
-      if (principal <= 0) return;
+      if (principal <= 0) {
+        return;
+      }
 
       user.walletBalance =
-        parseFloat(user.walletBalance || 0) +
+        parseFloat(
+          user.walletBalance || 0
+        ) +
         principal;
 
-      inv.releasedToWallet = true;
-      inv.principalReleased = true;
-      inv.releasedAt = Date.now();
-      inv.releasedAmount = principal;
+      inv.releasedToWallet =
+        true;
 
-      syncLegacyInvestValue(user);
+      inv.principalReleased =
+        true;
+
+      inv.releasedAt =
+        Date.now();
+
+      inv.releasedAmount =
+        principal;
+
+      syncLegacyInvestValue(
+        user
+      );
 
       saveStorageData();
 
@@ -2036,14 +2969,19 @@
     }
 
     function getAllUsers() {
+
       const users = [];
 
       function walk(node) {
-        if (!node) return;
+
+        if (!node) {
+          return;
+        }
 
         users.push(node);
 
-        (node.children || []).forEach(walk);
+        (node.children || [])
+          .forEach(walk);
       }
 
       walk(treeData);
@@ -2052,23 +2990,33 @@
     }
 
     function openTransferModal() {
+
       const user =
-        findNode(treeData, selectedId);
+        findNode(
+          treeData,
+          selectedId
+        );
 
       if (!user) {
+
         alert(
           'בחר משתמש בעץ לפני העברת כסף.'
         );
+
         return;
       }
 
       const balance =
-        parseFloat(user.walletBalance || 0);
+        parseFloat(
+          user.walletBalance || 0
+        );
 
       if (balance <= 0) {
+
         alert(
           'אין מספיק כסף בארנק להעברה.'
         );
+
         return;
       }
 
@@ -2080,30 +3028,44 @@
       select.innerHTML = '';
 
       getAllUsers()
-        .filter(u => u.id !== user.id)
+        .filter(
+          u => u.id !== user.id
+        )
         .forEach(u => {
-          const option =
-            document.createElement('option');
 
-          option.value = u.id;
+          const option =
+            document.createElement(
+              'option'
+            );
+
+          option.value =
+            u.id;
 
           option.innerText =
-            u.email || '(ללא אימייל)';
+            u.name ||
+            u.username ||
+            '(ללא שם)';
 
-          select.appendChild(option);
+          select.appendChild(
+            option
+          );
         });
 
-      if (select.options.length === 0) {
+      if (
+        select.options.length === 0
+      ) {
+
         alert(
           'אין משתמש אחר שאליו ניתן להעביר כסף.'
         );
+
         return;
       }
 
       document.getElementById(
         'transferFromUser'
       ).innerText =
-        `שולח: ${user.email || '(ללא אימייל)'} | יתרה זמינה: $${formatMoney(balance)}`;
+        `שולח: ${user.name || user.username || '(ללא שם)'} | יתרה זמינה: $${formatMoney(balance)}`;
 
       document.getElementById(
         'transferAmount'
@@ -2111,12 +3073,18 @@
 
       document.getElementById(
         'transferModal'
-      ).classList.add('active');
+      ).classList.add(
+        'active'
+      );
     }
 
     function transferWalletMoney() {
+
       const from =
-        findNode(treeData, selectedId);
+        findNode(
+          treeData,
+          selectedId
+        );
 
       const to =
         findNode(
@@ -2133,35 +3101,48 @@
           ).value || 0
         );
 
-      if (!from || !to) return;
+      if (!from || !to) {
+        return;
+      }
 
       if (amount <= 0) {
+
         alert(
           'יש להזין סכום גדול מאפס.'
         );
+
         return;
       }
 
       const fromBalance =
-        parseFloat(from.walletBalance || 0);
+        parseFloat(
+          from.walletBalance || 0
+        );
 
       if (amount > fromBalance) {
+
         alert(
           'אין מספיק כסף בארנק להעברה.'
         );
+
         return;
       }
 
       from.walletBalance =
-        fromBalance - amount;
+        fromBalance -
+        amount;
 
       to.walletBalance =
-        parseFloat(to.walletBalance || 0) +
+        parseFloat(
+          to.walletBalance || 0
+        ) +
         amount;
 
       saveStorageData();
 
-      closeModal('transferModal');
+      closeModal(
+        'transferModal'
+      );
 
       render();
 
@@ -2171,23 +3152,29 @@
     }
 
     function changePassword(e) {
+
       e.preventDefault();
 
-      let userId =
+      const userId =
         document.getElementById(
           'passUserSelect'
         ).value;
 
-      let newPass =
+      const newPass =
         document.getElementById(
           'newPassVal'
         ).value;
 
-      let user =
-        findNode(treeData, userId);
+      const user =
+        findNode(
+          treeData,
+          userId
+        );
 
       if (user) {
-        user.pass = newPass;
+
+        user.pass =
+          newPass;
 
         saveStorageData();
 
@@ -2199,11 +3186,14 @@
           'newPassVal'
         ).value = '';
 
-        closeModal('passModal');
+        closeModal(
+          'passModal'
+        );
       }
     }
 
     function saveConfig() {
+
       rankReq.sales =
         parseFloat(
           document.getElementById(
@@ -2234,22 +3224,29 @@
 
       saveStorageData();
 
-      closeModal('rankModal');
+      closeModal(
+        'rankModal'
+      );
 
       render();
     }
 
     function resetSystemData() {
+
       document.getElementById(
         'dropdownMenu'
-      ).classList.remove('active');
+      ).classList.remove(
+        'active'
+      );
 
       if (
         confirm(
-          "איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?"
+          'איפוס נתונים ימחק את כל העץ ויחזיר את המערכת למצב התחלתי. להמשיך?'
         )
       ) {
+
         treeData = null;
+
         selectedId = null;
 
         localStorage.removeItem(
@@ -2265,71 +3262,115 @@
     }
 
     function openModal(id) {
-      if (id === 'rankModal') {
+
+      if (
+        id === 'rankModal'
+      ) {
+
         document.getElementById(
           'cfgSales'
-        ).value = rankReq.sales;
+        ).value =
+          rankReq.sales;
 
         document.getElementById(
           'cfgInvest'
-        ).value = rankReq.invest;
+        ).value =
+          rankReq.invest;
 
         document.getElementById(
           'cfgMembers'
-        ).value = rankReq.members;
+        ).value =
+          rankReq.members;
 
         document.getElementById(
           'cfgGrp'
-        ).value = rankReq.grp;
+        ).value =
+          rankReq.grp;
       }
 
       document.getElementById(
         id
-      ).classList.add('active');
+      ).classList.add(
+        'active'
+      );
     }
 
     function closeModal(id) {
+
       document.getElementById(
         id
-      ).classList.remove('active');
+      ).classList.remove(
+        'active'
+      );
     }
 
     function toggleDropdown() {
+
       document.getElementById(
         'dropdownMenu'
-      ).classList.toggle('active');
+      ).classList.toggle(
+        'active'
+      );
     }
 
     function closeDropdown() {
+
       document.getElementById(
         'dropdownMenu'
-      ).classList.remove('active');
+      ).classList.remove(
+        'active'
+      );
     }
 
-    document.addEventListener('click', function(e) {
-      const menu =
-        document.querySelector('.menu-wrap');
+    document.addEventListener(
+      'click',
+      function(e) {
 
-      if (!menu.contains(e.target)) {
-        closeDropdown();
+        const menu =
+          document.querySelector(
+            '.menu-wrap'
+          );
+
+        if (
+          !menu.contains(
+            e.target
+          )
+        ) {
+          closeDropdown();
+        }
       }
+    );
+
+    document.querySelectorAll(
+      '.modal-overlay'
+    ).forEach(overlay => {
+
+      overlay.addEventListener(
+        'click',
+        function(e) {
+
+          if (
+            e.target ===
+            overlay
+          ) {
+            overlay.classList.remove(
+              'active'
+            );
+          }
+        }
+      );
     });
 
-    document.querySelectorAll('.modal-overlay')
-      .forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-          if (e.target === overlay) {
-            overlay.classList.remove('active');
-          }
-        });
-      });
-
     loadStorageData();
+
     render();
 
-    setInterval(() => {
-      updateInvestmentTimers();
-    }, 1000);
+    setInterval(
+      () => {
+        updateInvestmentTimers();
+      },
+      1000
+    );
   </script>
 </body>
   </html>
