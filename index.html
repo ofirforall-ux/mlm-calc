@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,6 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       padding: 20px;
-      direction: rtl;
     }
 
     .container {
@@ -50,14 +49,12 @@
       color: var(--text-main);
     }
 
-    /* Grid Layouts */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
-    /* Form Styles */
     .form-group {
       margin-bottom: 15px;
     }
@@ -103,16 +100,12 @@
       color: #000;
     }
 
-    /* Tender Option styling */
-    .tender-badge {
+    .tender-option {
       color: var(--accent-green);
       font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
 
-    /* Tree Visualization Styles */
+    /* Tree Styling */
     .tree-container {
       overflow-x: auto;
       padding: 20px 0;
@@ -155,7 +148,7 @@
       align-items: center;
     }
 
-    /* Visible connecting lines between nodes */
+    /* Visible Connecting Lines */
     .tree li::before, .tree li::after {
       content: '';
       position: absolute;
@@ -193,7 +186,7 @@
       border-radius: 5px 0 0 0;
     }
 
-    /* Circular Node Styling */
+    /* Circle Icon & Details */
     .node-circle {
       width: 60px;
       height: 60px;
@@ -223,26 +216,30 @@
       white-space: nowrap;
     }
 
-    /* Timers & Status Badges */
+    /* Timers & Status Boxes */
     .timer-box {
       background: #0f172a;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
       margin-top: 10px;
       border: 1px solid var(--border-color);
     }
 
-    .timer-red {
+    .status-red {
       color: var(--danger-color);
       font-weight: bold;
     }
 
-    .timer-yellow {
+    .status-yellow {
       color: var(--warning-color);
       font-weight: bold;
     }
 
-    /* Tables */
+    .status-green {
+      color: var(--accent-green);
+      font-weight: bold;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -251,7 +248,7 @@
 
     th, td {
       padding: 10px;
-      text-align: right;
+      text-align: left;
       border-bottom: 1px solid var(--border-color);
     }
 
@@ -263,74 +260,74 @@
 <body>
 
 <div class="container">
-  <h2>מערכת ניהול Universe Pro</h2>
+  <h2>Universe Pro Dashboard</h2>
 
   <div class="grid-2">
-    <!-- הוספת משתמש / ארגון -->
+    <!-- Add User / Organization Member -->
     <div class="card">
-      <h3>הוספת שותף לארגון</h3>
+      <h3>Add Member</h3>
       <div class="form-group">
-        <label>שם בארגון</label>
-        <input type="text" id="userName" placeholder="הכנס שם בארגון">
+        <label>Org Name</label>
+        <input type="text" id="userName" placeholder="Enter Org Name">
       </div>
       <div class="form-group">
-        <label>אימייל</label>
+        <label>Email</label>
         <input type="email" id="userEmail" placeholder="user@example.com">
       </div>
       <div class="form-group">
-        <label>מזהה ארגון (מזהה הורה/ספונסר)</label>
-        <input type="number" id="parentId" placeholder="השאר ריק אם זה הראשי">
+        <label>Org ID (Sponsor / Parent ID)</label>
+        <input type="number" id="parentId" placeholder="Leave empty for root">
       </div>
-      <button onclick="addUser()">הוסף משתמש</button>
+      <button onclick="addUser()">Add Member</button>
     </div>
 
-    <!-- ביצוע השקעה / העברה -->
+    <!-- Process Investment / Transfer -->
     <div class="card">
-      <h3>ביצוע השקעה / העברה</h3>
+      <h3>New Investment</h3>
       <div class="form-group">
-        <label>מזהה ארגון מבוצע</label>
-        <input type="number" id="investUserId" placeholder="הכנס מזהה ארגון">
+        <label>Target Org ID</label>
+        <input type="number" id="investUserId" placeholder="Enter Org ID">
       </div>
       <div class="form-group">
-        <label>סכום (תומך במספרים עשרוניים)</label>
+        <label>Amount ($)</label>
         <input type="number" step="0.01" id="investAmount" placeholder="0.00">
       </div>
       <div class="form-group">
-        <label>סוג מסלול השקעה</label>
+        <label>Investment Type</label>
         <select id="investType">
-          <option value="unai">קרן לשנתיים - UNAI Engine</option>
-          <option value="tender">טנדר <span class="tender-badge">⚡ (4 חודשים)</span></option>
+          <option value="unai">UNAI Engine - 2 Years Fund</option>
+          <option value="tender">Tender ⚡ (4 Months Pool)</option>
         </select>
       </div>
-      <button class="btn-success" onclick="processInvestment()">בצע השקעה ⚡</button>
+      <button class="btn-success" onclick="processInvestment()">Submit Investment ⚡</button>
     </div>
   </div>
 
-  <!-- תצוגת מפת הארגון (עץ) -->
+  <!-- Organization Tree -->
   <div class="card">
-    <h3>מפת ארגון (עץ שיווקי)</h3>
+    <h3>Organization Tree</h3>
     <div class="tree-container">
       <div id="treeView" class="tree"></div>
     </div>
   </div>
 
-  <!-- טיימרים וניהול עמלות -->
+  <!-- Active Timers & Commission Releases -->
   <div class="card">
-    <h3>טיימרים וקרנות פעילות</h3>
+    <h3>Active Timers & Daily Yields</h3>
     <div id="timersList"></div>
   </div>
 
-  <!-- היסטוריית השקעות -->
+  <!-- Investment History -->
   <div class="card">
-    <h3>היסטוריית השקעות (מספרים עשרוניים)</h3>
+    <h3>Investment History</h3>
     <table>
       <thead>
         <tr>
-          <th>מזהה ארגון</th>
-          <th>שם בארגון</th>
-          <th>סכום השקעה</th>
-          <th>מסלול</th>
-          <th>תאריך</th>
+          <th>Org ID</th>
+          <th>Org Name</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody id="investmentsTable"></tbody>
@@ -339,13 +336,13 @@
 </div>
 
 <script>
-  // איפוס מלא בטעינה הראשונית לפי הדרישה - להתחיל מאפס
+  // Clean initialization - No previous user data stored
   localStorage.removeItem('universe_pro_users');
   localStorage.removeItem('universe_pro_investments');
 
   let users = [];
   let investments = [];
-  let nextOrgId = 1001; // מזהה ארגון נקי ראשוני
+  let nextOrgId = 1001;
 
   function addUser() {
     const name = document.getElementById('userName').value;
@@ -353,7 +350,7 @@
     const parentId = parseInt(document.getElementById('parentId').value) || null;
 
     if (!name || !email) {
-      alert('נא למלא שם בארגון ואימייל');
+      alert('Please fill in Org Name and Email');
       return;
     }
 
@@ -361,8 +358,7 @@
       id: nextOrgId++,
       name: name,
       email: email,
-      parentId: parentId,
-      joinDate: new Date()
+      parentId: parentId
     };
 
     users.push(newUser);
@@ -381,27 +377,25 @@
 
     const user = users.find(u => u.id === userId);
     if (!user) {
-      alert('מזהה ארגון לא נמצא');
+      alert('Org ID not found');
       return;
     }
 
     if (isNaN(amount) || amount <= 0) {
-      alert('נא להזין סכום עשרוני תקין');
+      alert('Please enter a valid amount');
       return;
     }
-
-    const durationMonths = type === 'unai' ? 24 : 4;
 
     const newInvest = {
       id: Date.now(),
       userId: userId,
       userName: user.name,
-      amount: amount.toFixed(2), // תמיכה עשרונית
+      amount: amount,
       type: type,
-      durationMonths: durationMonths,
       startDate: new Date(),
       lastResetDate: new Date(),
-      status: 'active'
+      status: 'active',
+      withdrawn: false
     };
 
     investments.push(newInvest);
@@ -417,7 +411,7 @@
     treeContainer.innerHTML = '';
 
     if (users.length === 0) {
-      treeContainer.innerHTML = '<p>אין משתמשים בארגון כרגע</p>';
+      treeContainer.innerHTML = '<p style="color: var(--text-muted);">No members in organization yet</p>';
       return;
     }
 
@@ -433,9 +427,9 @@
   function buildTreeNode(user) {
     const li = document.createElement('li');
 
-    // הרכבת המבנה: עיגול עם מזהה הארגון, ומתחתיו המייל והשם בארגון
+    // Circular Icon containing Org ID, Email & Org Name underneath
     li.innerHTML = `
-      <div class="node-circle" title="${user.name}">${user.id}</div>
+      <div class="node-circle">${user.id}</div>
       <div class="node-email">${user.email}</div>
       <div class="node-name">${user.name}</div>
     `;
@@ -458,13 +452,13 @@
 
     investments.forEach(inv => {
       const tr = document.createElement('tr');
-      const typeLabel = inv.type === 'tender' ? '⚡ טנדר (4 חודשים)' : 'קרן לשנתיים - UNAI Engine';
+      const typeLabel = inv.type === 'tender' ? 'Tender ⚡ (4 Months)' : 'UNAI Engine (2 Years)';
       tr.innerHTML = `
         <td>${inv.userId}</td>
         <td>${inv.userName}</td>
-        <td>$${parseFloat(inv.amount).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</td>
+        <td>$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
         <td>${typeLabel}</td>
-        <td>${new Date(inv.startDate).toLocaleDateString('he-IL')}</td>
+        <td>${new Date(inv.startDate).toLocaleDateString()}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -475,7 +469,7 @@
     container.innerHTML = '';
 
     if (investments.length === 0) {
-      container.innerHTML = '<p>אין טיימרים פעילים</p>';
+      container.innerHTML = '<p style="color: var(--text-muted);">No active investments</p>';
       return;
     }
 
@@ -485,16 +479,16 @@
 
       if (inv.type === 'unai') {
         box.innerHTML = `
-          <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - קרן לשנתיים (UNAI Engine)<br>
-          סכום: $${inv.amount}<br>
-          <span class="timer-yellow">זמן מתוכנן לשחרור הקרן: 24 חודשים</span>
+          <strong>Org ID: ${inv.userId} (${inv.userName})</strong> - UNAI Engine (2 Years Fund)<br>
+          Principal: $${inv.amount.toFixed(2)}<br>
+          <span class="status-yellow">Lock Period: 24 Months</span>
         `;
       } else if (inv.type === 'tender') {
         box.id = `timer-box-${inv.id}`;
         box.innerHTML = `
-          <strong>מזהה ארגון: ${inv.userId} (${inv.userName})</strong> - השקעת טנדר ⚡<br>
-          סכום: $${inv.amount}<br>
-          סטטוס טיימר: <span id="timer-status-${inv.id}">מחשב...</span>
+          <strong>Org ID: ${inv.userId} (${inv.userName})</strong> - Tender ⚡ Pool<br>
+          Principal: $${inv.amount.toFixed(2)} | <span id="daily-yield-${inv.id}">Accumulating Daily Interest...</span><br>
+          Status: <span id="timer-status-${inv.id}">Calculating...</span>
         `;
       }
       container.appendChild(box);
@@ -503,7 +497,6 @@
     updateTenderTimers();
   }
 
-  // לוגיקת טיימר 4 חודשים (אדום) + 72 שעות (צהוב) בלולאה מחזורית
   function updateTenderTimers() {
     const now = new Date().getTime();
 
@@ -511,36 +504,50 @@
       if (inv.type !== 'tender') return;
 
       const statusElem = document.getElementById(`timer-status-${inv.id}`);
+      const yieldElem = document.getElementById(`daily-yield-${inv.id}`);
       if (!statusElem) return;
 
-      // הגדרת זמנים במילישניות (לצורך סימולציה/תצוגה בזמן אמת)
+      // Calculate Daily Interest (Estimated 0.5% per day)
+      const daysElapsed = (now - new Date(inv.startDate).getTime()) / (1000 * 60 * 60 * 24);
+      const accumulatedYield = (inv.amount * 0.005 * daysElapsed);
+      if (yieldElem) {
+        yieldElem.innerHTML = `Daily Yield: <strong style="color:var(--accent-green)">+$${accumulatedYield.toFixed(4)}</strong>`;
+      }
+
+      if (inv.withdrawn) {
+        statusElem.className = 'status-green';
+        statusElem.innerHTML = 'Principal Withdrawn Successfully! ✔';
+        return;
+      }
+
+      // Time definitions for logic
       const fourMonthsMs = 4 * 30 * 24 * 60 * 60 * 1000;
       const seventyTwoHoursMs = 72 * 60 * 60 * 1000;
 
       const elapsed = now - new Date(inv.lastResetDate).getTime();
 
       if (elapsed < fourMonthsMs) {
-        // שלב 1: 4 חודשים (באדום)
+        // Phase 1: 4 Months Locked (Red)
         const remaining = fourMonthsMs - elapsed;
         const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
         const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        statusElem.className = 'timer-red';
-        statusElem.innerHTML = `נעול ל-4 חודשים (נותרו ${days} ימים ו-${hours} שעות)`;
+        statusElem.className = 'status-red';
+        statusElem.innerHTML = `Locked for 4 Months (Remaining: ${days}d ${hours}h)`;
       } else if (elapsed < fourMonthsMs + seventyTwoHoursMs) {
-        // שלב 2: 72 שעות בצהוב + כפתור משיכה
+        // Phase 2: 72 Hours Window (Yellow) + Withdraw Button
         const windowElapsed = elapsed - fourMonthsMs;
         const remaining = seventyTwoHoursMs - windowElapsed;
         const hours = Math.floor(remaining / (1000 * 60 * 60));
         const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
 
-        statusElem.className = 'timer-yellow';
+        statusElem.className = 'status-yellow';
         statusElem.innerHTML = `
-          חלון משיכה פתוח! (נותרו ${hours} שעות ו-${minutes} דקות)
+          Withdrawal Window Open! (${hours}h ${minutes}m remaining)
           <br>
-          <button class="btn-warning" onclick="withdrawPrincipal(${inv.id})">משוך קרן עכשיו</button>
+          <button class="btn-warning" style="width: auto; padding: 5px 15px; margin-top: 8px;" onclick="withdrawPrincipal(${inv.id})">Withdraw Principal</button>
         `;
       } else {
-        // שלב 3: עברו 72 שעות ללא משיכה -> איפוס מחדש ל-4 חודשים
+        // Phase 3: Missed 72 Hours -> Reset back to 4 Months (Red)
         inv.lastResetDate = new Date();
         renderTimers();
       }
@@ -548,16 +555,17 @@
   }
 
   function withdrawPrincipal(invId) {
-    alert('הקרן נמשכה בהצלחה!');
-    investments = investments.filter(i => i.id !== invId);
-    renderInvestmentsTable();
-    renderTimers();
+    const inv = investments.find(i => i.id === invId);
+    if (inv) {
+      inv.withdrawn = true;
+      renderTimers();
+    }
   }
 
-  // עדכון טיימרים פעיל כל שנייה
+  // Active Timer Loop
   setInterval(updateTenderTimers, 1000);
 
-  // טעינה ראשונית ריקה
+  // Initialize
   renderTree();
   renderTimers();
 </script>
